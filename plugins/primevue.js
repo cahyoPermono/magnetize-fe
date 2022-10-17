@@ -11,6 +11,7 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Row from 'primevue/row';
 import Paginator from 'primevue/paginator';
+import Dialog from 'primevue/dialog';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, {ripple: true});
@@ -25,5 +26,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Column', Column);
     nuxtApp.vueApp.component('Row', Row);
     nuxtApp.vueApp.component('Paginator', Paginator);
+    nuxtApp.vueApp.component('Dialog', Dialog);
    //other components that you need
 });

@@ -1,0 +1,3 @@
+<template>
+    hello, {{$route}}
+</template>
