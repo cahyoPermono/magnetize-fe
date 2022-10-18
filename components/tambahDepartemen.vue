@@ -89,7 +89,7 @@
         </div>
         <div class="mt-2">
           <label for="deskripsi"><small>Deskripsi</small></label>
-          <Editor v-model="deskripsi" id="deskripsi" />
+          <Editor v-model="deskripsi" class="deskripsi-tambah" />
         </div>
         <div class="mt-4">
           <Button label="Submit" icon="pi pi-check" type="submit" />
@@ -101,9 +101,6 @@
 
 <script setup>
 import axios from "axios";
-import { useToast } from "primevue/usetoast";
-
-const toast = useToast();
 
 const displayModal = ref(false);
 const deskripsi = ref("");
@@ -149,7 +146,7 @@ const isRequired = (value) => {
 </script>
 
 <style>
-.ProseMirror {
+.deskripsi-tambah .ProseMirror {
   border-radius: 10px;
   border: 1px solid #1d1d1d;
   width: 400px;

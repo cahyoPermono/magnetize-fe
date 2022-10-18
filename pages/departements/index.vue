@@ -22,11 +22,8 @@
         <Column field="lokasi" header="Lokasi" :sortable="true"></Column>
         <Column>
           <template #body="slotProps">
-            <NuxtLink
-              type="button"
-              icon="pi pi-eye"
-              class="p-button-rounded p-button-success"
-              :to="`departement/${slotProps.data.id}`"
+            <NuxtLink :to="`/departements/${slotProps.data.id}`">
+              <Button type="button" icon="pi pi-eye" class=" p-button-success" ></Button
             ></NuxtLink>
           </template>
         </Column>
@@ -41,7 +38,7 @@ let dataDept = ref("");
 
 function viewDept(param) {
   console.log(param);
-};
+}
 
 onMounted(async () => {
   const response = await axios.get(

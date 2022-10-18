@@ -1120,7 +1120,7 @@ h3 {
 
 p {
     font-size: x-large;
-    margin-top: 30px;
+    margin-top: 0px;
 }
 .p-button-info {
     margin-left: 680px;
