@@ -40,5 +40,8 @@
     align-items: center;
     margin-top: 1rem;
   }
+  a:hover{
+    text-decoration: none;
+  }
   </style>
   

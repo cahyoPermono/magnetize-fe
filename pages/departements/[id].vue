@@ -1,89 +1,71 @@
 <template>
   <div class="container-dept p-3">
-    <div class="b col-4">
-      <div class="card p-3">
-        <small>Nama Departemen</small>
-        <h2>{{ dept.nama }}</h2>
-        <small>Deskripsi</small>
-        <Editord v-model="dept.deskripsi" class="deskripsi-one" />
+    <div class="mt-2">
+      <div class="b col-4">
+        <div class="card p-3">
+          <small>Nama Departemen</small>
+          <h2>{{ dept.nama }}</h2>
+          <small>Deskripsi</small>
+          <Editord v-model="dept.deskripsi" class="deskripsi-one" />
+          <div>
+            <edit-departemen />
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="b col-8">
-      <div class="card p-3">
-        <small>URL</small>
-        <h5>{{ dept.url }}</h5>
-        <small>Industri</small>
-        <h5>{{ dept.industri }}</h5>
-        <small>Lokasi</small>
-        <h5>{{ dept.lokasi }}</h5>
-        <small>Alamat</small>
-        <h5>{{ dept.alamat }}</h5>
+      <div class="b col-8">
+        <div class="card p-3">
+          <small>URL</small>
+          <h5>{{ dept.url }}</h5>
+          <small>Industri</small>
+          <h5>{{ dept.industri }}</h5>
+          <small>Lokasi</small>
+          <h5>{{ dept.lokasi }}</h5>
+          <small>Alamat</small>
+          <h5>{{ dept.alamat }}</h5>
+        </div>
       </div>
     </div>
     <div class="mt-5">
-      <div class="b col-6">
+      <div class="b col-12">
         <div class="card p-3">
-          <small class="mb-2">Notes</small>
-          <tambah-note />
-          <Accordion class="mt-2">
-            <AccordionTab
-              v-for="(note, index) in dept.Notes"
-              :key="index"
-              :header="note.notes"
-            >
-              <p>
-                <strong>{{ note.notes }}</strong>
-              </p>
-              <small
-                ><strong>Created at: </strong>{{ note.createdAt }} <br />
-                <strong>Updated at: </strong> {{ note.updatedAt }}</small
-              >
-            </AccordionTab>
-          </Accordion>
-        </div>
-      </div>
-      <div class="b col-6">
-        <div class="card p-3">
-          <small>Attachments</small>
-          <tambah-attachment />
-          <Accordion class="mt-2">
-            <AccordionTab
-              v-for="(attachment, index) in dept.Attachments"
-              :key="index"
-              :header="attachment.attachment_name"
-            >
-              <p class="b col-8">
-                <strong>{{ attachment.attachment_name }}</strong>
-              </p>
-              <div class="b col-4">
-                <Button
-                  icon="pi pi-download"
-                  @click="download(attachment.attachment_file)"
-                ></Button>
-              </div>
-            </AccordionTab>
-          </Accordion>
+          <tab-component />
         </div>
       </div>
     </div>
+    <NuxtLink to="/departements" class="float my-float">
+      <Button
+        icon="pi pi-arrow-left"
+        class="p-button-rounded"
+        style="box-shadow: 2px 2px 3px #999"
+      />
+    </NuxtLink>
   </div>
 </template>
 
 <script setup>
 import axios from "axios";
-const dept = ref("");
-function download(zzz) {
-  const inputMIME = zzz.split(",")[0].split(":")[1].split(";")[0];
-  console.log(inputMIME);
-  if (zzz.split(",")[0].indexOf("base64") >= 0) {
-    let binaryVal = atob(zzz.split(",")[1]);
-    console.log(binaryVal);
-  } else {
-    let binaryVal = unescape(zzz.split(",")[1]);
-    console.log("done");
-    
-  }
+const route = useRoute();
+
+const edit_note = ref(false);
+function edit() {
+  edit_note.value = !edit_note.value;
 }
+async function update_note(note, id) {
+  await axios.post("http://localhost:3000/api/1.0/notes", {
+    notes: note,
+    DepartementId: route.params.id,
+  });
+
+  await axios.delete("http://localhost:3000/api/1.0/notes/" + id);
+  return location.reload();
+}
+const dept = ref("");
+const isRequired = (value) => {
+  if (!value) {
+    return "This field is required";
+  }
+  return true;
+};
 
 onMounted(async () => {
   const route = useRoute();
@@ -92,7 +74,12 @@ onMounted(async () => {
   const res = await axios.get(
     "http://localhost:3000/api/1.0/departements/" + id
   );
-  dept.value = res.data.departement;
+  if (res.data.message) {
+    alert(res.data.message);
+    location = "/departements";
+  } else {
+    dept.value = res.data.departement;
+  }
 });
 </script>
 <style>
@@ -107,5 +94,12 @@ div.b {
 }
 .p-accordion-content p {
   font-size: 12pt;
+}
+.float {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  text-align: center;
+  margin-top: 22px;
 }
 </style>

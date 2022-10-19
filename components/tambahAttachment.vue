@@ -2,7 +2,7 @@
   <Button
     label="tambah attachment"
     icon="pi pi-plus"
-    class="p-button-sm mt-3"
+    class="p-button-sm p-button-success mt-3"
     @click="openModalAttachment"
   />
   <Dialog
@@ -68,8 +68,7 @@ function handleFileSelect(evt) {
     alert("Please select a file less than 2MB.");
     return;
   } else {
-    const allowedExtensions =
-      /(\.jpg|\.jpeg|\.png|\.gif|\.pdf)$/i;
+    const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif|\.pdf)$/i;
     if (!allowedExtensions.exec(f.name)) {
       alert("Invalid file type");
       file.value = "";

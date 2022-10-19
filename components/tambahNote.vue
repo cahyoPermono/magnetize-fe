@@ -2,7 +2,7 @@
   <Button
     label="tambah note"
     icon="pi pi-plus"
-    class="p-button-sm mt-3"
+    class="p-button-sm p-button-success mt-3"
     @click="openModalNote"
   />
   <Dialog

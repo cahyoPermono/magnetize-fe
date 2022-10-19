@@ -12,8 +12,8 @@ import Column from 'primevue/column';
 import Row from 'primevue/row';
 import Paginator from 'primevue/paginator';
 import Dialog from 'primevue/dialog';
-import Accordion from 'primevue/accordion';
-import AccordionTab from 'primevue/accordiontab';
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, {ripple: true});
@@ -29,7 +29,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Row', Row);
     nuxtApp.vueApp.component('Paginator', Paginator);
     nuxtApp.vueApp.component('Dialog', Dialog);
-    nuxtApp.vueApp.component('Accordion', Accordion);
-    nuxtApp.vueApp.component('AccordionTab', AccordionTab);
+    nuxtApp.vueApp.component('TabView', TabView);
+    nuxtApp.vueApp.component('TabPanel', TabPanel);
    //other components that you need
 });

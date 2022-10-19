@@ -23,7 +23,11 @@
         <Column>
           <template #body="slotProps">
             <NuxtLink :to="`/departements/${slotProps.data.id}`">
-              <Button type="button" icon="pi pi-eye" class=" p-button-success" ></Button
+              <Button
+                type="button"
+                icon="pi pi-eye"
+                class="p-button-success"
+              ></Button
             ></NuxtLink>
           </template>
         </Column>
@@ -35,10 +39,6 @@
 <script setup>
 import axios from "axios";
 let dataDept = ref("");
-
-function viewDept(param) {
-  console.log(param);
-}
 
 onMounted(async () => {
   const response = await axios.get(
