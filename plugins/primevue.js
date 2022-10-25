@@ -14,6 +14,10 @@ import Paginator from 'primevue/paginator';
 import Dialog from 'primevue/dialog';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
+import FileUpload from 'primevue/fileupload';
+import Textarea from 'primevue/textarea';
+import Avatar from 'primevue/avatar';
+import Sidebar from 'primevue/sidebar';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, {ripple: true});
@@ -31,5 +35,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Dialog', Dialog);
     nuxtApp.vueApp.component('TabView', TabView);
     nuxtApp.vueApp.component('TabPanel', TabPanel);
+    nuxtApp.vueApp.component('FileUpload', FileUpload);
+    nuxtApp.vueApp.component('Textarea', Textarea);
+    nuxtApp.vueApp.component('Avatar', Avatar);
+    nuxtApp.vueApp.component('Sidebar', Sidebar);
+    
    //other components that you need
 });

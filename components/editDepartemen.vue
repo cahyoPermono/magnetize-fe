@@ -1,9 +1,8 @@
 <template>
-  <Button
-    icon="pi pi-user-edit"
+  <i
+    class="pi pi-user-edit"
     @click="openPosition('top')"
-    class="p-button-warning"
-    style="float: right"
+    style="float: right; opacity:0.3;"
   />
 
   <Dialog
@@ -103,7 +102,7 @@ async function save() {
       .then(() => {
         alert("Departemen diupdate");
         setTimeout(function () {
-          location="/departements";
+          location = "/departements";
         }, 760);
       });
 

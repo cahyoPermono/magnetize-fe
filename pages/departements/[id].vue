@@ -1,29 +1,55 @@
 <template>
   <div class="container-dept p-3">
-    <div class="mt-2">
-      <div class="b col-4">
-        <div class="card p-3">
-          <small>Nama Departemen</small>
-          <h2>{{ dept.nama }}</h2>
-          <small>Deskripsi</small>
-          <Editord v-model="dept.deskripsi" class="deskripsi-one" />
-          <div>
-            <edit-departemen />
+    <div class="p-3">
+      <div class="b p-3">
+        <Avatar
+          :image="dept.avatar"
+          class="mr-4"
+          size="xlarge"
+          shape="circle"
+        />
+      </div>
+      <div class="b">
+        <h2>
+          {{ dept.nama }}
+          <i class="pi pi-eye" style="opacity: 0.3" @click="viewDept"></i>
+        </h2>
+
+        <Dialog
+          header="Detail Departemen"
+          v-model:visible="displayResponsive"
+          :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
+          :style="{ width: '50vw' }"
+        >
+          <div class="card p-3">
+            <span style="float: right">
+              <edit-departemen @click="viewDept" />
+            </span>
+            <small>Nama Departemen</small>
+            <p>{{ dept.nama }}</p>
+            <small>Lokasi</small>
+            <p>{{ dept.lokasi }}</p>
+            <small>Alamat</small>
+            <p>{{ dept.alamat }}</p>
+            <small>Industri</small>
+            <p>{{ dept.industri }}</p>
+            <small>URL</small>
+            <p>{{ dept.url }}</p>
+            <small>Deskripsi</small>
+            <p>{{ dept.deskripsi }}</p>
           </div>
-        </div>
+          <template #footer>
+            <Button
+              label="OK"
+              icon="pi pi-check"
+              @click="viewDept"
+              class="p-button-text"
+            />
+          </template>
+        </Dialog>
+        <small>{{ dept.alamat }}, {{ dept.lokasi }}</small>
       </div>
-      <div class="b col-8">
-        <div class="card p-3">
-          <small>URL</small>
-          <h5>{{ dept.url }}</h5>
-          <small>Industri</small>
-          <h5>{{ dept.industri }}</h5>
-          <small>Lokasi</small>
-          <h5>{{ dept.lokasi }}</h5>
-          <small>Alamat</small>
-          <h5>{{ dept.alamat }}</h5>
-        </div>
-      </div>
+      <div></div>
     </div>
     <div class="mt-5">
       <div class="b col-12">
@@ -47,6 +73,12 @@ import axios from "axios";
 const route = useRoute();
 
 const edit_note = ref(false);
+const displayResponsive = ref(false);
+
+const viewDept = () => {
+  displayResponsive.value = !displayResponsive.value;
+};
+
 function edit() {
   edit_note.value = !edit_note.value;
 }
@@ -69,7 +101,6 @@ const isRequired = (value) => {
 
 onMounted(async () => {
   const route = useRoute();
-
   const id = route.params.id;
   const res = await axios.get(
     "http://localhost:3000/api/1.0/departements/" + id

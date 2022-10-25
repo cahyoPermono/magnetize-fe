@@ -13,88 +13,60 @@
     :modal="true"
   >
     <div class="card p-3">
-      <Form @submit="saveAttachment">
-        <div class="mt-2">
-          <label for="attachment"
-            ><small>Nama Attachment</small
-            ><span style="color: red">*</span></label
-          >
-          <Field
-            class="form-control"
-            name="attachment"
-            :rules="isRequired"
-            v-model="newAttachment.attachment"
-          />
-          <ErrorMessage name="attachment"
-            ><small style="color: red"
-              >Attachment is required</small
-            ></ErrorMessage
-          >
-        </div>
-        <div class="mt-2">
-          <label for="formFile"
-            ><small>File Attachment</small
-            ><span style="color: red">*</span></label
-          >
-          <input
-            class="form-control"
-            type="file"
-            @change="handleFileSelect"
-            id="formFile"
-          />
-        </div>
-        <div class="mt-4">
-          <Button label="Submit" icon="pi pi-check" type="submit" />
-        </div>
-      </Form>
+      <div class="mt-2">
+        <label for="attachment"
+          ><small>Nama Attachment</small
+          ><span style="color: red">*</span></label
+        >
+        <Field
+          class="form-control"
+          name="attachment"
+          v-model="newAttachment.attachment"
+        />
+      </div>
+      <div class="mt-2">
+        <label for="formFile"
+          ><small>File Attachment</small
+          ><span style="color: red">*</span></label
+        >
+        <FileUpload
+          name="demo[]"
+          mode="basic"
+          @upload="onUpload"
+          accept="image/*,.pdf"
+          :maxFileSize="2000000"
+        >
+        </FileUpload>
+      </div>
     </div>
   </Dialog>
 </template>
 
 <script setup>
 import axios from "axios";
+const route = useRoute();
 
 const displayModalAttachment = ref(false);
 const newAttachment = reactive({
   attachment: "",
+  type: "",
+  file: "",
 });
 
-const file = ref("");
-
-function handleFileSelect(evt) {
-  let f = evt.target.files[0];
-  const filesize = f.size / 1024 ** 2;
-  if (filesize >= 2) {
-    alert("Please select a file less than 2MB.");
-    return;
-  } else {
-    const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif|\.pdf)$/i;
-    if (!allowedExtensions.exec(f.name)) {
-      alert("Invalid file type");
-      file.value = "";
-      newAttachment.attachment = "";
-      return false;
-    } else {
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        file.value = reader.result;
-      };
-      // Read in the image file as a data URL.
-      reader.readAsDataURL(f);
-    }
-  }
-}
-function openModalAttachment() {
-  displayModalAttachment.value = !displayModalAttachment.value;
-}
-const route = useRoute();
-
-async function saveAttachment() {
+async function onUpload(evt) {
   try {
-    const res = await axios.post("http://localhost:3000/api/1.0/attachments", {
+    let f = evt.files[0];
+    newAttachment.type = f.type;
+    const reader = new FileReader();
+    reader.readAsDataURL(f);
+    reader.onload = () => {
+      newAttachment.file = reader.result;
+    };
+    console.log(newAttachment.file);
+    await axios.post("http://localhost:3000/api/1.0/attachments", {
       attachment_name: newAttachment.attachment,
-      attachment_file: file.value,
+      attachment_file: newAttachment.file,
+      type: newAttachment.type,
       DepartementId: route.params.id,
     });
     alert("Attachment baru ditambahkan");
@@ -102,13 +74,10 @@ async function saveAttachment() {
       location.reload();
     }, 760);
   } catch (error) {
-    alert("Attachment kosong atau invalid type file");
+    alert(error);
   }
 }
-const isRequired = (value) => {
-  if (!value) {
-    return "This field is required";
-  }
-  return true;
-};
+function openModalAttachment() {
+  displayModalAttachment.value = !displayModalAttachment.value;
+}
 </script>
