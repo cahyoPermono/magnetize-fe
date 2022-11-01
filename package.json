@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "nuxt": "3.0.0-rc.3",
-    "primeflex": "3.2.0",
+    "primeflex": "^3.2.0",
     "primeicons": "5.0.0",
     "primevue": "3.10.0"
   },
@@ -24,6 +24,7 @@
     "@vee-validate/rules": "^4.7.0",
     "axios": "^1.0.0",
     "dateformat": "^5.0.3",
+    "dotenv": "^16.0.3",
     "lexical": "^0.5.0",
     "sass": "^1.55.0",
     "vee-validate": "^4.7.0",

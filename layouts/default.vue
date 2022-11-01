@@ -1,5 +1,5 @@
 <template>
-  <div class="topBar px-4 py-3 shadow">
+  <div class="topBar px-4 py-3 shadow-6">
     <Button
       @click="visibleLeft = true"
       icon="pi pi-bars"
