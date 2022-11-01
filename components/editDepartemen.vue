@@ -40,6 +40,10 @@
 
 <script setup>
 import axios from "axios";
+const config = useRuntimeConfig();
+const route = useRoute();
+const router = useRouter();
+
 const newDept = ref(null);
 const position = ref("center");
 const displayPosition = ref(false);
@@ -50,39 +54,29 @@ const openPosition = (pos) => {
 const closePosition = () => {
   displayPosition.value = false;
 };
-async function save() {
-  console.log(newDept.value);
-  try {
-    await axios
-      .post("http://localhost:3000/api/1.0/departements", {
-        nama: newDept.value.nama,
-        url: newDept.value.url,
-        industri: newDept.value.industri,
-        lokasi: newDept.value.lokasi,
-        alamat: newDept.value.alamat,
-        deskripsi: newDept.value.deskripsi,
-      })
-      .then(() => {
-        alert("Departemen diupdate");
-        setTimeout(function () {
-          location = "/departements";
-        }, 760);
-      });
 
-    await axios.delete(
-      "http://localhost:3000/api/1.0/departements/" + newDept.value.id
-    );
+async function save() {
+  try {
+    await axios.post(config.API_BASE_URL + "departements", {
+      nama: newDept.value.nama,
+      url: newDept.value.url,
+      industri: newDept.value.industri,
+      lokasi: newDept.value.lokasi,
+      alamat: newDept.value.alamat,
+      deskripsi: newDept.value.deskripsi,
+    }).then(() => {
+      alert("Departemen diupdate");
+      axios.delete(config.API_BASE_URL + "departements/" + route.params.id);
+    }).then(() => {
+      router.push({ path: `/departements/${newDept.value.id}` });
+    });
   } catch (error) {
     alert(error);
   }
 }
 onMounted(async () => {
-  const route = useRoute();
-
   const id = route.params.id;
-  const getdata = await axios.get(
-    "http://localhost:3000/api/1.0/departements/" + id
-  );
+  const getdata = await axios.get(config.API_BASE_URL + "departements/" + id);
   newDept.value = getdata.data.departement;
 });
 </script>

@@ -14,7 +14,7 @@
           :breakpoints="{ '960px': '75vw', '640px': '90vw' }" :style="{ width: '50vw' }">
           <div class="card p-3">
             <span style="float: right">
-              <edit-departemen @click="viewDept" />
+              <edit-departemen />
             </span>
             <small>Nama Departemen</small>
             <p>{{ dept.nama }}</p>
@@ -52,38 +52,24 @@
 
 <script setup>
 import axios from "axios";
-const route = useRoute();
-
-const edit_note = ref(false);
 const displayResponsive = ref(false);
 
 const viewDept = () => {
   displayResponsive.value = !displayResponsive.value;
 };
 
-function edit() {
-  edit_note.value = !edit_note.value;
-}
-async function update_note(note, id) {
-  await axios.post("http://localhost:3000/api/1.0/notes", {
-    notes: note,
-    DepartementId: route.params.id,
-  });
-
-  await axios.delete("http://localhost:3000/api/1.0/notes/" + id);
-  return location.reload();
-}
 const dept = ref("");
 
 onMounted(async () => {
   const route = useRoute();
+  const router = useRouter();
+  const config = useRuntimeConfig();
+
   const id = route.params.id;
-  const res = await axios.get(
-    "http://localhost:3000/api/1.0/departements/" + id
-  );
+  const res = await axios.get(config.API_BASE_URL + "departements/" + id);
   if (res.data.message) {
     alert(res.data.message);
-    location = "/departements";
+    router.push({ path: "/departements" });
   } else {
     dept.value = res.data.departement;
   }
