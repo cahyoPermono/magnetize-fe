@@ -2,6 +2,8 @@
   <div class="container-dept p-5">
     <h1>Departemen Imani Prima</h1>
     <tambah-departemen />
+    <!-- <Button label="download" @click="download()" /> -->
+    <a href="file:///F:/Sidna/feat-departement/magnetize-be/docs/0.48144976903409775_doc.pdf'">download</a>
     <div class="card shadow m-4 p-2">
       <DataTable :value="dataDept" :paginator="true" :rows="5"
         paginatorTemplate=" FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
@@ -30,7 +32,9 @@
 <script setup>
 import axios from "axios";
 let dataDept = ref("");
-
+const download = async () =>{
+  await axios.get("http://localhost:3000/trypdf");
+}
 onMounted(async () => {
   const config = useRuntimeConfig();
   const response = await axios.get(config.API_BASE_URL + "departements");
