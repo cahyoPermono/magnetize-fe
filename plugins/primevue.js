@@ -18,6 +18,8 @@ import FileUpload from 'primevue/fileupload';
 import Textarea from 'primevue/textarea';
 import Avatar from 'primevue/avatar';
 import Sidebar from 'primevue/sidebar';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, {ripple: true});
@@ -40,5 +42,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Avatar', Avatar);
     nuxtApp.vueApp.component('Sidebar', Sidebar);
     
+    nuxtApp.vueApp.component('DataTable', DataTable);
+    nuxtApp.vueApp.component('Column', Column);
    //other components that you need
 });
