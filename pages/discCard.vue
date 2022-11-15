@@ -951,10 +951,10 @@ const questions = ref();
 onMounted(() => {
     getQuestion()
 })
-
+const config = useRuntimeConfig()
 function getQuestion() {
      try {
-        axios.get("http://localhost:3000/api/1.0/questions")
+        axios.get(config.API_BASE_URL + "questions")
         .then(response => {
             questions.value = response.data.data
         });
@@ -969,7 +969,7 @@ async function save() {
             toast.add({ severity: "error", summary: "You cannot select both of `P` and `K` choice in the same term"});
             return;
         } else {
-            await axios.post("http://localhost:3000/api/1.0/answers", {
+            await axios.post(config.API_BASE_URL + "answers", {
             name: answer.name,
             email: answer.email,
             role: answer.role,
@@ -1120,7 +1120,7 @@ h3 {
 
 p {
     font-size: x-large;
-    margin-top: 30px;
+    margin-top: 0px;
 }
 .p-button-info {
     margin-left: 680px;

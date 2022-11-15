@@ -7,13 +7,17 @@ import ToastService from 'primevue/toastservice';
 import Message from 'primevue/message';
 import Card from 'primevue/card';
 import RadioButton from 'primevue/radiobutton';
-import Steps from 'primevue/steps';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Row from 'primevue/row';
+import Paginator from 'primevue/paginator';
+import Dialog from 'primevue/dialog';
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
 import FileUpload from 'primevue/fileupload';
-import Dropdown from 'primevue/dropdown';
-import Tooltip from 'primevue/tooltip';
+import Textarea from 'primevue/textarea';
 import Avatar from 'primevue/avatar';
-import InputNumber from 'primevue/inputnumber';
-import Divider from 'primevue/divider';
+import Sidebar from 'primevue/sidebar';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
@@ -26,13 +30,18 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Message', Message);
     nuxtApp.vueApp.component('Card', Card);
     nuxtApp.vueApp.component('RadioButton', RadioButton);
-    nuxtApp.vueApp.component('Steps', Steps);
+    nuxtApp.vueApp.component('DataTable', DataTable);
+    nuxtApp.vueApp.component('Column', Column);
+    nuxtApp.vueApp.component('Row', Row);
+    nuxtApp.vueApp.component('Paginator', Paginator);
+    nuxtApp.vueApp.component('Dialog', Dialog);
+    nuxtApp.vueApp.component('TabView', TabView);
+    nuxtApp.vueApp.component('TabPanel', TabPanel);
     nuxtApp.vueApp.component('FileUpload', FileUpload);
-    nuxtApp.vueApp.component('Dropdown', Dropdown);
-    nuxtApp.vueApp.directive('Tooltip', Tooltip);
+    nuxtApp.vueApp.component('Textarea', Textarea);
     nuxtApp.vueApp.component('Avatar', Avatar);
-    nuxtApp.vueApp.component('InputNumber', InputNumber);
-    nuxtApp.vueApp.component('Divider', Divider);
+    nuxtApp.vueApp.component('Sidebar', Sidebar);
+    
     nuxtApp.vueApp.component('DataTable', DataTable);
     nuxtApp.vueApp.component('Column', Column);
    //other components that you need
