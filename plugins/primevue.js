@@ -14,6 +14,8 @@ import Tooltip from 'primevue/tooltip';
 import Avatar from 'primevue/avatar';
 import InputNumber from 'primevue/inputnumber';
 import Divider from 'primevue/divider';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, {ripple: true});
@@ -31,5 +33,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Avatar', Avatar);
     nuxtApp.vueApp.component('InputNumber', InputNumber);
     nuxtApp.vueApp.component('Divider', Divider);
+    nuxtApp.vueApp.component('DataTable', DataTable);
+    nuxtApp.vueApp.component('Column', Column);
    //other components that you need
 });
