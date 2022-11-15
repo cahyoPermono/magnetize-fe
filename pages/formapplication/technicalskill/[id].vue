@@ -15,20 +15,12 @@
           <Column headerStyle="width: 20em" field="subskill" header="Nama Skill" />
           <Column header="Nilai">
             <template #body="slotProps">
-              <input
-                type="text"
-                v-model="slotProps.data.nilai"
-                class="form-control"
-              />
+              <input type="text" v-model="slotProps.data.nilai" class="form-control" />
             </template>
           </Column>
           <Column header="Keterangan">
             <template #body="slotProps">
-              <input
-                type="text"
-                v-model="slotProps.data.keterangan"
-                class="form-control"
-              />
+              <input type="text" v-model="slotProps.data.keterangan" class="form-control" />
             </template>
           </Column>
         </DataTable>
@@ -44,34 +36,21 @@
             @click="addOther"
             icon="pi pi-plus"
             class="p-button-warning"
-            v-tooltip.right="'Klik untuk menambahkan'"
-          />
+            v-tooltip.right="'Klik untuk menambahkan'" />
           <DataTable :value="otherskills">
             <Column headerStyle="width: 20em" header="Nama Skill">
               <template #body="slotProps">
-                <input
-                type="text"
-                v-model="slotProps.data.nameother"
-                class="form-control"
-                />
+                <input type="text" v-model="slotProps.data.nameother" class="form-control" />
               </template>
             </Column>
             <Column header="Nilai">
               <template #body="slotProps">
-                <input
-                type="text"
-                v-model="slotProps.data.nilaiother"
-                class="form-control"
-                />
+                <input type="text" v-model="slotProps.data.nilaiother" class="form-control" />
               </template>
             </Column>
             <Column header="Keterangan">
               <template #body="slotProps">
-                <input
-                type="text"
-                v-model="slotProps.data.keteranganother"
-                class="form-control"
-                />
+                <input type="text" v-model="slotProps.data.keteranganother" class="form-control" />
               </template>
             </Column>
           </DataTable>
@@ -113,8 +92,26 @@ function addOther() {
 
 onMounted(() => {
   getApplicant();
+  getJob();
 
-  axios.get("http://localhost:3000/api/1.0/jobs").then((response) => {
+  
+});
+
+async function getApplicant() {
+  try {
+    await axios
+      .get("http://localhost:3000/api/1.0/applicants")
+      .then((response) => {
+        applicants.value = response.data.data;
+      });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function getJob(){
+  try {
+    await axios.get("http://localhost:3000/api/1.0/jobs").then((response) => {
     response.data.data.forEach((element) => {
       if (element.name === applicants.value[0].position) {
         jobs.value = element;
@@ -122,7 +119,9 @@ onMounted(() => {
     });
     axios
       .get("http://localhost:3000/api/1.0/skills/" + jobs.value.id)
+      
       .then((response) => {
+        console.log(jobs.value.id)
         skills.value = response.data.data;
         skills.value.forEach((element) => {
           arrskill.push({
@@ -140,17 +139,8 @@ onMounted(() => {
         });
       });
   });
-});
-
-async function getApplicant() {
-  try {
-    await axios
-      .get("http://localhost:3000/api/1.0/applicants")
-      .then((response) => {
-        applicants.value = response.data.data;
-      });
   } catch (err) {
-    console.log(err);
+    console.log(err)
   }
 }
 async function save() {
@@ -170,7 +160,7 @@ async function save() {
       axios
         .post("http://localhost:3000/api/1.0/otherapplicantskills", {
           applicantId: route.params.id,
-          name: elother.nameother,
+          nama: elother.nameother,
           nilai: elother.nilaiother,
           keterangan: elother.keteranganother,
         })
