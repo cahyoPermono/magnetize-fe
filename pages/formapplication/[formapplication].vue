@@ -1579,10 +1579,15 @@ import { ref, onMounted, reactive } from "vue";
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
 
+definePageMeta({
+    layout: false,
+});
+
 const toast = useToast();
 
 const subskills = ref(null);
 const arr = ref([]);
+
 
 onMounted(() => {
   getSubSkill();
