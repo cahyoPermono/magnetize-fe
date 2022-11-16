@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" style="margin-bottom: 15px;">
     <Form @submit="save">
     <div class="card-header">
       <h5>Technical Skill</h5>
@@ -56,8 +56,9 @@
           </DataTable>
       </div>
     </div>
-    <div class="card-footer">
-      <Button type="submit" label="Save" />
+    <div class="card-footer text-muted">
+      <Button class="p-button-sm p-button-text" disabled />
+      <Button class="p-button-sm" icon="pi pi-save" type="submit" style="float: right" />
     </div>
   </Form>
   </div>
@@ -66,6 +67,11 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+
+definePageMeta({
+    layout: false,
+});
+
 
 const route = useRoute();
 const router = useRouter();
@@ -166,7 +172,7 @@ async function save() {
         })
     });
     alert("Suksess Save Data")
-      router.push({ path: "/" });
+      router.push({ path: "/formapplication/form" });
   } catch (err) {
     console.log(err);
   }
