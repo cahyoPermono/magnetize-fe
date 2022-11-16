@@ -172,7 +172,7 @@ async function save() {
         })
     });
     alert("Suksess Save Data")
-      router.push({ path: "/" });
+      router.push({ path: "/formapplication/form" });
   } catch (err) {
     console.log(err);
   }
