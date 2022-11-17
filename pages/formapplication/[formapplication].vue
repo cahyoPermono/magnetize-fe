@@ -1,7 +1,6 @@
 <template>
   <div class="card">
-    <Form v-slot="{ meta }" @submit="save">
-      <Toast />
+    <Form @submit="save">
       <div v-if="apply">
         <div class="card-body">
           <div class="mt-2">
@@ -41,17 +40,15 @@
                 ><span style="color: red">*</span>
               </label>
               <div class="col-sm">
-                <Field
+                <select
+                  name="jobs"
                   class="form-control"
-                  name="position"
-                  :rules="isRequired"
                   v-model="applicant.position"
-                />
-                <ErrorMessage name="position">
-                  <small style="color: red"
-                    >Apply for Position is required</small
-                  >
-                </ErrorMessage>
+                >
+                  <option v-for="job in jobs" :value="job.name" :key="job.id">
+                    {{ job.name }}
+                  </option>
+                </select>
               </div>
             </div>
           </div>
@@ -62,7 +59,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(apply = false), (personal1 = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -335,7 +331,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(personal1 = false), (personal2 = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -487,7 +482,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(personal2 = false), (family = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -536,11 +530,24 @@
                   ><small>Menikah, Tahun</small></label
                 >&nbsp;&nbsp;
                 <InputText
+                  v-if="
+                    applicant.marital_status === 'lajang' ||
+                    applicant.marital_status === 'janda/duda'
+                  "
+                  class="p-inputtext-sm"
+                  name="year_marriage"
+                  type="text"
+                  v-model="applicant.year_marriage"
+                  readonly
+                />
+                <InputText
+                  v-else
                   class="p-inputtext-sm"
                   name="year_marriage"
                   type="text"
                   v-model="applicant.year_marriage"
                 />
+
                 <ErrorMessage name="marital_status">
                   <small style="color: red">Marital Status is required</small>
                 </ErrorMessage>
@@ -683,7 +690,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(family = false), (formaleducation = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -800,7 +806,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(formaleducation = false), (nonformaleducation = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -877,6 +882,7 @@
                     @upload="onUploadCerti($event, index)"
                     accept="image/*,.pdf"
                     :maxFileSize="1000000"
+                    :auto="true"
                   >
                   </FileUpload>
                 </div>
@@ -909,7 +915,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(nonformaleducation = false), (computer = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -982,7 +987,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(computer = false), (employhistory = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -1121,7 +1125,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(employhistory = false), (jobdesc = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -1160,7 +1163,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(jobdesc = false), (otherinfo = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -1182,7 +1184,11 @@
               >
               <span style="color: red">*</span>
             </label>
-            <Field
+            <select v-model="otherinformation.hospitalized" class="form-control">
+              <option value="ya">Ya</option>
+              <option value="tidak">Tidak</option>
+            </select>
+            <!-- <Field
               class="form-control"
               name="hospitalized"
               :rules="isRequired"
@@ -1190,20 +1196,21 @@
             />
             <ErrorMessage name="hospitalized">
               <small style="color: red">Hospitalized is required</small>
-            </ErrorMessage>
+            </ErrorMessage> -->
           </div>
-          <div class="mt-2">
+          <div class="mt-2" v-if="otherinformation.hospitalized === 'ya'">
             <label for="disease">
               <small
                 >(Jika Ya) Sakit apa ? (If Yes) What kind of disease ?</small
               >
             </label>
-            <Field
+            <Field 
               class="form-control"
               name="disease"
               v-model="otherinformation.disease"
             />
           </div>
+          
           <div class="mt-2">
             <label for="psycological_test">
               <small
@@ -1497,7 +1504,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(otherinfo = false), (attach = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -1547,6 +1553,7 @@
                     @upload="onUpload($event, index)"
                     accept="image/*,.pdf"
                     :maxFileSize="1000000"
+                    :auto="true"
                   >
                   </FileUpload>
                 </div>
@@ -1565,7 +1572,6 @@
             class="p-button-sm"
             icon="pi pi-save"
             type="submit"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -1580,33 +1586,21 @@ import axios from "axios";
 import { useToast } from "primevue/usetoast";
 
 definePageMeta({
-    layout: false,
+  layout: false,
 });
 
 const toast = useToast();
 
-const subskills = ref(null);
-const arr = ref([]);
-
+const jobs = ref([]);
 
 onMounted(() => {
-  getSubSkill();
+  getJob();
 });
 
-function getSubSkill() {
+function getJob() {
   try {
-    axios.get("http://localhost:3000/api/1.0/subskills").then((response) => {
-      subskills.value = response.data.data;
-
-      subskills.value.forEach((element) => {
-        arr.value.push({
-          id: element.id,
-          subskill: element.subskill,
-          nilai: "",
-          keterangan: "",
-        });
-      });
-      // console.log(arr);
+    axios.get("http://localhost:3000/api/1.0/jobs").then((response) => {
+      jobs.value = response.data.data;
     });
   } catch (err) {
     console.log(err);
@@ -1718,15 +1712,15 @@ const applicant = reactive({
 });
 
 const members = ref([
-  { member_name: "Ayah", code: "ayah" },
-  { member_name: "Ibu", code: "ibu" },
-  { member_name: "Saudara 1", code: "saudara1" },
-  { member_name: "Saudara 2", code: "saudara2" },
-  { member_name: "Saudara 3", code: "saudara3" },
-  { member_name: "Suami / Istri", code: "suami/istri" },
-  { member_name: "Anak 1", code: "anak1" },
-  { member_name: "Anak 2", code: "anak2" },
-  { member_name: "Anak 3", code: "anak3" },
+  { member_name: "Ayah", code: "Ayah" },
+  { member_name: "Ibu", code: "Ibu" },
+  { member_name: "Saudara 1", code: "Saudara 1" },
+  { member_name: "Saudara 2", code: "Saudara 2" },
+  { member_name: "Saudara 3", code: "Saudara 3" },
+  { member_name: "Suami / Istri", code: "Suami / Istri" },
+  { member_name: "Anak 1", code: "Anak 1" },
+  { member_name: "Anak 2", code: "Anak 2" },
+  { member_name: "Anak 3", code: "Anak 3" },
 ]);
 
 const formaleducate = reactive({
@@ -1866,15 +1860,14 @@ async function save() {
         attachment: attachments,
       })
       .then((response) => {
-        toast.add({ severity: "info", summary: "Success Save Data" });
+        alert('Save Success')
       });
-    const applicantNow = await axios.get(
-      "http://localhost:3000/api/1.0/applicants"
-    );
+    const applicantNow = await axios.get("http://localhost:3000/api/1.0/applicants");
+    const pdf = await axios.get("http://localhost:3000/api/1.0/topdf/" + applicantNow.data.data[0].id)
+    console.log(pdf)
     setTimeout(() => {
       router.push({ path: "/formapplication/technicalskill/" + applicantNow.data.data[0].id });
-    }, 2000);
-    
+    }, 1000);
   } catch (err) {
     console.log(err);
   }
