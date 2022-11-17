@@ -58,7 +58,7 @@
     </div>
     <div class="card-footer text-muted">
       <Button class="p-button-sm p-button-text" disabled />
-      <Button class="p-button-sm" icon="pi pi-save" type="submit" style="float: right" />
+      <Button class="p-button-sm" icon="pi pi-save" type="submit" :loading="loading" style="float: right" />
     </div>
   </Form>
   </div>
@@ -80,6 +80,7 @@ const applicants = ref(null);
 const jobs = ref(null);
 const skills = ref(null);
 const arrskill = reactive([]);
+const loading = ref(false);
 
 const otherskills = reactive([
   {
@@ -127,7 +128,6 @@ async function getJob(){
       .get("http://localhost:3000/api/1.0/skills/" + jobs.value.id)
       
       .then((response) => {
-        console.log(jobs.value.id)
         skills.value = response.data.data;
         skills.value.forEach((element) => {
           arrskill.push({
@@ -151,6 +151,7 @@ async function getJob(){
 }
 async function save() {
   try {
+    
     await arrskill.forEach((element) => {
       element.subname.forEach(el => {
         axios
@@ -170,9 +171,13 @@ async function save() {
           nilai: elother.nilaiother,
           keterangan: elother.keteranganother,
         })
-    });
-    alert("Suksess Save Data")
-      router.push({ path: "/formapplication/form" });
+    })
+    alert("Harap Tunggu, Kami Sedang Mengirim Data Anda");
+    loading.value = true;
+    const pdf = await axios.get("http://localhost:3000/api/1.0/topdf_skill/" + route.params.id);
+    loading.value =  false;
+    alert("Data berhasil dikirim");
+    router.push({ path: "/formapplication/form" });
   } catch (err) {
     console.log(err);
   }
