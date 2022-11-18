@@ -59,7 +59,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(apply = false), (personal1 = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
