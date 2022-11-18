@@ -103,11 +103,11 @@ onMounted(() => {
 
   
 });
-
+const config = useRuntimeConfig()
 async function getApplicant() {
   try {
     await axios
-      .get("http://localhost:3000/api/1.0/applicants")
+      .get(config.API_BASE_URL + "applicants")
       .then((response) => {
         applicants.value = response.data.data;
       });
@@ -118,14 +118,14 @@ async function getApplicant() {
 
 async function getJob(){
   try {
-    await axios.get("http://localhost:3000/api/1.0/jobs").then((response) => {
+    await axios.get(config.API_BASE_URL + "jobs").then((response) => {
     response.data.data.forEach((element) => {
       if (element.name === applicants.value[0].position) {
         jobs.value = element;
       }
     });
     axios
-      .get("http://localhost:3000/api/1.0/skills/" + jobs.value.id)
+      .get(config.API_BASE_URL + "skill/" + jobs.value.id)
       
       .then((response) => {
         skills.value = response.data.data;
@@ -155,7 +155,7 @@ async function save() {
     await arrskill.forEach((element) => {
       element.subname.forEach(el => {
         axios
-        .post("http://localhost:3000/api/1.0/applicantskills", {
+        .post(config.API_BASE_URL + "applicantskills", {
           applicantId: route.params.id,
           subskillId: el.id,
           nilai: el.nilai,
@@ -165,7 +165,7 @@ async function save() {
     })
     await otherskills.forEach(elother => {
       axios
-        .post("http://localhost:3000/api/1.0/otherapplicantskills", {
+        .post(config.API_BASE_URL + "otherapplicantskills", {
           applicantId: route.params.id,
           nama: elother.nameother,
           nilai: elother.nilaiother,
@@ -174,7 +174,8 @@ async function save() {
     })
     alert("Harap Tunggu, Kami Sedang Mengirim Data Anda");
     loading.value = true;
-    const pdf = await axios.get("http://localhost:3000/api/1.0/topdf_skill/" + route.params.id);
+    
+    const pdf = await axios.get(config.API_BASE_URL + "topdf_skill/" + route.params.id);
     loading.value =  false;
     alert("Data berhasil dikirim");
     router.push({ path: "/formapplication/form" });
