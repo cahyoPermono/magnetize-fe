@@ -1597,9 +1597,11 @@ onMounted(() => {
   getJob();
 });
 
+const config = useRuntimeConfig()
 function getJob() {
   try {
-    axios.get("http://localhost:3000/api/1.0/jobs").then((response) => {
+    axios.get(config.API_BASE_URL + "jobs")
+    .then((response) => {
       jobs.value = response.data.data;
     });
   } catch (err) {
@@ -1798,7 +1800,7 @@ async function save() {
     return (applicant.photo = "https://via.placeholder.com/120x120?text=FOTO");
   try {
     await axios
-      .post("http://localhost:3000/api/1.0/applicants", {
+      .post(config.API_BASE_URL + "applicants", {
         applicant: {
           name: applicant.name,
           gender: applicant.gender,
@@ -1862,8 +1864,9 @@ async function save() {
       .then((response) => {
         alert('Save Success')
       });
-    const applicantNow = await axios.get("http://localhost:3000/api/1.0/applicants");
-    const pdf = await axios.get("http://localhost:3000/api/1.0/topdf/" + applicantNow.data.data[0].id)
+    const applicantNow = await axios.get(config.API_BASE_URL + "applicants");
+    
+    const pdf = await axios.get(config.API_BASE_URL + "topdf/" + applicantNow.data.data[0].id)
     console.log(pdf)
     setTimeout(() => {
       router.push({ path: "/formapplication/technicalskill/" + applicantNow.data.data[0].id });
