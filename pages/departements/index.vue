@@ -30,6 +30,7 @@
 <script setup>
 import axios from "axios";
 let dataDept = ref("");
+
 onMounted(async () => {
   const config = useRuntimeConfig();
   const response = await axios.get(config.API_BASE_URL + "departements");

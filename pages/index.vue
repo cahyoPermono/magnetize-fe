@@ -107,7 +107,9 @@ const masuk = () => {
     console.log(err);
   }
 };
-
+definePageMeta({
+  layout: false,
+});
 </script>
 
 <style>
