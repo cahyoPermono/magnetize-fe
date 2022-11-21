@@ -18,9 +18,9 @@ import FileUpload from 'primevue/fileupload';
 import Textarea from 'primevue/textarea';
 import Avatar from 'primevue/avatar';
 import Sidebar from 'primevue/sidebar';
-import Dropdown from 'primevue/Dropdown';
-import Divider from 'primevue/Divider';
-import InputNumber from 'primevue/InputNumber';
+import Dropdown from 'primevue/dropdown';
+import Divider from 'primevue/divider';
+import InputNumber from 'primevue/inputnumber';
 import Tooltip from 'primevue/tooltip';
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -43,9 +43,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Textarea', Textarea);
     nuxtApp.vueApp.component('Avatar', Avatar);
     nuxtApp.vueApp.component('Sidebar', Sidebar);
+    
     nuxtApp.vueApp.component('Dropdown', Dropdown);
     nuxtApp.vueApp.component('Divider', Divider);
+    nuxtApp.vueApp.directive('Tooltip', Tooltip);
     nuxtApp.vueApp.component('InputNumber', InputNumber);
-    nuxtApp.vueApp.directive('tooltip', Tooltip);
-    //other components that you need
+   //other components that you need
 });
