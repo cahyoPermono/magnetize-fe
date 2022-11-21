@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <Form @submit="save">
+    <Form v-slot="{ meta }" @submit="save">
       <div v-if="apply">
         <div class="card-body">
           <div class="mt-2">
@@ -331,6 +331,7 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(personal1 = false), (personal2 = true)"
+            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -482,6 +483,7 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(personal2 = false), (family = true)"
+            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -690,6 +692,7 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(family = false), (formaleducation = true)"
+            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -806,6 +809,7 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(formaleducation = false), (nonformaleducation = true)"
+            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -915,6 +919,7 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(nonformaleducation = false), (computer = true)"
+            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -987,6 +992,7 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(computer = false), (employhistory = true)"
+            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -1125,6 +1131,7 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(employhistory = false), (jobdesc = true)"
+            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -1163,6 +1170,7 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(jobdesc = false), (otherinfo = true)"
+            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -1184,7 +1192,10 @@
               >
               <span style="color: red">*</span>
             </label>
-            <select v-model="otherinformation.hospitalized" class="form-control">
+            <select
+              v-model="otherinformation.hospitalized"
+              class="form-control"
+            >
               <option value="ya">Ya</option>
               <option value="tidak">Tidak</option>
             </select>
@@ -1204,13 +1215,13 @@
                 >(Jika Ya) Sakit apa ? (If Yes) What kind of disease ?</small
               >
             </label>
-            <Field 
+            <Field
               class="form-control"
               name="disease"
               v-model="otherinformation.disease"
             />
           </div>
-          
+
           <div class="mt-2">
             <label for="psycological_test">
               <small
@@ -1504,6 +1515,7 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(otherinfo = false), (attach = true)"
+            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -1572,6 +1584,7 @@
             class="p-button-sm"
             icon="pi pi-save"
             type="submit"
+            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -1592,14 +1605,14 @@ definePageMeta({
 const toast = useToast();
 
 const jobs = ref([]);
-
+const config = useRuntimeConfig();
 onMounted(() => {
   getJob();
 });
 
 function getJob() {
   try {
-    axios.get("http://localhost:3000/api/1.0/jobs").then((response) => {
+    axios.get(config.API_BASE_URL + "jobs").then((response) => {
       jobs.value = response.data.data;
     });
   } catch (err) {
@@ -1798,7 +1811,7 @@ async function save() {
     return (applicant.photo = "https://via.placeholder.com/120x120?text=FOTO");
   try {
     await axios
-      .post("http://localhost:3000/api/1.0/applicants", {
+      .post(config.API_BASE_URL + "applicants", {
         applicant: {
           name: applicant.name,
           gender: applicant.gender,
@@ -1841,7 +1854,8 @@ async function save() {
           hospitalized: otherinformation.hospitalized,
           disease: otherinformation.disease,
           psycological_test: otherinformation.psycological_test,
-          experience_tellecomunication: otherinformation.experience_tellecomunication,
+          experience_tellecomunication:
+            otherinformation.experience_tellecomunication,
           experience_it: otherinformation.experience_it,
           reason_join: otherinformation.reason_join,
           reason_hire: otherinformation.reason_hire,
@@ -1860,13 +1874,18 @@ async function save() {
         attachment: attachments,
       })
       .then((response) => {
-        alert('Save Success')
+        alert("Data Disimpan, Harap Tunggu Halaman Selanjutnya...");
       });
-    const applicantNow = await axios.get("http://localhost:3000/api/1.0/applicants");
-    const pdf = await axios.get("http://localhost:3000/api/1.0/topdf/" + applicantNow.data.data[0].id)
-    console.log(pdf)
+    const applicantNow = await axios.get(config.API_BASE_URL + "applicants");
+
+    const pdf = await axios.get(
+      config.API_BASE_URL + "topdf/" + applicantNow.data.data[0].id
+    );
+    console.log(pdf);
     setTimeout(() => {
-      router.push({ path: "/formapplication/technicalskill/" + applicantNow.data.data[0].id });
+      router.push({
+        path: "/formapplication/technicalskill/" + applicantNow.data.data[0].id,
+      });
     }, 1000);
   } catch (err) {
     console.log(err);
