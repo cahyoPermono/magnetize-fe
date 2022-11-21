@@ -1584,6 +1584,7 @@
             class="p-button-sm"
             icon="pi pi-save"
             type="submit"
+            :loading="loading"
             :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
@@ -1798,6 +1799,7 @@ let jobdesc = ref(false);
 let otherinfo = ref(false);
 let attach = ref(false);
 let technicalskill = ref(false);
+const loading = ref(false);
 
 const isRequired = (value) => {
   if (!value) {
@@ -1875,13 +1877,14 @@ async function save() {
       })
       .then((response) => {
         alert("Data Disimpan, Harap Tunggu Halaman Selanjutnya...");
+        loading.value = true;
       });
     const applicantNow = await axios.get(config.API_BASE_URL + "applicants");
 
     const pdf = await axios.get(
       config.API_BASE_URL + "topdf/" + applicantNow.data.data[0].id
     );
-    console.log(pdf);
+    loading.value = false  ;
     setTimeout(() => {
       router.push({
         path: "/formapplication/technicalskill/" + applicantNow.data.data[0].id,
