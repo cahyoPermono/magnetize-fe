@@ -113,16 +113,22 @@ definePageMeta({
 </script>
 
 <style>
+@import "https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css";
+
+body {
+  margin: 0;
+}
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 200px;
+  margin-top: 250px;
 }
 
 @media screen and (max-width:768px) {
   .container {
-
+    margin-bottom: 2rem;
     margin-top: 2rem;
   }
 }
@@ -135,7 +141,7 @@ small {
   height: 35px;
 }
 
-a:hover {
+body a:hover {
   text-decoration: none;
 }
 </style>
