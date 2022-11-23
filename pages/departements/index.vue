@@ -30,9 +30,7 @@
 <script setup>
 import axios from "axios";
 let dataDept = ref("");
-const download = async () => {
-  await axios.get("http://localhost:3000/trypdf");
-}
+
 onMounted(async () => {
   const config = useRuntimeConfig();
   const response = await axios.get(config.API_BASE_URL + "departements");

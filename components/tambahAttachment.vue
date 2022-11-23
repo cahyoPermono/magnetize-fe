@@ -96,6 +96,7 @@ async function onUpload(evt) {
     reader.readAsDataURL(f);
     reader.onload = async () => {
       newAttachment.file = reader.result;
+      console.log(newAttachment.file);
       await axios.post(config.API_BASE_URL + "attachments", {
         attachment_name: newAttachment.attachment,
         attachment_file: newAttachment.file,

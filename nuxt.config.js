@@ -1,6 +1,10 @@
 import { defineNuxtConfig } from 'nuxt';
 
 export default defineNuxtConfig({
+    server: {
+        port: 3003, // default: 3000
+        host: 'localhost', // default: localhost,
+    },
     css: [
         'primevue/resources/themes/saga-blue/theme.css',
         'primevue/resources/primevue.css',
@@ -8,7 +12,7 @@ export default defineNuxtConfig({
         'primeflex/primeflex.css',
     ],
     build: {
-        transpile: ['primevue']
+        transpile: ['primevue','@vee-validate/rules']
     },
     app: {
         head: {
@@ -21,5 +25,6 @@ export default defineNuxtConfig({
     publicRuntimeConfig: {
         API_BASE_URL: process.env.NUXT_PUBLIC_API_BASE
     },
+
 
 })
