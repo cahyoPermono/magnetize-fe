@@ -3,7 +3,7 @@ import { defineNuxtConfig } from 'nuxt';
 export default defineNuxtConfig({
     server: {
         port: 3003, // default: 3000
-        host: '192.168.1.81', // default: localhost,
+        host: 'localhost', // default: localhost,
     },
     css: [
         'primevue/resources/themes/saga-blue/theme.css',
@@ -12,7 +12,7 @@ export default defineNuxtConfig({
         'primeflex/primeflex.css',
     ],
     build: {
-        transpile: ['primevue']
+        transpile: ['primevue','@vee-validate/rules']
     },
     app: {
         head: {
