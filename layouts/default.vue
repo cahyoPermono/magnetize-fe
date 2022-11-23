@@ -7,9 +7,18 @@
     />
     <a href="/"><img src="~/assets/magnetize-logo.png" alt="Logo" style="height: 40px" /></a>
     <Button
+      icon="pi pi-sign-in"
+      style="float: right"
+      class="p-button-text p-button-plain"
+      @click="signin"
+      v-if="!isLoggedIn"
+    />
+    <Button
       icon="pi pi-sign-out"
       style="float: right"
       class="p-button-text p-button-plain"
+      @click="signout"
+      v-if="isLoggedIn"
     />
     <Sidebar v-model:visible="visibleLeft" :baseZIndex="10000">
       <strong><p>Home</p></strong>
@@ -24,8 +33,8 @@
         </NuxtLink>
       </div>
       <strong><p>Feature</p></strong>
-      <div class="ml-3">
-        <NuxtLink to="/departements">
+      <div class="ml-3" >
+        <NuxtLink v-if="isLoggedIn" to="/departements">
           <Button
             icon="pi pi-building"
             class="p-button-text p-button-plain"
@@ -34,7 +43,7 @@
           />
         </NuxtLink>
         <br />
-        <NuxtLink to="/discCard">
+        <NuxtLink v-if="isLoggedIn" to="/discCard">
           <Button
             icon="pi pi-book"
             class="p-button-text p-button-plain"
@@ -49,6 +58,20 @@
 </template>
 
 <script setup>
+import {computed} from 'vue';
 const visibleLeft = ref(false);
+const router = useRouter();
+function signin() {
+  router.push('/login')
+}
+const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+const isLoggedIn = computed(() => token)
 
+function signout() {
+  localStorage.removeItem("token");
+  router.push('/',setTimeout(function(){
+    
+    location.reload();
+  }, 1000))
+}
 </script>
