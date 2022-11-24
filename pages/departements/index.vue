@@ -46,11 +46,13 @@ import axios from "axios";
 let dataDept = ref("");
 const router = useRouter();
 
+
+
 onMounted(async () => {
   const token = localStorage.getItem("token");
   if (!token) {
-    alert('Silahkan Login')
-    router.push('/');
+    // router.push('/login')
+    return navigateTo('/login')
   } 
   else {
     const config = useRuntimeConfig();

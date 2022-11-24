@@ -8,7 +8,7 @@ const router = useRouter();
 onMounted(async () => {
     const token = localStorage.getItem("token");
     if (!token) {
-        router.push('/');
+        return navigateTo('/login')
     }
     await setTimeout(() => {
         localStorage.removeItem("token");
