@@ -3,12 +3,22 @@
     <h1>Departemen Imani Prima</h1>
     <tambah-departemen />
     <div class="card shadow m-4 p-2">
-      <DataTable :value="dataDept" :paginator="true" :rows="5"
+      <DataTable
+        :value="dataDept"
+        :paginator="true"
+        :rows="5"
         paginatorTemplate=" FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-        responsiveLayout="scroll" removableSort>
+        responsiveLayout="scroll"
+        removableSort
+      >
         <Column>
           <template #body="slotProps">
-            <Avatar :image="slotProps.data.avatar" class="mr-2" size="xlarge" shape="circle" />
+            <Avatar
+              :image="slotProps.data.avatar"
+              class="mr-2"
+              size="xlarge"
+              shape="circle"
+            />
           </template>
         </Column>
         <Column field="nama" header="Nama Departemen" :sortable="true"></Column>
@@ -18,7 +28,11 @@
         <Column>
           <template #body="slotProps">
             <NuxtLink :to="`/departements/${slotProps.data.id}`">
-              <Button type="button" icon="pi pi-eye" class="p-button-outlined"></Button>
+              <Button
+                type="button"
+                icon="pi pi-eye"
+                class="p-button-outlined"
+              ></Button>
             </NuxtLink>
           </template>
         </Column>
@@ -30,11 +44,29 @@
 <script setup>
 import axios from "axios";
 let dataDept = ref("");
+const router = useRouter();
 
 onMounted(async () => {
-  const config = useRuntimeConfig();
-  const response = await axios.get(config.API_BASE_URL + "departements");
-  dataDept.value = response.data.departements;
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert('Silahkan Login')
+    router.push('/');
+  } 
+  else {
+    const config = useRuntimeConfig();
+    const response = await axios.get(config.API_BASE_URL + "departements", {
+      headers: {
+        'Authorization': `Bearer ${token}` 
+      }
+    });
+    dataDept.value = response.data.departements;
+    await setTimeout(() => {
+      localStorage.removeItem("token");
+      alert("Waktu habis, silahkan login lagi");
+      router.push("/");
+    }, 3600000);
+  }
+    
 });
 </script>
 

@@ -63,11 +63,18 @@
 
 <script setup>
 import axios from "axios";
-import { reactive } from "vue";
+import { reactive, onMounted } from "vue";
 
 const user = reactive({
   email: "",
   password: "",
+});
+
+onMounted(async () => {
+  const token = localStorage.getItem("token");
+    if (token) {
+        router.push('/dashboard');
+    }
 });
 
 const router = useRouter();
@@ -80,17 +87,23 @@ function login() {
         password: user.password,
       })
       .then((r) => {
-        axios.defaults.headers.common["Authorization"] =
+          axios.defaults.headers.common["Authorization"] =
           "Bearer " + r.data.token;
         localStorage.setItem("token", JSON.stringify(r.data.token));
         alert("Login Success");
         router.push("/dashboard");
-      });
+      })
+      .catch((err) => {alert(err.response.data.error)});
   } catch (err) {
     console.log(err);
   }
 }
-
+const isRequired = (value) => {
+  if (!value) {
+    return "This field is required";
+  }
+  return true;
+};
 definePageMeta({
   layout: false,
 });
