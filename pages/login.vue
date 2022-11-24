@@ -1,68 +1,97 @@
 <template>
-    <section class="w-100 p-8" style="background-color: #9A616D;">
-    <div class="row d-flex justify-content-center align-items-center">
-      <div class="col col-xl-10">
-        <div class="card" style="border-radius: 1rem;">
-          <div class="row g-0">
-            <div class="col-md col-lg d-flex align-items-center">
-              <div class="card-body text-black">
-                <form @submit.prevent="login">
-                  <div class="align-items-center mb-3 pb-1">
-                    <span class="h3 fw-bold mb-0" style="margin-top: 5px; margin-left: 250px;">SIGN IN YOUR ACCOUNT </span>
-                  </div>
-                  <div class="form-outline mb-4">
-                    <label class="form-label" for="form2Example17">Email address</label>
-                    <input type="email" class="form-control" v-model="user.email" />
-                  </div>
-                  <div class="form-outline mb-4">
-                    <label class="form-label" for="form2Example27">Password</label>
-                    <input type="password" id="form2Example27" class="form-control" v-model="user.password" />
-                    
-                  </div>
-
-                  <div class="pt-1 mb-4">
-                    <button class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
-                  </div>
-                  <p class="mb-2 small text-muted" style="color: #393f81;">Don't have an account? <a href="#!"
-                      style="color: #393f81;">Register here</a></p>
-                </form>
-
-              </div>
+  <div
+    class="card text-center"
+    style="height: 41rem; padding-top: 10px; padding: 50px"
+  >
+    <Form @submit="login">
+      <div
+        class="card-header"
+        style="text-align: center; background-color: #129666"
+      >
+        <h4>SIGN IN YOUR ACCOUNT</h4>
+      </div>
+      <div class="card-body">
+        <div class="mt-4">
+          <div class="row">
+            <label for="email" class="col-sm-2 col-form-label">Email </label>
+            <div class="col-sm">
+              <Field
+                class="form-control"
+                name="email"
+                type="email"
+                :rules="isRequired"
+                v-model="user.email"
+              />
+              <ErrorMessage name="email">
+                <small style="color: red">Email is required</small>
+              </ErrorMessage>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <div class="row">
+            <label for="password" class="col-sm-2 col-form-label">
+              Password
+            </label>
+            <div class="col-sm">
+              <Field
+                class="form-control"
+                name="password"
+                type="password"
+                :rules="isRequired"
+                v-model="user.password"
+              />
+              <ErrorMessage name="password">
+                <small style="color: red">Password is required</small>
+              </ErrorMessage>
             </div>
           </div>
         </div>
       </div>
-    </div>
-</section>
+      <div class="card-footer text-muted">
+        <Button class="p-button-sm p-button-text" disabled />
+        <Button
+          class="p-button-sm"
+          icon="pi pi-sign-in"
+          type="submit"
+          style="float: right"
+        />
+      </div>
+    </Form>
+  </div>
 </template>
 
 <script setup>
-import axios from 'axios';
-import {reactive} from 'vue';
+import axios from "axios";
+import { reactive } from "vue";
+
 const user = reactive({
-    email: '',
-    password: '',
-})
+  email: "",
+  password: "",
+});
 
-const router = useRouter()
+const router = useRouter();
 
-function login(){
-    try {
-        axios.post("http://localhost:3000/api/1.0/login", {
-            email: user.email,
-            password: user.password
-        }).then(r => {
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + r.data.token;
-            localStorage.setItem( 'token', JSON.stringify(r.data.token) );
-            alert('Login Success')
-            router.push("/dashboard", setTimeout(function(){
-                
-                location.reload();
-            }, 1000))
-            
-        });
-    } catch (err) {
-        console.log(err);
-    }
+function login() {
+  try {
+    axios
+      .post("http://localhost:3000/api/1.0/login", {
+        email: user.email,
+        password: user.password,
+      })
+      .then((r) => {
+        axios.defaults.headers.common["Authorization"] =
+          "Bearer " + r.data.token;
+        localStorage.setItem("token", JSON.stringify(r.data.token));
+        alert("Login Success");
+        router.push("/dashboard");
+      });
+  } catch (err) {
+    console.log(err);
+  }
 }
+
+definePageMeta({
+  layout: false,
+});
 </script>
