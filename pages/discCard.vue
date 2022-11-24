@@ -951,6 +951,9 @@ const questions = ref();
 onMounted(() => {
     getQuestion()
 })
+definePageMeta({
+  layout: false,
+});
 const config = useRuntimeConfig()
 function getQuestion() {
      try {

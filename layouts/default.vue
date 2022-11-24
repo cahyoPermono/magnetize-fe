@@ -43,7 +43,7 @@
           />
         </NuxtLink>
         <br />
-        <NuxtLink v-if="isLoggedIn" to="/discCard">
+        <NuxtLink to="/discCard">
           <Button
             icon="pi pi-book"
             class="p-button-text p-button-plain"
@@ -64,7 +64,9 @@ const router = useRouter();
 function signin() {
   router.push('/login')
 }
+
 const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+
 const isLoggedIn = computed(() => token)
 
 function signout() {
