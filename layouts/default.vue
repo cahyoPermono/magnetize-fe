@@ -6,13 +6,13 @@
       class="p-button-text p-button-plain sidebarTrig"
     />
     <a href="/"><img src="~/assets/magnetize-logo.png" alt="Logo" style="height: 40px" /></a>
-    <Button
+    <!-- <Button
       icon="pi pi-sign-in"
       style="float: right"
       class="p-button-text p-button-plain"
       @click="signin"
       v-if="!isLoggedIn"
-    />
+    /> -->
     <Button
       icon="pi pi-sign-out"
       style="float: right"
@@ -69,9 +69,6 @@ const isLoggedIn = computed(() => token)
 
 function signout() {
   localStorage.removeItem("token");
-  router.push('/',setTimeout(function(){
-    
-    location.reload();
-  }, 1000))
+  router.push('/')
 }
 </script>

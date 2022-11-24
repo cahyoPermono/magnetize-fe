@@ -1,6 +1,7 @@
 <template>
   <div class="grid grid-nogutter" style="background-color:#129666;">
     <div class="col-md-6 col-12 p-4">
+      <Button label="Login" icon="pi pi-sign-in" class="p-button-warning" @click="login" />
       <div class="px-2 py-4 mx-4 text-center">
         <img class="w-8" src="~/assets/logo-putih.png" /> <br>
         <span class="text-1xl text-white">Anda layak jadi asset kami</span>
@@ -107,6 +108,9 @@ const masuk = () => {
     console.log(err);
   }
 };
+const login = () => {
+  router.push('/login')
+}
 definePageMeta({
   layout: false,
 });
