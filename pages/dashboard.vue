@@ -6,12 +6,15 @@
 import { onMounted } from 'vue';
 const router = useRouter();
 onMounted(async () => {
-    const token = localStorage.getItem("token");
+    const token = useCookie('token')
+    // const token = localStorage.getItem("token");
     if (!token) {
-        return navigateTo('/login')
+        return navigateTo('/login') 
     }
     await setTimeout(() => {
-        localStorage.removeItem("token");
+        // localStorage.removeItem("token");
+        // const token = useCookie('token')
+        token.value = null
         alert("Waktu habis, silahkan login lagi")
         router.push('/')
     }, 3600000);

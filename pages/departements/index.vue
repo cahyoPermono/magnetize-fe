@@ -49,8 +49,9 @@ const router = useRouter();
 
 
 onMounted(async () => {
-  const token = localStorage.getItem("token");
-  if (!token) {
+  const token = useCookie('token')
+  // const token = localStorage.getItem("token");
+  if (!token.value) {
     // router.push('/login')
     return navigateTo('/login')
   } 
@@ -63,7 +64,8 @@ onMounted(async () => {
     });
     dataDept.value = response.data.departements;
     await setTimeout(() => {
-      localStorage.removeItem("token");
+      // localStorage.removeItem("token");
+      token.value = null
       alert("Waktu habis, silahkan login lagi");
       router.push("/");
     }, 3600000);
