@@ -71,8 +71,8 @@ const user = reactive({
 });
 
 onMounted(async () => {
-  const token = localStorage.getItem("token");
-    if (token) {
+  // const token = localStorage.getItem("token");
+    if (token.value) {
         router.push('/dashboard');
     }
 });
@@ -90,12 +90,9 @@ function login() {
           axios.defaults.headers.common["Authorization"] =
           "Bearer " + r.data.token;
           token.value = r.data.token
-          // console.log(token.value)
-        // localStorage.setItem("token", JSON.stringify(r.data.token));
         alert("Login Success");
         router.push("/dashboard");
       })
-      
       .catch((err) => {alert(err.response.data.error)});
   } catch (err) {
     console.log(err);
