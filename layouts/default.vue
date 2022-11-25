@@ -67,11 +67,9 @@ function signin() {
 const token = useCookie('token')
 // const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
-const isLoggedIn = computed(() => token)
+const isLoggedIn = computed(() => token.value)
 
 function signout() {
-  // localStorage.removeItem("token");
-  const token = useCookie('token')
   token.value = null;
   router.push('/')
 }

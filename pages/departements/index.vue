@@ -46,31 +46,24 @@ import axios from "axios";
 let dataDept = ref("");
 const router = useRouter();
 
-
+definePageMeta({
+  middleware: 'auth'
+});
 
 onMounted(async () => {
   const token = useCookie('token')
-  // const token = localStorage.getItem("token");
-  if (!token.value) {
-    // router.push('/login')
-    return navigateTo('/login')
-  } 
-  else {
-    const config = useRuntimeConfig();
-    const response = await axios.get(config.API_BASE_URL + "departements", {
-      headers: {
-        'Authorization': `Bearer ${token}` 
-      }
-    });
-    dataDept.value = response.data.departements;
-    await setTimeout(() => {
-      // localStorage.removeItem("token");
-      token.value = null
-      alert("Waktu habis, silahkan login lagi");
-      router.push("/");
-    }, 3600000);
-  }
-    
+  const config = useRuntimeConfig();
+  const response = await axios.get(config.API_BASE_URL + "departements", {
+    headers: {
+      'Authorization': `Bearer ${token.value}` 
+    }
+  });
+  dataDept.value = response.data.departements;
+  await setTimeout(() => {
+    token.value = null
+    alert("Waktu habis, silahkan login lagi");
+    router.push("/");
+  }, 3600000);  
 });
 </script>
 
