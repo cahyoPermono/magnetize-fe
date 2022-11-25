@@ -78,7 +78,7 @@ onMounted(async () => {
 });
 
 const router = useRouter();
-
+const token = useCookie('token');
 function login() {
   try {
     axios
@@ -89,10 +89,13 @@ function login() {
       .then((r) => {
           axios.defaults.headers.common["Authorization"] =
           "Bearer " + r.data.token;
-        localStorage.setItem("token", JSON.stringify(r.data.token));
+          token.value = r.data.token
+          // console.log(token.value)
+        // localStorage.setItem("token", JSON.stringify(r.data.token));
         alert("Login Success");
         router.push("/dashboard");
       })
+      
       .catch((err) => {alert(err.response.data.error)});
   } catch (err) {
     console.log(err);

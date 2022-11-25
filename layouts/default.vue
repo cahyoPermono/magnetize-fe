@@ -64,13 +64,15 @@ const router = useRouter();
 function signin() {
   router.push('/login')
 }
-
-const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+const token = useCookie('token')
+// const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
 const isLoggedIn = computed(() => token)
 
 function signout() {
-  localStorage.removeItem("token");
+  // localStorage.removeItem("token");
+  const token = useCookie('token')
+  token.value = null;
   router.push('/')
 }
 </script>
