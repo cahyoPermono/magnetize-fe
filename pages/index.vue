@@ -1,9 +1,6 @@
 <template>
   <div class="grid grid-nogutter" style="background-color:#129666;">
     <div class="col-md-6 col-12 p-4">
-      <Button label="Apply" icon="pi pi-pencil" class="p-button-warning" @click="form" style="margin-right: 20px;" />
-      <Button label="Test DISC" icon="pi pi-book" class="p-button-warning" @click="test" style="margin-right: 20px;" />
-      <Button label="Login" icon="pi pi-sign-in" class="p-button-warning" @click="login" />
       <div class="px-2 py-4 mx-4 text-center">
         <img class="w-8" src="~/assets/logo-putih.png" /> <br>
         <span class="text-1xl text-white">Anda layak jadi asset kami</span>
@@ -57,7 +54,17 @@
       </div>
     </div>
     <div class="col-md-6 col-12 container">
-      <img src="~/assets/undraw_content_team_re_6rlg.svg" alt="Image" class="w-8">
+      <div class="d-flex flex-row-reverse" style="margin-right:75px">
+        <img src="~/assets/undraw_content_team_re_6rlg.svg" alt="Image" class="w-10">
+      </div>
+      <div class="d-flex flex-row mt-4">
+        <Button label="Apply" icon="pi pi-pencil" class="p-button-warning" @click="form" style="margin-right: 20px;" />
+        <Button label="Test DISC" icon="pi pi-book" class="p-button-warning" @click="test"
+          style="margin-right: 20px;" />
+        <div v-if="!isLoggedIn">
+          <Button label="Login" icon="pi pi-sign-in" class="p-button-warning" @click="login" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -68,7 +75,18 @@ import { useToast } from "primevue/usetoast";
 const toast = useToast();
 const router = useRouter();
 const config = useRuntimeConfig();
-
+let isLoggedIn = ref(false);
+onMounted(async() => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    isLoggedIn.value = !isLoggedIn.value;
+    await setTimeout(() => {
+      localStorage.removeItem("token");
+      alert("Waktu habis, silahkan login lagi")
+      router.push('/login')
+    }, 10000);
+  }
+})
 const data = reactive({
   nama: "",
   noHp: "",
