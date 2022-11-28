@@ -1,8 +1,8 @@
 <template>
-  <div class="container-dept p-5">
+  <div class="container-dept">
     <h1>Departemen Imani Prima</h1>
     <tambah-departemen />
-    <div class="card shadow m-4 p-2">
+    <div class="card shadow mt-4 ml-4 w-100">
       <DataTable
         :value="dataDept"
         :paginator="true"
