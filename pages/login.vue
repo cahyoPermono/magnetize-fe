@@ -72,7 +72,7 @@ const user = reactive({
 
 onMounted(async () => {
   // const token = localStorage.getItem("token");
-    if (token.value) {
+    if (token) {
         router.push('/dashboard');
     }
 });
