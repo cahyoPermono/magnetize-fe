@@ -23,9 +23,9 @@
             @click="visibleLeft = false" />
         </NuxtLink>
         <br />
-        <NuxtLink to="/discCard">
+        <!-- <NuxtLink to="/discCard">
           <Button icon="pi pi-book" class="p-button-text p-button-plain" label="Disc" @click="visibleLeft = false" />
-        </NuxtLink>
+        </NuxtLink> -->
       </div>
     </Sidebar>
   </div>

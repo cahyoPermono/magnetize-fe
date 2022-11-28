@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <Toast />
   <div
     class="card text-center"
     style="height: 41rem; padding-top: 10px; padding: 50px"
@@ -59,26 +61,24 @@
       </div>
     </Form>
   </div>
+</div>
 </template>
 
 <script setup>
 import axios from "axios";
 import { reactive, onMounted } from "vue";
+import { useToast } from "primevue/usetoast";
+
+const toast = useToast();
 
 const user = reactive({
   email: "",
   password: "",
 });
 
-onMounted(async () => {
-  // const token = localStorage.getItem("token");
-    if (token) {
-        router.push('/dashboard');
-    }
-});
-
 const router = useRouter();
 const token = useCookie('token');
+
 function login() {
   try {
     axios
@@ -86,14 +86,17 @@ function login() {
         email: user.email,
         password: user.password,
       })
-      .then((r) => {
+      .then(async (r) => {
           axios.defaults.headers.common["Authorization"] =
           "Bearer " + r.data.token;
           token.value = r.data.token
-        alert("Login Success");
+        // alert("Login Success");
         router.push("/dashboard");
       })
-      .catch((err) => {alert(err.response.data.error)});
+      .catch((err) => {
+        // alert(err.response.data.error)
+            toast.add({severity:'error', summary: 'Error', detail:'Email or Password incorrect', life: 3000});
+      });
   } catch (err) {
     console.log(err);
   }
@@ -106,5 +109,6 @@ const isRequired = (value) => {
 };
 definePageMeta({
   layout: false,
+  middleware: 'islogin'
 });
 </script>
