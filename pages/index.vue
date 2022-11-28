@@ -64,6 +64,9 @@
         <div v-if="!isLoggedIn">
           <Button label="Login" icon="pi pi-sign-in" class="p-button-warning" @click="login" />
         </div>
+        <div v-if="isLoggedIn">
+          <Button label="Masuk" icon="pi pi-sign-in" class="p-button-warning" @click="login" />
+        </div>
       </div>
     </div>
   </div>
@@ -76,15 +79,16 @@ const toast = useToast();
 const router = useRouter();
 const config = useRuntimeConfig();
 let isLoggedIn = ref(false);
+
 onMounted(async() => {
-  const token = localStorage.getItem("token");
-  if (token) {
+  const token = useCookie('token')
+  if (token.value) {
     isLoggedIn.value = !isLoggedIn.value;
     await setTimeout(() => {
-      localStorage.removeItem("token");
+      token.value = null
       alert("Waktu habis, silahkan login lagi")
       router.push('/login')
-    }, 10000);
+    }, 3600000);
   }
 })
 const data = reactive({
@@ -139,7 +143,6 @@ const test = () => {
 }
 definePageMeta({
   layout: false,
-  middleware: 'islogin'
 });
 </script>
 
