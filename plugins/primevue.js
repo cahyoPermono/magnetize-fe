@@ -22,10 +22,14 @@ import Dropdown from 'primevue/dropdown';
 import Divider from 'primevue/divider';
 import InputNumber from 'primevue/inputnumber';
 import Tooltip from 'primevue/tooltip';
+import ConfirmDialog from 'primevue/confirmdialog';
+import ConfirmationService from 'primevue/confirmationservice';
+
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, { ripple: true });
     nuxtApp.vueApp.use(ToastService);
+    nuxtApp.vueApp.use(ConfirmationService);
     nuxtApp.vueApp.component('Button', Button);
     nuxtApp.vueApp.component('InputText', InputText);
     nuxtApp.vueApp.component('Toast', Toast);
@@ -43,10 +47,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Textarea', Textarea);
     nuxtApp.vueApp.component('Avatar', Avatar);
     nuxtApp.vueApp.component('Sidebar', Sidebar);
-    
     nuxtApp.vueApp.component('Dropdown', Dropdown);
     nuxtApp.vueApp.component('Divider', Divider);
     nuxtApp.vueApp.directive('Tooltip', Tooltip);
     nuxtApp.vueApp.component('InputNumber', InputNumber);
+    nuxtApp.vueApp.component('ConfirmDialog', ConfirmDialog)
    //other components that you need
 });

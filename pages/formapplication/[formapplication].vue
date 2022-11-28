@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <Toast />
   <div class="card">
     <Form v-slot="{ meta }" @submit="save">
       <div v-if="apply">
@@ -919,7 +921,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(nonformaleducation = false), (computer = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -1131,7 +1132,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(employhistory = false), (jobdesc = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -1170,7 +1170,6 @@
             class="p-button-sm"
             icon="pi pi-arrow-right"
             @click="(jobdesc = false), (otherinfo = true)"
-            :disabled="!(meta.valid && meta.dirty)"
             style="float: right"
           />
         </div>
@@ -1592,6 +1591,7 @@
       </div>
     </Form>
   </div>
+</div>
 </template>
 
 <script setup>
@@ -1610,6 +1610,11 @@ const config = useRuntimeConfig();
 onMounted(() => {
   getJob();
 });
+
+const showWarn = () => {
+  toast.add({severity:'warn', summary: 'Sukses isi Form', 
+    detail:'Form Anda Lengkap, Silahkan tunggu halaman selanjutnya', life: 3000});
+}
 
 function getJob() {
   try {
@@ -1876,7 +1881,8 @@ async function save() {
         attachment: attachments,
       })
       .then((response) => {
-        alert("Data Disimpan, Harap Tunggu Halaman Selanjutnya...");
+        showWarn();
+        // alert("Data Anda Berhasil Disimpan, Harap Tunggu Halaman Selanjutnya...");
         loading.value = true;
       });
     const applicantNow = await axios.get(config.API_BASE_URL + "applicants");
