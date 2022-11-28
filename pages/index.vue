@@ -139,6 +139,7 @@ const test = () => {
 }
 definePageMeta({
   layout: false,
+  middleware: 'islogin'
 });
 </script>
 
