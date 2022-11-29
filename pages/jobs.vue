@@ -143,6 +143,9 @@ const jobs = reactive([
         deskripsi: "Mengembangkan solusi software berdasarkan spesifikasi kebutuhan Merawat, memperbaiki, meningkatkan dan memperbaharui software yang ada Mengintegrasikan komponen atau menambahkan fitur baru pada software yang ada Membuat dokumen teknis terkait sebagai laporan dan dokumentasi Berkomunikasi dengan klien terkait aplikasi atau solusi perangkat lunak yang di kembangkan"
     }
 ]);
+definePageMeta({
+    layout: false,
+});
 </script>
 
 <style>
