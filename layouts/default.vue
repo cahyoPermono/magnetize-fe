@@ -12,7 +12,12 @@
       </strong>
       <div class="ml-3 mb-3">
         <NuxtLink to="/dashboard">
-          <Button icon="pi pi-home" class="p-button-text p-button-plain" label="Home" @click="visibleLeft = false" />
+          <Button
+            icon="pi pi-home"
+            class="p-button-text p-button-plain"
+            label="Home"
+            @click="visibleLeft = false"
+          />
         </NuxtLink>
       </div>
       <strong>
@@ -35,19 +40,26 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import axios from "axios";
+import { ref, onMounted, computed } from "vue";
+
 const visibleLeft = ref(false);
 const router = useRouter();
 function signin() {
-  router.push('/login')
+  router.push("/login");
 }
-const token = useCookie('token')
+
+const token = useCookie("token");
 // const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
-const isLoggedIn = computed(() => token.value)
+const isLoggedIn = computed(() => token.value);
 
-function signout() {
-  token.value = null;
-  router.push('/')
+async function signout() {
+  const today = new Date();
+  await axios.put('http://localhost:3000/api/1.0/update/11',{
+    lastActive: today,
+  })
+  // token.value = null;
+  // router.push('/')
 }
 </script>
