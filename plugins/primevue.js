@@ -27,13 +27,14 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import ConfirmationService from 'primevue/confirmationservice';
 import Breadcrumb from 'primevue/breadcrumb';
 import Tree from 'primevue/tree';
-
+import InputSwitch from 'primevue/inputswitch';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, { ripple: true });
     nuxtApp.vueApp.use(ToastService);
     nuxtApp.vueApp.use(ConfirmationService);
     nuxtApp.vueApp.component('Button', Button);
+    nuxtApp.vueApp.component('InputSwitch', InputSwitch);
     nuxtApp.vueApp.component('InputText', InputText);
     nuxtApp.vueApp.component('Toast', Toast);
     nuxtApp.vueApp.component('Message', Message);

@@ -1,22 +1,12 @@
 <template>
-  <div class="topBar px-4 py-3 shadow-6">
-    <a href="/dashboard"
-      ><img src="~/assets/magnetize-logo.png" alt="Logo" style="height: 40px"
-    /></a>
-    <div style="float: right">
-      <Button
-        icon="pi pi-sign-out"
-        class="p-button-text p-button-plain"
-        @click="signout"
-        v-if="isLoggedIn"
-      />
-      <Button
-        @click="visibleLeft = true"
-        icon="pi pi-bars"
-        class="p-button-text p-button-plain sidebarTrig"
-      />
+  <div class="topBar px-2 py-3 shadow-3">
+    <a href="/dashboard"><img src="~/assets/magnetize-logo.png" alt="Logo" style="height: 40px" /></a>
+    <div style="float: right" class="px-2">
+      <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="signout" v-if="isLoggedIn" />
     </div>
-    <Sidebar v-model:visible="visibleLeft" :baseZIndex="10000" position="right">
+  </div>
+  <div class="row" style="height: 90vh; width: 100%;">
+    <div class="col-2 px-4 shadow-3">
       <strong>
         <p>Home</p>
       </strong>
@@ -35,22 +25,18 @@
       </strong>
       <div class="ml-3">
         <NuxtLink v-if="isLoggedIn" to="/departements">
-          <Button
-            icon="pi pi-building"
-            class="p-button-text p-button-plain"
-            label="Departements"
-            @click="visibleLeft = false"
-          />
+          <Button icon="pi pi-building" class="p-button-text p-button-plain" label="Departements" />
         </NuxtLink>
         <br />
-        <!-- <NuxtLink to="/discCard">
-          <Button icon="pi pi-book" class="p-button-text p-button-plain" label="Disc" @click="visibleLeft = false" />
-        </NuxtLink> -->
-        <!-- <Tree :value="nodes"></Tree> -->
+        <NuxtLink to="/jobs_hcd">
+          <Button icon="pi pi-sitemap" class="p-button-text p-button-plain" label="Jobs" />
+        </NuxtLink>
       </div>
-    </Sidebar>
+    </div>
+    <div class="col-auto">
+      <slot />
+    </div>
   </div>
-  <slot />
 </template>
 
 <script setup>
