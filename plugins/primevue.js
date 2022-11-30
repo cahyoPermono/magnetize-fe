@@ -10,6 +10,7 @@ import RadioButton from 'primevue/radiobutton';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Row from 'primevue/row';
+import ColumnGroup from 'primevue/columngroup'; 
 import Paginator from 'primevue/paginator';
 import Dialog from 'primevue/dialog';
 import TabView from 'primevue/tabview';
@@ -24,6 +25,8 @@ import InputNumber from 'primevue/inputnumber';
 import Tooltip from 'primevue/tooltip';
 import ConfirmDialog from 'primevue/confirmdialog';
 import ConfirmationService from 'primevue/confirmationservice';
+import Breadcrumb from 'primevue/breadcrumb';
+import Tree from 'primevue/tree';
 
 
 export default defineNuxtPlugin((nuxtApp) => {
@@ -39,6 +42,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('DataTable', DataTable);
     nuxtApp.vueApp.component('Column', Column);
     nuxtApp.vueApp.component('Row', Row);
+    nuxtApp.vueApp.component('ColumnGroup', ColumnGroup);
     nuxtApp.vueApp.component('Paginator', Paginator);
     nuxtApp.vueApp.component('Dialog', Dialog);
     nuxtApp.vueApp.component('TabView', TabView);
@@ -51,6 +55,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Divider', Divider);
     nuxtApp.vueApp.directive('Tooltip', Tooltip);
     nuxtApp.vueApp.component('InputNumber', InputNumber);
-    nuxtApp.vueApp.component('ConfirmDialog', ConfirmDialog)
+    nuxtApp.vueApp.component('ConfirmDialog', ConfirmDialog);
+    nuxtApp.vueApp.component('Breadcrumb', Breadcrumb);
+    nuxtApp.vueApp.component('Tree', Tree);
+
+
    //other components that you need
 });

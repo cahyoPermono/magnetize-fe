@@ -78,6 +78,7 @@ const user = reactive({
 
 const router = useRouter();
 const token = useCookie('token');
+const role = useCookie('role');
 
 function login() {
   try {
