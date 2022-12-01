@@ -35,7 +35,7 @@ let dataDept = ref("");
 const router = useRouter();
 
 definePageMeta({
-  middleware: 'auth'
+  middleware: ['auth']
 });
 
 onMounted(async () => {

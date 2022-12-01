@@ -10,46 +10,30 @@
         <hr>
         <Form>
           <div class="mb-4">
-            <small for="nama" class="block text-900 font-medium mb-2">Nama<span style="color:red;">*</span></small>
-            <Field class="w-full form-control" id="nama" name="nama" :rules="isRequired" v-model="data.nama"
-              style="background-color: white; color: black;"></Field>
-            <ErrorMessage class="mb-2" name="nama"><small style="color:red;">Nama harus diisi</small></ErrorMessage>
+            <small for="posisi" class="block text-900 font-medium mb-2">Posisi<span style="color:red;">*</span></small>
+            <select
+              name="posisi"
+              class="form-control"
+              v-model="data.posisi">
+              <option value="Intership">Web App Developer Trainee</option>
+              <option value="Web Dev Trainee">Fullstack Developer</option>
+              <option value="Web Dev Trainee">Internship / Kerja Praktek</option>
+            </select>
           </div>
           <div class="mb-4">
-            <small for="nohp" class="block text-900 font-medium mb-2">No. HP<span style="color:red;">*</span></small>
-            <Field class="w-full form-control" id="nohp" name="nohp" :rules="isRequired" v-model="data.noHp"
-              style="background-color: white; color: black;"></Field>
-            <ErrorMessage class="mb-2" name="nohp"><small style="color:red;">No HP harus diisi</small></ErrorMessage>
+            <small for="cv" class="block text-900 font-medium mb-2">Uploac CV<span style="color:red;">*</span></small>
+            <FileUpload
+              name="demo[]"
+              mode="basic"
+              :customUpload="true"
+              @uploader="onUpload"
+              accept="image/*,.pdf"
+              :maxFileSize="2000000"
+              :auto="true"
+            />
           </div>
-          <div class="mb-4">
-            <small for="email" class="block text-900 font-medium mb-2">Email<span style="color:red;">*</span></small>
-            <Field class="w-full form-control" id="email" name="email" :rules="validateEmail" v-model="data.email"
-              style="background-color: white; color: black;"></Field>
-            <small style="color:red;">
-              <ErrorMessage class="mb-2" name="email" />
-            </small>
-          </div>
-          <div class="mb-4">
-            <div class="formgrid grid">
-              <div class="field col">
-                <small for="jurusan" class="block text-900 font-medium mb-2">Jurusan<span
-                    style="color:red;">*</span></small>
-                <Field class="w-full form-control" id="jurusan" name="jurusan" :rules="isRequired"
-                  v-model="data.jurusan" style="background-color: white; color: black;"></Field>
-                <ErrorMessage class="mb-2" name="jurusan"><small style="color:red;">Jurusan harus diisi</small>
-                </ErrorMessage>
-              </div>
-              <div class="field col">
-                <small for="Angkatan" class="block text-900 font-medium mb-2">Angkatan<span
-                    style="color:red;">*</span></small>
-                <Field class="w-full form-control" id="Angkatan" name="Angkatan" :rules="isRequired"
-                  v-model="data.angkatan" style="background-color: white; color: black;"></Field>
-                <ErrorMessage class="mb-2" name="Angkatan"><small style="color:red;">Angkatan harus diisi</small>
-                </ErrorMessage>
-              </div>
-            </div>
-          </div>
-          <Button label="Masuk" icon="pi pi-user" class="p-button-warning" @click="masuk" />
+          
+          <Button label="Apply" icon="pi pi-user" class="p-button-warning" @click="masuk" />
         </Form>
       </div>
     </div>
@@ -64,6 +48,9 @@
         <div v-if="!isLoggedIn">
           <Button label="Login" icon="pi pi-sign-in" class="p-button-warning" @click="login" />
         </div>
+        <div v-if="isLoggedIn">
+          <Button label="Masuk" icon="pi pi-sign-in" class="p-button-warning" @click="login" />
+        </div>
       </div>
     </div>
   </div>
@@ -76,23 +63,21 @@ const toast = useToast();
 const router = useRouter();
 const config = useRuntimeConfig();
 let isLoggedIn = ref(false);
+
 onMounted(async() => {
-  const token = localStorage.getItem("token");
-  if (token) {
+  const token = useCookie('token')
+  if (token.value) {
     isLoggedIn.value = !isLoggedIn.value;
     await setTimeout(() => {
-      localStorage.removeItem("token");
+      token.value = null
       alert("Waktu habis, silahkan login lagi")
       router.push('/login')
-    }, 10000);
+    }, 3600000);
   }
 })
 const data = reactive({
-  nama: "",
-  noHp: "",
-  jurusan: "",
-  email: "",
-  angkatan: ""
+  posisi: "",
+  cv: "",
 });
 
 const isRequired = (value) => {
@@ -112,14 +97,23 @@ const validateEmail = (value) => {
   // All is good
   return true;
 }
+
+const onUpload = (evt) => {
+  let f = evt.files[0];
+  // newAttachment.type = f.type;
+  const reader = new FileReader();
+  reader.readAsDataURL(f);
+  reader.onloadend = function () {
+    data.cv = reader.result;
+  };
+  alert('Upload Success')
+};
+
 const masuk = () => {
   try {
     axios.post(config.API_BASE_URL + "guest", {
-      name: data.nama,
-      phone: data.noHp,
-      major: data.jurusan,
-      generation: data.angkatan,
-      email: data.email,
+      posisi: data.posisi,
+      cv: data.cv,
     }).then(() => {
       toast.add({ severity: "info", summary: "Enjoy the Carnaval" });
       router.push({ path: "/jobs" });
@@ -139,7 +133,6 @@ const test = () => {
 }
 definePageMeta({
   layout: false,
-  middleware: 'islogin'
 });
 </script>
 
