@@ -1,5 +1,6 @@
 <template>
   <div class="grid grid-nogutter" style="background-color:#129666;">
+    <Toast />
     <div class="col-md-6 col-12 p-4">
       <div class="px-2 py-4 mx-4 text-center">
         <img class="w-8" src="~/assets/logo-putih.png" /> <br>
@@ -106,7 +107,7 @@ const onUpload = (evt) => {
   reader.onloadend = function () {
     data.cv = reader.result;
   };
-  alert('Upload Success')
+  toast.add({severity:'success', summary: 'Success', detail:'Save Data Success', life: 3000});
 };
 
 const masuk = () => {

@@ -132,18 +132,7 @@
               &nbsp;Phone Number<span style="color: red">*</span>
             </label>
             <div class="col-sm">
-              <vue-tel-input
-                v-model="newUser.phone"
-                @input="onPhoneInput"
-              ></vue-tel-input>
-              <!-- <Field
-                  class="form-control"
-                  name="phone"
-                  :rules="isRequired"
-                  v-model="newUser.phone" />
-                <ErrorMessage name="phone">
-                  <small style="color: red">Phone Number is required</small>
-                </ErrorMessage> -->
+              <vue-tel-input v-model="newUser.phone" @input="onPhoneInput"></vue-tel-input>
             </div>
           </div>
         </div>
