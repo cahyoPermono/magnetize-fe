@@ -78,7 +78,7 @@ const user = reactive({
 
 const router = useRouter();
 const token = useCookie('token');
-const role = useCookie('role');
+const userdata = useCookie('user');
 
 function login() {
   try {
@@ -90,7 +90,9 @@ function login() {
       .then(async (r) => {
           axios.defaults.headers.common["Authorization"] =
           "Bearer " + r.data.token;
-          token.value = r.data.token
+          token.value = r.data.token;
+          userdata.value = r.data.user.roleId
+          
         // alert("Login Success");
         router.push("/dashboard");
       })

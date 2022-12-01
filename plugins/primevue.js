@@ -28,6 +28,7 @@ import ConfirmationService from 'primevue/confirmationservice';
 import Breadcrumb from 'primevue/breadcrumb';
 import Tree from 'primevue/tree';
 import InputSwitch from 'primevue/inputswitch';
+import PanelMenu from 'primevue/panelmenu';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, { ripple: true });
@@ -59,6 +60,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('ConfirmDialog', ConfirmDialog);
     nuxtApp.vueApp.component('Breadcrumb', Breadcrumb);
     nuxtApp.vueApp.component('Tree', Tree);
+    nuxtApp.vueApp.component('PanelMenu', PanelMenu);
 
 
    //other components that you need
