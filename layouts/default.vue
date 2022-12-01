@@ -12,12 +12,7 @@
       </strong>
       <div class="ml-3 mb-3">
         <NuxtLink to="/dashboard">
-          <Button
-            icon="pi pi-home"
-            class="p-button-text p-button-plain"
-            label="Home"
-            @click="visibleLeft = false"
-          />
+          <Button icon="pi pi-home" class="p-button-text p-button-plain" label="Home" @click="visibleLeft = false" />
         </NuxtLink>
       </div>
       <strong>
@@ -33,7 +28,7 @@
         </NuxtLink>
       </div>
     </div>
-    <div class="col-auto">
+    <div class="col-10">
       <slot />
     </div>
   </div>
@@ -56,10 +51,12 @@ const isLoggedIn = computed(() => token.value);
 
 async function signout() {
   const today = new Date();
-  await axios.put('http://localhost:3000/api/1.0/update/11',{
+  await axios.put('http://localhost:3000/api/1.0/update/11', {
     lastActive: today,
   })
   token_user.value = null;
+  token.value = null;
+  router.push("/login")
 }
 </script>
 
@@ -69,5 +66,4 @@ a:hover {
   text-decoration: none;
   color: inherit;
 }
-
 </style>

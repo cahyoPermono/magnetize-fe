@@ -15,6 +15,7 @@ import Paginator from 'primevue/paginator';
 import Dialog from 'primevue/dialog';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
+import Panel from 'primevue/panel';
 import FileUpload from 'primevue/fileupload';
 import Textarea from 'primevue/textarea';
 import Avatar from 'primevue/avatar';
@@ -59,7 +60,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('ConfirmDialog', ConfirmDialog);
     nuxtApp.vueApp.component('Breadcrumb', Breadcrumb);
     nuxtApp.vueApp.component('Tree', Tree);
-
+    nuxtApp.vueApp.component('Panel', Panel);
 
    //other components that you need
 });

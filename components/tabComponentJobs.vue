@@ -16,7 +16,7 @@
             <span>  - Summary</span>
           </template>
           <div>
-            <tambah-attachment />
+            <Summary ></Summary>
           </div>
         </TabPanel>
         <TabPanel>
