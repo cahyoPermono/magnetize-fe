@@ -5,8 +5,8 @@
       <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="signout" v-if="isLoggedIn" />
     </div>
   </div>
-  <div class="row" style="height: 90vh; width: 100%;">
-    <div class="col-2 px-4 shadow-3">
+  <div class="grid" style="height: 91vh; width: 100%;">
+    <div class="col-2 p-4 shadow-3">
       <strong>
         <p>Home</p>
       </strong>
@@ -42,12 +42,22 @@ function signin() {
   router.push('/login')
 }
 const token = useCookie('token')
-// const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+const token_user = useCookie('user')
 
 const isLoggedIn = computed(() => token.value)
 
 function signout() {
   token.value = null;
+  token_user.value = null;
   router.push('/')
 }
 </script>
+
+<style>
+a,
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+</style>
