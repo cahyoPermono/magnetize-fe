@@ -37,12 +37,13 @@ const router = useRouter();
 definePageMeta({
   middleware: ['auth']
 });
-
+ 
 onMounted(async () => {
-  const token = useCookie('token')
+  const token = useCookie('token');
+  const roleId = useCookie('role');
   const token_user = useCookie('user')
   const config = useRuntimeConfig();
-  const response = await axios.get(config.API_BASE_URL + "departements", {
+  const response = await axios.get(config.API_BASE_URL + "all_departements/" + roleId.value, {
     headers: {
       'Authorization': `Bearer ${token.value}`
     }

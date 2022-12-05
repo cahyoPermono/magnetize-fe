@@ -69,7 +69,8 @@ function login() {
       .then(async (r) => {
         axios.defaults.headers.common["Authorization"] =
           "Bearer " + r.data.token;
-        token.value = r.data.token
+        token.value = r.data.token;
+        role.value = r.data.user.roleId;
         token_user.value = r.data.user.id;
         // alert("Login Success");
         router.push("/dashboard");
