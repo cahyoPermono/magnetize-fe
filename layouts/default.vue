@@ -12,19 +12,14 @@
       />
     </div>
   </div>
-  <div class="row" style="height: 90vh; width: 100%">
-    <div class="col-2 px-4 shadow-3">
+  <div class="grid m-0" style="height: 91vh; width: 100%;">
+    <div class="col-2 p-4 shadow-3">
       <strong>
         <p>Home</p>
       </strong>
       <div class="ml-3 mb-3">
         <NuxtLink to="/dashboard">
-          <Button
-            icon="pi pi-home"
-            class="p-button-text p-button-plain"
-            label="Home"
-            @click="visibleLeft = false"
-          />
+          <Button icon="pi pi-home" class="p-button-text p-button-plain" label="Home" @click="visibleLeft = false" />
         </NuxtLink>
       </div>
       <strong>
@@ -47,10 +42,10 @@
           />
         </NuxtLink>
         <br />
-        <PanelMenu v-if="(role === 1)" :model="items" style="width: 11em;"/>
+        <!-- <PanelMenu v-if="(role === 1)" :model="items" style="width: 11em;" /> -->
       </div>
     </div>
-    <div class="col-auto">
+    <div class="col-10">
       <slot />
     </div>
   </div>
@@ -67,7 +62,8 @@ function signin() {
 }
 
 const token = useCookie("token");
-const roleId = useCookie("user");
+const roleId = useCookie("role");
+const token_user = useCookie('user')
 
 const isLoggedIn = computed(() => token.value);
 const role = computed(() => roleId.value);
@@ -76,9 +72,10 @@ const config = useRuntimeConfig();
 
 async function signout() {
   const today = new Date();
-  await axios.put(config.API_BASE_URL + "update/" + roleId.value, {
+  await axios.put(config.API_BASE_URL + "update/" + token_user.value, {
     lastActive: today,
   });
+  token_user.value = null;
   token.value = null;
   roleId.value = null;
   router.push("/");
@@ -129,3 +126,11 @@ const items = ref([
   },
 ]);
 </script>
+
+<style>
+a,
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+</style>

@@ -38,8 +38,7 @@
                         </ErrorMessage>
                     </div>
                     <div class="col-3">
-                        <label for="contract_detail"><small>Contract Detail</small><span
-                                style="color: red">*</span></label>
+                        <label for="contract_detail"><small>Contract</small><span style="color: red">*</span></label>
                         <Dropdown v-model="newJob.contract_detail" :options="contract_detail" optionLabel="a"
                             placeholder="Jenis Kontrak" />
                         <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
@@ -65,15 +64,24 @@
                 <div class="row">
                     <div class="col-6">
                         <label><small>Currency</small><span style="color: red">*</span></label> <br>
-                        <Dropdown v-model="newJob.currency" :options="CurrencyList" optionLabel="text" placeholder="Jenis Mata Uang" />
+                        <Dropdown v-model="newJob.currency" :options="CurrencyList" optionLabel="text"
+                            placeholder="Jenis Mata Uang" />
                         <ErrorMessage name="currency"><small style="color: red">Currency is required</small>
                         </ErrorMessage>
                     </div>
                     <div class="col-6">
                         <label><small>Frekuensi Penggajian</small><span style="color: red">*</span></label> <br>
-                        <Dropdown v-model="newJob.payment_frequency" :options="payment_frequency" optionLabel="text" placeholder="Frekuensi Penggajian" />
-                        <ErrorMessage name="payment_frequency"><small style="color: red">payment frequency is required</small>
+                        <Dropdown v-model="newJob.payment_frequency" :options="payment_frequency" optionLabel="text"
+                            placeholder="Frekuensi Penggajian" />
+                        <ErrorMessage name="payment_frequency"><small style="color: red">payment frequency is
+                                required</small>
                         </ErrorMessage>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label for="deskripsi"><small>Deskripsi</small></label> <br>
+                        <Textarea name="deskripsi" v-model="desc" style="width: 100%;" />
                     </div>
                 </div>
                 <div class="mt-4">
@@ -86,8 +94,10 @@
 
 <script setup>
 import axios from "axios";
+
 const config = useRuntimeConfig();
 const token = useCookie('token');
+const token_user = useCookie('user');
 const CurrencyList = [
     { code: "AFN", text: "AFN - Afghanistan Afghanis" },
     { code: "ALL", text: "ALL - Albania Leke" },
@@ -195,11 +205,11 @@ const CurrencyList = [
     { code: "ZMK", text: "ZMK - Zambia Kwacha" },
 ];
 const payment_frequency = [
-    {text:"Annually"},
-    {text:"Daily"},
-    {text:"Hourly"},
-    {text:"Weekly"},
-    {text:"Monthly"},
+    { text: "Annually" },
+    { text: "Daily" },
+    { text: "Hourly" },
+    { text: "Weekly" },
+    { text: "Monthly" },
 ]
 const contract_detail = [
     {
@@ -247,42 +257,48 @@ const newJob = reactive({
     currency: "",
     min_salary: "",
     max_salary: "",
-    creator_id: "",
+    payment_frequency: "",
 });
 const departements = ref();
-
-function openModal() {
-    displayModal.value = !displayModal.value;
-};
-
-onMounted(async () => {
-    const data_dept = await axios.get(config.API_BASE_URL + "departements", {
-        headers: {
-            'Authorization': `Bearer ${token.value}`
-        }
-    });
-    departements.value = await data_dept.data.departements;
-});
-
 async function save() {
+    const data = {
+        name: newJob.name,
+        DepartementId: DepartementId.value.id,
+        location: newJob.location,
+        remote: newJob.remote,
+        headcount: newJob.headcount,
+        contract_detail: newJob.contract_detail.a,
+        min_salary: newJob.min_salary,
+        max_salary: newJob.max_salary,
+        currency: newJob.currency.code,
+        payment_frequency: newJob.payment_frequency.text,
+        desc: desc.value,
+        creator_id: token_user.value,
+        status: "Active"
+    }
     try {
-        await axios.post(config.API_BASE_URL + "departements", {
-            nama: newJob.nama,
-            url: newJob.url,
-            industri: newJob.industri,
-            lokasi: newJob.lokasi,
-            alamat: newJob.alamat,
-            avatar: newJob.avatar,
-            deskripsi: deskripsi.value,
-        }).then(() => {
+        await axios.post(config.API_BASE_URL + "jobs", data).then(() => {
             displayModal.value = false
-            alert("Departemen baru ditambahkan");
+            alert("Job baru ditambahkan");
             location.reload()
         });
     } catch (error) {
         console.log(error);
     }
 }
+
+function openModal() {
+    displayModal.value = !displayModal.value;
+};
+
+onMounted(async () => {
+    const data_dept = await axios.get(config.API_BASE_URL + "all_departements/" + token_user.value, {
+        headers: {
+            'Authorization': `Bearer ${token.value}`
+        }
+    });
+    departements.value = await data_dept.data.departements;
+});
 const isRequired = (value) => {
     if (!value) {
         return "This field is required";

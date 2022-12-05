@@ -12,13 +12,14 @@ export default defineNuxtConfig({
         'primeflex/primeflex.css',
     ],
     build: {
-        transpile: ['primevue','@vee-validate/rules']
+        transpile: ['primevue', '@vee-validate/rules']
     },
     app: {
         head: {
             title: 'Magnetize',
             link: [
-                { rel: 'icon', type: 'image/png', href: '/_nuxt/assets/favicon.png' }
+                { rel: 'icon', type: 'image/png', href: '/_nuxt/assets/favicon.png' },
+                { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,700,1,-25' }
             ],
         }
     },
