@@ -5,7 +5,7 @@
       <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="signout" v-if="isLoggedIn" />
     </div>
   </div>
-  <div class="grid" style="height: 91vh; width: 100%;">
+  <div class="grid m-0" style="height: 91vh; width: 100%;">
     <div class="col-2 p-4 shadow-3">
       <strong>
         <p>Home</p>
@@ -26,6 +26,8 @@
         <NuxtLink to="/jobs_hcd">
           <Button icon="pi pi-sitemap" class="p-button-text p-button-plain" label="Jobs" />
         </NuxtLink>
+        <br />
+        <!-- <PanelMenu v-if="(role === 1)" :model="items" style="width: 11em;" /> -->
       </div>
     </div>
     <div class="col-10">
@@ -36,7 +38,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted, computed } from "vue";
+import { ref, computed } from "vue";
 
 const visibleLeft = ref(false);
 const router = useRouter();
@@ -45,18 +47,23 @@ function signin() {
 }
 
 const token = useCookie("token");
+const roleId = useCookie("role");
 const token_user = useCookie('user')
 
 const isLoggedIn = computed(() => token.value);
+const role = computed(() => roleId.value);
+
+const config = useRuntimeConfig();
 
 async function signout() {
   const today = new Date();
-  await axios.put('http://localhost:3000/api/1.0/update/11', {
+  await axios.put(config.API_BASE_URL + "update/" + token_user.value, {
     lastActive: today,
-  })
+  });
   token_user.value = null;
   token.value = null;
-  router.push("/login")
+  roleId.value = null;
+  router.push("/");
 }
 </script>
 

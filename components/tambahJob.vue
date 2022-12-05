@@ -274,7 +274,7 @@ async function save() {
         payment_frequency: newJob.payment_frequency.text,
         desc: desc.value,
         creator_id: token_user.value,
-        status:"Active"
+        status: "Active"
     }
     try {
         await axios.post(config.API_BASE_URL + "jobs", data).then(() => {
@@ -291,9 +291,8 @@ function openModal() {
     displayModal.value = !displayModal.value;
 };
 
-
 onMounted(async () => {
-    const data_dept = await axios.get(config.API_BASE_URL + "departements", {
+    const data_dept = await axios.get(config.API_BASE_URL + "all_departements/" + token_user.value, {
         headers: {
             'Authorization': `Bearer ${token.value}`
         }
