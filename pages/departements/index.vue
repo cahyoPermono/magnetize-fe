@@ -41,7 +41,7 @@ definePageMeta({
 onMounted(async () => {
   const token = useCookie('token');
   const roleId = useCookie('role');
-  const token_user = useCookie('user')
+  const token_user = useCookie('user');
   const config = useRuntimeConfig();
   const response = await axios.get(config.API_BASE_URL + "all_departements/" + roleId.value, {
     headers: {
