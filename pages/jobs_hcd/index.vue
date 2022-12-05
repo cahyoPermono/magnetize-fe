@@ -51,6 +51,10 @@ onMounted(() => {
         })
         .catch(err => { console.log(err) })
 });
+definePageMeta({
+    middleware:'auth'
+});
+
 </script>
 
 <style>

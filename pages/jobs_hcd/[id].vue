@@ -82,6 +82,11 @@ onMounted(async () => {
   lokasi.value = await job.data.data.location
   salary.value = `${await job.data.data.min_salary} - ${await job.data.data.max_salary} (${await job.data.data.currency})`
 });
+
+definePageMeta({
+    middleware:'auth'
+});
+
 </script>
 
 <style scoped>

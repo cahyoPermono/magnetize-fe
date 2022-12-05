@@ -1,19 +1,12 @@
 <template>
   <div class="topBar px-2 py-3 shadow-3">
-    <a href="/dashboard"
-      ><img src="~/assets/magnetize-logo.png" alt="Logo" style="height: 40px"
-    /></a>
+    <a href="/dashboard"><img src="~/assets/magnetize-logo.png" alt="Logo" style="height: 40px" /></a>
     <div style="float: right" class="px-2">
-      <Button
-        icon="pi pi-sign-out"
-        class="p-button-text p-button-plain"
-        @click="signout"
-        v-if="isLoggedIn"
-      />
+      <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="signout" v-if="isLoggedIn" />
     </div>
   </div>
-  <div class="grid m-0" style="height: 91vh; width: 100%;">
-    <div class="col-2 p-4 shadow-3">
+  <div class="row" style="height: 90vh; width: 100%;">
+    <div class="col-2 px-4 shadow-3">
       <strong>
         <p>Home</p>
       </strong>
@@ -27,22 +20,16 @@
       </strong>
       <div class="ml-3">
         <NuxtLink v-if="isLoggedIn" to="/departements">
-          <Button
-            icon="pi pi-building"
-            class="p-button-text p-button-plain"
-            label="Departements"
-          />
+          <Button icon="pi pi-building" class="p-button-text p-button-plain" label="Departements" />
         </NuxtLink>
         <br />
         <NuxtLink to="/jobs_hcd">
-          <Button
-            icon="pi pi-sitemap"
-            class="p-button-text p-button-plain"
-            label="Jobs"
-          />
+          <Button icon="pi pi-sitemap" class="p-button-text p-button-plain" label="Jobs" />
         </NuxtLink>
         <br />
-        <!-- <PanelMenu v-if="(role === 1)" :model="items" style="width: 11em;" /> -->
+        <NuxtLink to="/dashboard-applicant">
+          <Button icon="pi pi-users" class="p-button-text p-button-plain" label="Guest" />
+        </NuxtLink>
       </div>
     </div>
     <div class="col-10">
@@ -53,7 +40,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, computed } from "vue";
+import { ref, onMounted, computed } from "vue";
 
 const visibleLeft = ref(false);
 const router = useRouter();
@@ -61,14 +48,12 @@ function signin() {
   router.push("/login");
 }
 
-const token = useCookie("token");
-const roleId = useCookie("role");
-const token_user = useCookie('user')
+const token = useCookie('token');
+const roleId = useCookie('role');
+const token_user = useCookie('user');
+// const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
 const isLoggedIn = computed(() => token.value);
-const role = computed(() => roleId.value);
-
-const config = useRuntimeConfig();
 
 async function signout() {
   const today = new Date();
