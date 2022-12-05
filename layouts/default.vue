@@ -57,13 +57,13 @@ const isLoggedIn = computed(() => token.value);
 
 async function signout() {
   const today = new Date();
-  await axios.put('http://localhost:3000/api/1.0/update/11', {
+  await axios.put(config.API_BASE_URL + "update/" + token_user.value, {
     lastActive: today,
-  })
+  });
+  token_user.value = null;
   token.value = null;
   roleId.value = null;
-  token_user.value = null;
-  router.push('/')
+  router.push("/");
 }
 
 const items = ref([
