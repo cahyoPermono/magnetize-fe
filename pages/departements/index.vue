@@ -47,12 +47,12 @@ let dataDept = ref("");
 const router = useRouter();
 
 definePageMeta({
-  middleware: ['auth']
+  middleware: ['auth', 'isdepartement']
 });
 
 onMounted(async () => {
   const token = useCookie('token');
-  const roleId = useCookie('user');
+  const roleId = useCookie('role');
   const config = useRuntimeConfig();
   const response = await axios.get(config.API_BASE_URL + "all_departements/" + roleId.value, {
     headers: {
@@ -61,7 +61,8 @@ onMounted(async () => {
   });
   dataDept.value = response.data.departements;
   await setTimeout(() => {
-    token.value = null
+    token.value = null;
+    roleId.value = null;
     alert("Waktu habis, silahkan login lagi");
     router.push("/");
   }, 3600000);  

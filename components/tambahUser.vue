@@ -169,11 +169,13 @@
 <script setup>
 import axios from "axios";
 import { onMounted } from "vue";
-const config = useRuntimeConfig();
+import { useToast } from "primevue/usetoast";
 
+const toast = useToast();
+const config = useRuntimeConfig();
 const displayModal = ref(false);
 const roles = ref([]);
-// const deskripsi = ref("");
+
 const newUser = reactive({
   fullName: "",
   displayName: "",
@@ -220,7 +222,8 @@ async function save() {
       })
       .then(() => {
         displayModal.value = false;
-        alert("Create User Success");
+        toast.add({severity:'success', summary: 'Create Success', detail:'Success Create User', life: 3000});
+        // alert("Create User Success");
         location.reload();
       });
   } catch (error) {

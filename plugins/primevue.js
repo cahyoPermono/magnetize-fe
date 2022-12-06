@@ -29,6 +29,7 @@ import Breadcrumb from 'primevue/breadcrumb';
 import Tree from 'primevue/tree';
 import InputSwitch from 'primevue/inputswitch';
 import PanelMenu from 'primevue/panelmenu';
+import TieredMenu from 'primevue/tieredmenu';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, { ripple: true });
@@ -61,7 +62,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Breadcrumb', Breadcrumb);
     nuxtApp.vueApp.component('Tree', Tree);
     nuxtApp.vueApp.component('PanelMenu', PanelMenu);
-
+    nuxtApp.vueApp.component('TieredMenu', TieredMenu);
 
    //other components that you need
 });

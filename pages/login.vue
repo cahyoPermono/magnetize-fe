@@ -78,7 +78,8 @@ const user = reactive({
 
 const router = useRouter();
 const token = useCookie('token');
-const userdata = useCookie('user');
+const role = useCookie('role');
+const idUser = useCookie('id');
 
 function login() {
   try {
@@ -91,8 +92,8 @@ function login() {
           axios.defaults.headers.common["Authorization"] =
           "Bearer " + r.data.token;
           token.value = r.data.token;
-          userdata.value = r.data.user.roleId
-          
+          role.value = r.data.user.roleId;
+          idUser.value = r.data.user.id
         // alert("Login Success");
         router.push("/dashboard");
       })
@@ -104,6 +105,7 @@ function login() {
     console.log(err);
   }
 }
+
 const isRequired = (value) => {
   if (!value) {
     return "This field is required";

@@ -12,8 +12,8 @@
       />
     </div>
   </div>
-  <div class="row" style="height: 90vh; width: 100%">
-    <div class="col-2 px-4 shadow-3">
+  <div class="grid" style="height: 91vh; width: 100%">
+    <div class="col-2 p-4 shadow-3">
       <strong>
         <p>Home</p>
       </strong>
@@ -31,7 +31,7 @@
         <p>Feature</p>
       </strong>
       <div class="ml-3">
-        <NuxtLink v-if="isLoggedIn" to="/departements">
+        <NuxtLink v-if="(isLoggedIn, isdepartement)" to="/departements">
           <Button
             icon="pi pi-building"
             class="p-button-text p-button-plain"
@@ -39,7 +39,7 @@
           />
         </NuxtLink>
         <br />
-        <NuxtLink to="/jobs_hcd">
+        <NuxtLink v-if="isjobs" to="/jobs_hcd">
           <Button
             icon="pi pi-sitemap"
             class="p-button-text p-button-plain"
@@ -47,10 +47,10 @@
           />
         </NuxtLink>
         <br />
-        <PanelMenu v-if="(role === 1)" :model="items" style="width: 11em;"/>
+        <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" style="width: 11em" />
       </div>
     </div>
-    <div class="col-auto">
+    <div class="col-10">
       <slot />
     </div>
   </div>
@@ -58,30 +58,46 @@
 
 <script setup>
 import axios from "axios";
-import { ref, computed } from "vue";
+import { ref, onMounted, computed } from "vue";
 
 const visibleLeft = ref(false);
 const router = useRouter();
+const config = useRuntimeConfig();
+const token = useCookie("token");
+const roleId = useCookie("role");
+const idUser = useCookie("id");
+
+const isLoggedIn = computed(() => token.value);
+
+const arr = reactive([]);
+
+onMounted(()=> {
+  axios
+    .get("http://localhost:3000/api/1.0/rolepermissions/" + roleId.value)
+    .then((response) => {
+      response.data.data.forEach((element) => {
+        arr.push(element.permission.permission);
+      });
+    });
+})
+
+const isjobs = computed(() => arr.includes('menu_jobs_hcd'))
+const isdepartement = computed(() => arr.includes('menu_departements'))
+const isuser = computed(() => arr.includes('menu_users'))
+
 function signin() {
   router.push("/login");
 }
 
-const token = useCookie("token");
-const roleId = useCookie("user");
-
-const isLoggedIn = computed(() => token.value);
-const role = computed(() => roleId.value);
-
-const config = useRuntimeConfig();
-
 async function signout() {
   const today = new Date();
-  await axios.put(config.API_BASE_URL + "update/" + roleId.value, {
+  await axios.put(config.API_BASE_URL + "update/" + idUser.value, {
     lastActive: today,
   });
-  token.value = null;
   roleId.value = null;
-  router.push("/");
+  token.value = null;
+  idUser.value = null;
+  router.push("/login");
 }
 
 const items = ref([
@@ -104,7 +120,7 @@ const items = ref([
                 key: "0_0_0_0",
                 label: "User Management",
                 icon: "pi pi-bars",
-                to: '/usermanagement'
+                to: "/usermanagement",
               },
             ],
           },
@@ -115,17 +131,15 @@ const items = ref([
           },
         ],
       },
-      // {
-      //   key: "0_1",
-      //   label: "Delete",
-      //   icon: "pi pi-fw pi-trash",
-      // },
-      // {
-      //   key: "0_2",
-      //   label: "Export",
-      //   icon: "pi pi-fw pi-external-link",
-      // },
     ],
   },
 ]);
 </script>
+
+<style>
+a,
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+</style>
