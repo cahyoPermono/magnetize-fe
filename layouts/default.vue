@@ -27,13 +27,15 @@
           />
         </NuxtLink>
         <br />
-        <NuxtLink v-if="isjobs" to="/jobs_hcd">
+        <NuxtLink v-if="(isLoggedIn, isjobs)" to="/jobs_hcd">
           <Button icon="pi pi-sitemap" class="p-button-text p-button-plain" label="Jobs" />
         </NuxtLink>
         <br />
         <NuxtLink to="/dashboard-applicant">
           <Button icon="pi pi-users" class="p-button-text p-button-plain" label="Guest" />
         </NuxtLink>
+        <br />
+        <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" />
       </div>
     </div>
     <div class="col-10">

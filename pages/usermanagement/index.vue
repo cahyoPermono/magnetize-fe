@@ -55,10 +55,7 @@
 <script setup>
 import axios from "axios";
 import dateFormat from "dateformat";
-
-definePageMeta({
-  middleware: ['auth', 'isuser']
-});
+import { ref,onMounted } from 'vue';
 
 let dataUser = ref("");
 const router = useRouter();
@@ -66,36 +63,27 @@ const router = useRouter();
 const reverseDate = (date) => {
   return dateFormat(date, "dd-mm-yyyy");
 };
+
 const lastDate = (date) => {
   return dateFormat(date, "dd-mm-yyyy, h:MM:ss TT");
 };
+
 const home = ref({
   icon: "pi pi-home",
   to: "/dashboard",
 });
+
 const items = ref([
   { label: "Administration", to: "/dashboard" },
   { label: "Account and Users" },
   { label: "Users" },
   { label: "User Management" },
 ]);
+
 onMounted(async () => {
   const token = useCookie("token");
   const config = useRuntimeConfig();
   const roleId = useCookie("role");
-  // const permName = ref([])
-  // // console.log(roleId.value);
-  // await axios
-  //   .get("http://localhost:3000/api/1.0/rolepermissions/" + roleId.value)
-  //   .then((response) => {
-  //     response.data.data.forEach((element) => {
-  //       const perm = element.permission.permission
-  //       console.log(perm)
-  //       if (perm === "menu_users") {
-  //         permName.value = perm
-  //       }
-  //     });
-  //   });
   const response = await axios.get(
     config.API_BASE_URL + "all_users/" + roleId.value,
     {
@@ -105,10 +93,15 @@ onMounted(async () => {
     }
   );
   dataUser.value = response.data.data;
+  
   await setTimeout(() => {
     token.value = null;
     alert("Waktu habis, silahkan login lagi");
     router.push("/");
   }, 3600000);
+});
+
+definePageMeta({
+  middleware: ['auth', 'isuser']
 });
 </script>
