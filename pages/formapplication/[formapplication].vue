@@ -1882,7 +1882,6 @@ async function save() {
       })
       .then((response) => {
         showWarn();
-        // alert("Data Anda Berhasil Disimpan, Harap Tunggu Halaman Selanjutnya...");
         loading.value = true;
       });
     const applicantNow = await axios.get(config.API_BASE_URL + "applicants");
@@ -1919,7 +1918,8 @@ const onUpload = (evt, index) => {
     reader.onloadend = function () {
       attachments[index].file = reader.result;
     };
-    alert("File Uploaded");
+    // alert("File Uploaded");
+    toast.add({ severity: 'success', summary: 'File Uploaded', life: 3000 });
   } catch (err) {
     alert(err);
   }
@@ -1934,7 +1934,8 @@ const onUploadCerti = (evt, index) => {
     reader.onloadend = function () {
       nonformaleducations[index].certificate = reader.result;
     };
-    alert("File Uploaded");
+    // alert("File Uploaded");
+    toast.add({ severity: 'success', summary: 'File Uploaded', life: 3000 });
   } catch (err) {
     alert(err);
   }

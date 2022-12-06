@@ -30,6 +30,7 @@ import Breadcrumb from 'primevue/breadcrumb';
 import Tree from 'primevue/tree';
 import InputSwitch from 'primevue/inputswitch';
 import PanelMenu from 'primevue/panelmenu';
+import TieredMenu from 'primevue/tieredmenu';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, { ripple: true });

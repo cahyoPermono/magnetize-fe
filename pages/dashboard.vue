@@ -11,9 +11,11 @@ definePageMeta({
 });
 
 onMounted(async () => {
-    const token = useCookie('token')
+    const token = useCookie('token');
+    const role = useCookie('role')
     await setTimeout(() => {
         token.value = null
+        role.value = null
         alert("Waktu habis, silahkan login lagi")
         router.push('/')
     }, 3600000);

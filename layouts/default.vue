@@ -19,17 +19,23 @@
         <p>Feature</p>
       </strong>
       <div class="ml-3">
-        <NuxtLink v-if="isLoggedIn" to="/departements">
-          <Button icon="pi pi-building" class="p-button-text p-button-plain" label="Departements" />
+        <NuxtLink v-if="(isLoggedIn, isdepartement)" to="/departements">
+          <Button
+            icon="pi pi-building"
+            class="p-button-text p-button-plain"
+            label="Departements"
+          />
         </NuxtLink>
         <br />
-        <NuxtLink to="/jobs_hcd">
+        <NuxtLink v-if="(isLoggedIn, isjobs)" to="/jobs_hcd">
           <Button icon="pi pi-sitemap" class="p-button-text p-button-plain" label="Jobs" />
         </NuxtLink>
         <br />
         <NuxtLink to="/dashboard-applicant">
           <Button icon="pi pi-users" class="p-button-text p-button-plain" label="Guest" />
         </NuxtLink>
+        <br />
+        <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" />
       </div>
     </div>
     <div class="col-10">
@@ -44,6 +50,24 @@ import { ref, onMounted, computed } from "vue";
 
 const visibleLeft = ref(false);
 const router = useRouter();
+const config = useRuntimeConfig();
+
+const arr = reactive([]);
+
+onMounted(()=> {
+  axios
+    .get("http://localhost:3000/api/1.0/rolepermissions/" + roleId.value)
+    .then((response) => {
+      response.data.data.forEach((element) => {
+        arr.push(element.permission.permission);
+      });
+    });
+})
+
+const isjobs = computed(() => arr.includes('menu_jobs_hcd'))
+const isdepartement = computed(() => arr.includes('menu_departements'))
+const isuser = computed(() => arr.includes('menu_users'))
+
 function signin() {
   router.push("/login");
 }
@@ -60,10 +84,10 @@ async function signout() {
   await axios.put(config.API_BASE_URL + "update/" + token_user.value, {
     lastActive: today,
   });
-  token_user.value = null;
   token.value = null;
   roleId.value = null;
-  router.push("/");
+  token_user.value = null;
+  router.push("/login");
 }
 
 const items = ref([
@@ -86,7 +110,7 @@ const items = ref([
                 key: "0_0_0_0",
                 label: "User Management",
                 icon: "pi pi-bars",
-                to: '/usermanagement'
+                to: "/usermanagement",
               },
             ],
           },
@@ -97,16 +121,6 @@ const items = ref([
           },
         ],
       },
-      // {
-      //   key: "0_1",
-      //   label: "Delete",
-      //   icon: "pi pi-fw pi-trash",
-      // },
-      // {
-      //   key: "0_2",
-      //   label: "Export",
-      //   icon: "pi pi-fw pi-external-link",
-      // },
     ],
   },
 ]);

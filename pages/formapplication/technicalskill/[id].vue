@@ -182,7 +182,6 @@ async function getJob() {
       });
       axios
         .get(config.API_BASE_URL + "skills/" + jobs.value.id)
-
         .then((response) => {
           skills.value = response.data.data;
           skills.value.forEach((element) => {

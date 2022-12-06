@@ -21,6 +21,7 @@
   
   <script setup>
   import axios from "axios";
+  import { ref, onMounted } from "vue";
   const displayResponsive = ref(false);
   
   const viewDept = () => {
@@ -41,6 +42,7 @@
       role.value = res.data.data.role;
   });
   </script>
+  
   <style>
   .ProseMirror .deskripsi-one {
     border: 0px;
