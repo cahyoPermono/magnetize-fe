@@ -6,34 +6,34 @@
         <img class="w-8" src="~/assets/logo-putih.png" /> <br>
         <span class="text-1xl text-white">Anda layak jadi asset kami</span>
       </div>
-      <div class="card p-6 m-4 shadow-6" style="border-radius: 10px; background-color: #faa922;">
+      <div class="card py-4 px-5 m-4 shadow-6" style="border-radius: 10px; background-color: #faa922;">
         <h5 class="font-bold text-center text-white">Buku Tamu</h5>
         <hr>
         <Form>
-          <div class="mb-4">
-            <small for="posisi" class="block text-900 font-medium mb-2">Posisi<span style="color:red;">*</span></small>
-            <select
-              name="posisi"
-              class="form-control"
-              v-model="data.posisi">
-              <option value="Intership">Web App Developer Trainee</option>
-              <option value="Web Dev Trainee">Fullstack Developer</option>
-              <option value="Web Dev Trainee">Internship / Kerja Praktek</option>
-            </select>
+          <div class="bg-yellow-400 py-4 px-4 border-round-md mb-2">
+            <div class="mb-4">
+              <small for="name" class="block text-900 font-medium mb-2">Nama<span style="color:red;">*</span></small>
+              <Field class="form-control" name="name" type="text" :rules="isRequired" v-model="data.name" />
+              <ErrorMessage name="name">
+                <small style="color: red">Nama harus diisi !</small>
+              </ErrorMessage>
+            </div>
+            <div class="mb-4">
+              <small for="posisi" class="block text-900 font-medium mb-2">Posisi<span
+                  style="color:red;">*</span></small>
+              <select name="posisi" class="form-control" v-model="data.posisi">
+                <option value="Web Dev Trainee">Web App Developer Trainee</option>
+                <option value="Fullstack Developer">Fullstack Developer</option>
+                <option value="Intership">Internship / Kerja Praktek</option>
+              </select>
+            </div>
+            <div class="mb-2">
+              <small for="cv" class="block text-900 font-medium mb-2">Upload CV<span style="color:red;">*</span></small>
+              <FileUpload name="demo[]" mode="basic" :customUpload="true" @uploader="onUpload" accept=".pdf"
+                :maxFileSize="2000000" :auto="true" class="bg-yellow-700 border-yellow-700" />
+            </div>
+
           </div>
-          <div class="mb-4">
-            <small for="cv" class="block text-900 font-medium mb-2">Uploac CV<span style="color:red;">*</span></small>
-            <FileUpload
-              name="demo[]"
-              mode="basic"
-              :customUpload="true"
-              @uploader="onUpload"
-              accept="image/*,.pdf"
-              :maxFileSize="2000000"
-              :auto="true"
-            />
-          </div>
-          
           <Button label="Apply" icon="pi pi-user" class="p-button-warning" @click="masuk" />
         </Form>
       </div>
@@ -65,7 +65,7 @@ const router = useRouter();
 const config = useRuntimeConfig();
 let isLoggedIn = ref(false);
 
-onMounted(async() => {
+onMounted(async () => {
   const token = useCookie('token')
   if (token.value) {
     isLoggedIn.value = !isLoggedIn.value;
@@ -77,6 +77,7 @@ onMounted(async() => {
   }
 })
 const data = reactive({
+  name: "",
   posisi: "",
   cv: "",
 });
@@ -107,12 +108,17 @@ const onUpload = (evt) => {
   reader.onloadend = function () {
     data.cv = reader.result;
   };
-  toast.add({severity:'success', summary: 'Success', detail:'Save Data Success', life: 3000});
+  toast.add({ severity: 'success', summary: 'Upload CV sukses', life: 3000 });
 };
 
 const masuk = () => {
+  if (data.cv && data.name && data.posisi === "") {
+    toast.add({ severity: "error", summary: "Ada data yang belum diisi", life: 3000 });
+    return router.push({ path: "/" });
+  }
   try {
     axios.post(config.API_BASE_URL + "guest", {
+      name: data.name,
       posisi: data.posisi,
       cv: data.cv,
     }).then(() => {

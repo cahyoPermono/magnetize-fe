@@ -1,30 +1,18 @@
 <template>
   <div class="topBar px-2 py-3 shadow-3">
-    <a href="/dashboard"
-      ><img src="~/assets/magnetize-logo.png" alt="Logo" style="height: 40px"
-    /></a>
+    <a href="/dashboard"><img src="~/assets/magnetize-logo.png" alt="Logo" style="height: 40px" /></a>
     <div style="float: right" class="px-2">
-      <Button
-        icon="pi pi-sign-out"
-        class="p-button-text p-button-plain"
-        @click="signout"
-        v-if="isLoggedIn"
-      />
+      <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="signout" v-if="isLoggedIn" />
     </div>
   </div>
-  <div class="grid" style="height: 91vh; width: 100%">
-    <div class="col-2 p-4 shadow-3">
+  <div class="row" style="height: 90vh; width: 100%;">
+    <div class="col-2 px-4 shadow-3">
       <strong>
         <p>Home</p>
       </strong>
       <div class="ml-3 mb-3">
         <NuxtLink to="/dashboard">
-          <Button
-            icon="pi pi-home"
-            class="p-button-text p-button-plain"
-            label="Home"
-            @click="visibleLeft = false"
-          />
+          <Button icon="pi pi-home" class="p-button-text p-button-plain" label="Home" @click="visibleLeft = false" />
         </NuxtLink>
       </div>
       <strong>
@@ -40,14 +28,12 @@
         </NuxtLink>
         <br />
         <NuxtLink v-if="isjobs" to="/jobs_hcd">
-          <Button
-            icon="pi pi-sitemap"
-            class="p-button-text p-button-plain"
-            label="Jobs"
-          />
+          <Button icon="pi pi-sitemap" class="p-button-text p-button-plain" label="Jobs" />
         </NuxtLink>
         <br />
-        <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" style="width: 11em" />
+        <NuxtLink to="/dashboard-applicant">
+          <Button icon="pi pi-users" class="p-button-text p-button-plain" label="Guest" />
+        </NuxtLink>
       </div>
     </div>
     <div class="col-10">
@@ -63,11 +49,6 @@ import { ref, onMounted, computed } from "vue";
 const visibleLeft = ref(false);
 const router = useRouter();
 const config = useRuntimeConfig();
-const token = useCookie("token");
-const roleId = useCookie("role");
-const idUser = useCookie("id");
-
-const isLoggedIn = computed(() => token.value);
 
 const arr = reactive([]);
 
@@ -89,14 +70,21 @@ function signin() {
   router.push("/login");
 }
 
+const token = useCookie('token');
+const roleId = useCookie('role');
+const token_user = useCookie('user');
+// const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+
+const isLoggedIn = computed(() => token.value);
+
 async function signout() {
   const today = new Date();
-  await axios.put(config.API_BASE_URL + "update/" + idUser.value, {
+  await axios.put(config.API_BASE_URL + "update/" + token_user.value, {
     lastActive: today,
   });
-  roleId.value = null;
   token.value = null;
-  idUser.value = null;
+  roleId.value = null;
+  token_user.value = null;
   router.push("/login");
 }
 
