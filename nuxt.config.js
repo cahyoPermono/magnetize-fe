@@ -10,6 +10,7 @@ export default defineNuxtConfig({
         'primevue/resources/primevue.css',
         'primeicons/primeicons.css',
         'primeflex/primeflex.css',
+        '@/assets/base.css',
     ],
     build: {
         transpile: ['primevue', '@vee-validate/rules']

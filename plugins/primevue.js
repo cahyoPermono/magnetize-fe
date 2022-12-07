@@ -30,7 +30,8 @@ import Breadcrumb from 'primevue/breadcrumb';
 import Tree from 'primevue/tree';
 import InputSwitch from 'primevue/inputswitch';
 import PanelMenu from 'primevue/panelmenu';
-import TieredMenu from 'primevue/tieredmenu';
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, { ripple: true });
@@ -62,8 +63,10 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('ConfirmDialog', ConfirmDialog);
     nuxtApp.vueApp.component('Breadcrumb', Breadcrumb);
     nuxtApp.vueApp.component('Tree', Tree);
-    nuxtApp.vueApp.component('PanelMenu', PanelMenu);
     nuxtApp.vueApp.component('Panel', Panel);
+    nuxtApp.vueApp.component('PanelMenu', PanelMenu);
+    nuxtApp.vueApp.component('Accordion', Accordion);
+    nuxtApp.vueApp.component('AccordionTab', AccordionTab);
 
    //other components that you need
 });

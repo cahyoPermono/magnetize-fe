@@ -1,58 +1,116 @@
 <template>
-  <div class="grid grid-nogutter" style="background-color:#129666;">
-    <Toast />
-    <div class="col-md-6 col-12 p-4">
-      <div class="px-2 py-4 mx-4 text-center">
-        <img class="w-8" src="~/assets/logo-putih.png" /> <br>
-        <span class="text-1xl text-white">Anda layak jadi asset kami</span>
+  <div>
+    <div class="bg-bluegray-900 text-gray-100 py-2 text-center shadow-3">
+      <div class="align-items-center col-12 p-0 text-sm">
+        <span>like/follow/subscribe semua sosial media kami untuk mendapatkan merchandise menarik</span>
       </div>
-      <div class="card py-4 px-5 m-4 shadow-6" style="border-radius: 10px; background-color: #faa922;">
-        <h5 class="font-bold text-center text-white">Buku Tamu</h5>
-        <hr>
-        <Form>
-          <div class="bg-yellow-400 py-4 px-4 border-round-md mb-2">
-            <div class="mb-4">
-              <small for="name" class="block text-900 font-medium mb-2">Nama<span style="color:red;">*</span></small>
-              <Field class="form-control" name="name" type="text" :rules="isRequired" v-model="data.name" />
-              <ErrorMessage name="name">
-                <small style="color: red">Nama harus diisi !</small>
-              </ErrorMessage>
+      <div class="align-items-center col-12">
+        <span class="p-0" style="cursor:pointer;">
+          <a href="https://www.facebook.com/PTImaniPrima/" target="_blank">
+            <Button iconClass="text-2xl md:text-3xl" icon="pi pi-facebook"
+              class="p-button-rounded p-button-outlined p-button-sm mx-1 md:mx-3" />
+          </a>
+          <a href="https://www.instagram.com/imaniprima/" target="_blank">
+            <Button iconClass="text-2xl md:text-3xl" icon="pi pi-instagram"
+              class="p-button-rounded p-button-outlined p-button-sm mx-1 md:mx-3" />
+          </a>
+          <a href="https://www.youtube.com/channel/UC9ONViZhn_fJLN9ciKDESzw/" target="_blank">
+            <Button iconClass="text-2xl md:text-3xl" icon="pi pi-youtube"
+              class="p-button-rounded p-button-outlined p-button-sm mx-1 md:mx-3" />
+          </a>
+          <a href="https://www.linkedin.com/company/pt-imani-prima/" target="_blank">
+            <Button iconClass="text-2xl md:text-3xl" icon="pi pi-linkedin"
+              class="p-button-rounded p-button-outlined p-button-sm mx-1 md:mx-3" />
+          </a>
+          <Button iconClass="text-2xl md:text-3xl" icon="pi pi-share-alt" @click="shareLink"
+            class="p-button-rounded p-button-outlined p-button-sm mx-1 md:mx-3" />
+          <Dialog header="Copy Link" v-model:visible="displayLink" :breakpoints="{ '640px': '75vw' }"
+            :style="{ width: '30vw' }" :modal="true">
+            <div class="block">
+              <InputText v-model="link" class="w-8"></InputText>
+              <Button label="Copy" @click="copy" class="p-button-text p-button-warning p-button-sm m-1" autofocus />
             </div>
-            <div class="mb-4">
-              <small for="posisi" class="block text-900 font-medium mb-2">Posisi<span
-                  style="color:red;">*</span></small>
-              <select name="posisi" class="form-control" v-model="data.posisi">
-                <option value="Web Dev Trainee">Web App Developer Trainee</option>
-                <option value="Fullstack Developer">Fullstack Developer</option>
-                <option value="Intership">Internship / Kerja Praktek</option>
-              </select>
-            </div>
-            <div class="mb-2">
-              <small for="cv" class="block text-900 font-medium mb-2">Upload CV<span style="color:red;">*</span></small>
-              <FileUpload name="demo[]" mode="basic" :customUpload="true" @uploader="onUpload" accept=".pdf"
-                :maxFileSize="2000000" :auto="true" class="bg-yellow-700 border-yellow-700" />
-            </div>
-
-          </div>
-          <Button label="Apply" icon="pi pi-user" class="p-button-warning" @click="masuk" />
-        </Form>
+          </Dialog>
+        </span>
       </div>
     </div>
-    <div class="col-md-6 col-12 container">
-      <div class="d-flex flex-row-reverse" style="margin-right:75px">
-        <img src="~/assets/undraw_content_team_re_6rlg.svg" alt="Image" class="w-10">
-      </div>
-      <div class="d-flex flex-row mt-4">
-        <Button label="Apply" icon="pi pi-pencil" class="p-button-warning" @click="form" style="margin-right: 20px;" />
-        <Button label="Test DISC" icon="pi pi-book" class="p-button-warning" @click="test"
-          style="margin-right: 20px;" />
-        <div v-if="!isLoggedIn">
-          <Button label="Login" icon="pi pi-sign-in" class="p-button-warning" @click="login" />
+    <div style="background-color:#129666; min-height: 100vh;">
+      <div class="grid grid-nogutter first-land">
+        <Toast />
+        <div class="bg-no-repeat bg-center md:col-6 col-12 m-0 mt-5 text-center container">
+          <div>
+            <img src="~/assets/wearehiring.png" alt="Image" class="w-10 md:w-12">
+          </div>
         </div>
-        <div v-if="isLoggedIn">
-          <Button label="Masuk" icon="pi pi-sign-in" class="p-button-warning" @click="login" />
+        <div class="md:col-6 col-12 md:mt-5">
+          <div class="md:mr-5 px-4 pt-2 pb-6 bg-green-400 border-round-xl shadow-3">
+            <div class="text-center">
+              <img src="~/assets/logoimani2.png" alt="Image" class="w-8 md:w-8">
+            </div>
+            <p class="text-center text-white text-sm m-0 p-0 mt-3">Anda layak jadi asset kami</p>
+            <h3 class="text-center m-0 p-0">Lowongan yang dibuka :</h3>
+            <Accordion v-for="(tab, index) in tabs" :key="tab.title" @click="active(index)" :activeIndex="tab.isActive">
+              <AccordionTab :header="tab.title">
+                <div v-if="tab.tugas">
+                  <p><strong>Uraian Tugas</strong></p>
+                  <ul>
+                    <li v-for="(tugas, index) in tab.tugas" :key="index">{{ tugas }}</li>
+                  </ul>
+                </div>
+                <p><strong>Kualifikasi</strong></p>
+                <ul>
+                  <li v-for="(kualifikasi, index) in tab.kualifikasi" :key="index">{{ kualifikasi }}</li>
+                </ul>
+              </AccordionTab>
+            </Accordion>
+            <!-- Buttons -->
+            <!-- <div class="text-center mt-3">
+              <Button label="Apply" icon="pi pi-pencil" class="p-button-warning" @click="form"
+                style="margin-right: 20px;" />
+              <Button label="Test DISC" icon="pi pi-book" class="p-button-warning" @click="test"
+                style="margin-right: 20px;" />
+              <span v-if="!isLoggedIn">
+                <Button label="Login" icon="pi pi-sign-in" class="p-button-warning" @click="login" />
+              </span>
+              <span v-if="isLoggedIn">
+                <Button label="Masuk" icon="pi pi-sign-in" class="p-button-warning" @click="login" />
+              </span>
+            </div> -->
+          </div>
         </div>
       </div>
+      <Button icon="pi pi-file" label="Apply" class="p-button-rounded p-button-warning float"
+        style="box-shadow: 2px 2px 3px #999" @click="openPosition('center')" />
+      <Dialog header="Buku Tamu" v-model:visible="displayPosition" :breakpoints="{ '640px': '75vw' }"
+        :style="{ width: '40vw' }" :position="position" :modal="true">
+        <Form>
+          <div class="bg-yellow-400 py-4 px-4 mb-2 shadow-5 border-round-sm">
+            <div class="mb-4">
+              <small for="name" class="block text-900 font-medium mb-2">Nama<span style="color:red;">*</span></small>
+              <span class="p-input-icon-left">
+                <i class="pi pi-user" />
+                <InputText type="text" v-model="data.name" placeholder="Nama" :rules="isRequired" name="name" />
+              </span>
+            </div>
+            <div class="mb-4">
+              <div class="grid">
+                <div class="col">
+                  <small for="posisi" class="block text-900 font-medium mb-2">Posisi<span
+                      style="color:red;">*</span></small>
+                  <Dropdown v-model="data.posisi" :options="tabs" optionLabel="title" placeholder="Pilih Posisi" />
+                </div>
+                <div class="col">
+                  <small for="cv" class="block text-900 font-medium mb-2">Upload CV<span
+                      style="color:red;">*</span></small>
+                  <FileUpload name="demo[]" mode="basic" :customUpload="true" @uploader="onUpload" accept=".pdf"
+                    :maxFileSize="2000000" :auto="true" class="bg-yellow-700 border-yellow-700" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <Button label="Apply" icon="pi pi-user" class="p-button-warning mt-3 shadow-5" @click="masuk()" />
+        </Form>
+      </Dialog>
     </div>
   </div>
 </template>
@@ -76,29 +134,67 @@ onMounted(async () => {
     }, 3600000);
   }
 })
+const openPosition = (pos) => {
+  position.value = pos;
+  displayPosition.value = true;
+};
+
+const displayPosition = ref(false);
+const position = ref('center');
+
+const active = (index) => {
+  tabs.value.forEach((val, i) => {
+    tabs.value[i].isActive = 1;
+  })
+  tabs.value[index].isActive = 0;
+}
+const tabs = ref([
+  {
+    title: "IT Programmer (Intern/Kerja Praktek)",
+    kualifikasi: [
+      "Diutamakan mahasiswa jurusan T.Informatika, Sistem Informasi,T.Elektro.",
+      "Menyukai programming web/mobile app",
+      "Inisiatif dan semangat belajar yang tinggi",
+      "Dapat berkomunikasi dan bekerjasama dengan baik",
+      "Lokasi penempatan di Bandung/Jakarta.",
+    ],
+    isActive: 1
+  },
+  {
+    title: "Full Stack Programmer",
+    kualifikasi: [
+      "Pendidikan minimal Diploma (D3) jurusan Teknologi Informasi",
+      "Pengalaman kerja dibidang yang sama minimal 3 tahun",
+      "Menguasai Docker, JavaScript, HTML, CSS/SASS, React, Redux, NodeJS, TypeScript, Angular, Laravel, Android,SQL",
+      "Berpengalaman membuat aplikasi Frontend atau Backend",
+      "Memahami C++ dan Operating System Embedded (diutamakan)",
+      "Memahami cara kerja Operating System Linux/Android (diutamakan)",
+    ],
+    isActive: 1
+  },
+  {
+    title: "Web App Developer Trainee",
+    kualifikasi: [
+      "Memahami PHP, JavaScript, Java, Python",
+      "Memahami Database salahsatu SQL/NoSQL(MySQL, PostGreSQL, SQLite, MongoDB, Oracle)",
+      "Memahami Wordpress",
+      "Memahami dasar SEO",
+      "Memahami Spring, Django, Express, React, Angular, Vue (lebih disukai)",
+      "Memiliki keinginan kuat untuk menjadi expert dibidang Software Tech",
+    ],
+    tugas: [
+      "Mengikuti App Developer Bootcamp Internal",
+      "Implementasi hasil Bootcamp dengan include di enterprise project baik internal maupun eksternal",
+    ],
+    isActive: 1
+  },
+]);
+
 const data = reactive({
   name: "",
   posisi: "",
   cv: "",
 });
-
-const isRequired = (value) => {
-  if (!value) {
-    return "This field is required";
-  }
-  return true;
-};
-
-const validateEmail = (value) => {
-  isRequired(value)
-  // if the field is not a valid email
-  const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-  if (!regex.test(value)) {
-    return 'Alamat email harus valid';
-  }
-  // All is good
-  return true;
-}
 
 const onUpload = (evt) => {
   let f = evt.files[0];
@@ -112,49 +208,48 @@ const onUpload = (evt) => {
 };
 
 const masuk = () => {
-  if (data.cv && data.name && data.posisi === "") {
+  const val = Object.values(data);
+  if (val.includes("")) {
     toast.add({ severity: "error", summary: "Ada data yang belum diisi", life: 3000 });
     return router.push({ path: "/" });
-  }
-  try {
-    axios.post(config.API_BASE_URL + "guest", {
-      name: data.name,
-      posisi: data.posisi,
-      cv: data.cv,
-    }).then(() => {
-      toast.add({ severity: "info", summary: "Enjoy the Carnaval" });
-      router.push({ path: "/jobs" });
-    })
-  } catch (err) {
-    console.log(err);
+  } else {
+    try {
+      const data_post = {
+        name: data.name,
+        posisi: data.posisi.title,
+        cv: data.cv,
+      }
+      axios.post(config.API_BASE_URL + "guest", data_post)
+        .then(() => {
+          toast.add({ severity: "info", summary: "Enjoy the Carnaval", life: 3000 });
+          router.push({ path: "/jobs" });
+        })
+    } catch (err) {
+      console.log(err);
+    }
   }
 };
-const login = () => {
-  router.push('/login')
-}
-const form = () => {
-  router.push('/formapplication/form')
-}
-const test = () => {
-  router.push('/discCard')
-}
+
 definePageMeta({
   layout: false,
 });
+
 </script>
 
 <style>
-@import "https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css";
-
-body {
-  margin: 0;
+.float {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  text-align: center;
+  margin-top: 22px;
 }
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 250px;
+  margin-top: 5vh;
 }
 
 @media screen and (max-width:768px) {
@@ -162,17 +257,6 @@ body {
     margin-bottom: 2rem;
     margin-top: 2rem;
   }
-}
 
-small {
-  opacity: 0.7;
-}
-
-.mb-3 {
-  height: 35px;
-}
-
-body a:hover {
-  text-decoration: none;
 }
 </style>
