@@ -1,5 +1,5 @@
 <template>
-    <Dialog v-model:visible="props.modalUpdateDesc" header="Tambah Kandidat"
+    <Dialog v-model:visible="props.modalUpdateDesc" header="Edit Description"
         :breakpoints="{ '960px': '75vw', '640px': '90vw' }" :style="{ width: '40vw' }" :modal="true">
         <div class="grid">
             <div class="col">

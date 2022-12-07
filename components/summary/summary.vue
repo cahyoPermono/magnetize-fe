@@ -76,6 +76,14 @@
                         </tr>
                         <tr>
                             <td>
+                                Payment Frequency
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;&nbsp;&nbsp;: {{ job_data.payment_frequency }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                                 Job Creator
                             </td>
                             <td>
@@ -124,7 +132,7 @@ const job_data = reactive({
     min_salary: null,
     max_salary: null,
     currency: null,
-    frequency: null,
+    payment_frequency: null,
     contract_detail: null,
     desc: null,
     package_detail: null,
@@ -148,6 +156,7 @@ const getter = async () => {
     job_data.max_salary = job.max_salary;
     job_data.currency = job.currency;
     job_data.package_detail = job.package_detail;
+    job_data.payment_frequency = job.payment_frequency;
     job_data.desc = job.desc;
     creator_data = await axios.get(config.API_BASE_URL + "users/" + job.creator_id);
     creator_data = await creator_data.data.data;
