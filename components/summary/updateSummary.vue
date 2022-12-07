@@ -4,16 +4,11 @@
         <div class="card p-3">
             <Form @submit="save">
                 <div class="row mt-2">
-                    <div class="col-7">
+                    <div class="col-12">
                         <label for="name"><small>Posisi</small><span style="color: red">*</span></label>
                         <Field class="form-control" name="name" :rules="isRequired" v-model="job.name" />
                         <ErrorMessage name="name"><small style="color: red">Position Name is required</small>
                         </ErrorMessage>
-                    </div>
-                    <div class="col-3">
-                        <label for="departement"><small>Departemen</small><span style="color: red">*</span></label> <br>
-                        <Dropdown v-model="DepartementId" :options="departements" optionLabel="nama"
-                            placeholder="Pilih Departemen" />
                     </div>
                 </div>
                 <div class="row">
@@ -38,8 +33,8 @@
                     </div>
                     <div class="col-3">
                         <label for="contract_detail"><small>Contract</small><span style="color: red">*</span></label>
-                        <Dropdown v-model="job.contract_detail" :options="contract_detail" optionLabel="a"
-                            placeholder="Jenis Kontrak" />
+                        <Dropdown v-model="dropdown_option.contract_detail" :options="contract_detail" optionLabel="a"
+                            :placeholder="job.contract_detail" />
                         <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
                         </ErrorMessage>
                     </div>
@@ -63,33 +58,24 @@
                 <div class="row">
                     <div class="col-6">
                         <label><small>Currency</small><span style="color: red">*</span></label> <br>
-                        <Dropdown v-model="job.currency" :options="CurrencyList" optionLabel="text"
-                            placeholder="Jenis Mata Uang" />
+                        <Dropdown v-model="dropdown_option.currency" :options="CurrencyList" optionLabel="text"
+                            :placeholder="job.currency" />
                         <ErrorMessage name="currency"><small style="color: red">Currency is required</small>
                         </ErrorMessage>
                     </div>
                     <div class="col-6">
                         <label><small>Frekuensi Penggajian</small><span style="color: red">*</span></label> <br>
-                        <Dropdown v-model="job.payment_frequency" :options="payment_frequency" optionLabel="text"
-                            placeholder="Frekuensi Penggajian" />
+                        <Dropdown v-model="dropdown_option.payment_frequency" :options="payment_frequency"
+                            optionLabel="text" :placeholder="job.payment_frequency" />
                         <ErrorMessage name="payment_frequency"><small style="color: red">payment frequency is
                                 required</small>
                         </ErrorMessage>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <label for="deskripsi"><small>Deskripsi</small></label> <br>
-                        <Textarea name="deskripsi" v-model="desc" style="width: 100%;" />
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <Button label="Submit" icon="pi pi-check" type="submit" />
-                </div>
             </Form>
         </div>
         <template #footer>
-            <Button label="Submit" icon="pi pi-check" />
+            <Button label="Submit" icon="pi pi-check" @click="updateSummary()" />
             <Button label="Cancel" icon="pi pi-times" class="p-button p-button-outlined" @click="closeModal()" />
         </template>
     </Dialog>
@@ -105,13 +91,176 @@ const props = defineProps({
         type: Boolean,
     }
 });
+
 const emit = defineEmits(['closeModal']);
 const closeModal = () => {
     emit('closeModal')
 };
+const dropdown_option = ref({
+    contract_detail: "",
+    currency: "",
+    payment_frequency: "",
+});
 let job = reactive();
-onMounted(async ()=>{
+onMounted(async () => {
     job = await axios.get(config.API_BASE_URL + "jobs/" + route.params.id);
     job = await job.data.data;
+    console.log(job);
 });
+const CurrencyList = [
+    { code: "AFN", text: "AFN - Afghanistan Afghanis" },
+    { code: "ALL", text: "ALL - Albania Leke" },
+    { code: "DZD", text: "DZD - Algeria Dinars" },
+    { code: "ARS", text: "ARS - Argentina Pesos" },
+    { code: "AUD", text: "AUD - Australia Dollars" },
+    { code: "ATS", text: "ATS - Austria Schillings" },
+    { code: "BSD", text: "BSD - Bahamas Dollars" },
+    { code: "BHD", text: "BHD - Bahrain Dinars" },
+    { code: "BDT", text: "BDT - Bangladesh Taka" },
+    { code: "BBD", text: "BBD - Barbados Dollars" },
+    { code: "BEF", text: "BEF - Belgium Francs" },
+    { code: "BMD", text: "BMD - Bermuda Dollars" },
+    { code: "BRL", text: "BRL - Brazil Reais" },
+    { code: "BGN", text: "BGN - Bulgaria Leva" },
+    { code: "CAD", text: "CAD - Canada Dollars" },
+    { code: "XOF", text: "XOF - CFA BCEAO Francs" },
+    { code: "XAF", text: "XAF - CFA BEAC Francs" },
+    { code: "CLP", text: "CLP - Chile Pesos" },
+    { code: "CNY", text: "CNY - China Yuan Renminbi" },
+    { code: "COP", text: "COP - Colombia Pesos" },
+    { code: "XPF", text: "XPF - CFP Francs" },
+    { code: "CRC", text: "CRC - Costa Rica Colones" },
+    { code: "HRK", text: "HRK - Croatia Kuna" },
+    { code: "CYP", text: "CYP - Cyprus Pounds" },
+    { code: "CZK", text: "CZK - Czech Republic Koruny" },
+    { code: "DKK", text: "DKK - Denmark Kroner" },
+    { code: "DEM", text: "DEM - Deutsche (Germany) Marks" },
+    { code: "DOP", text: "DOP - Dominican Republic Pesos" },
+    { code: "NLG", text: "NLG - Dutch (Netherlands) Guilders" },
+    { code: "XCD", text: "XCD - Eastern Caribbean Dollars" },
+    { code: "EGP", text: "EGP - Egypt Pounds" },
+    { code: "EEK", text: "EEK - Estonia Krooni" },
+    { code: "EUR", text: "EUR - Euro" },
+    { code: "FJD", text: "FJD - Fiji Dollars" },
+    { code: "FIM", text: "FIM - Finland Markkaa" },
+    { code: "FRF", text: "FRF - France Francs" },
+    { code: "DEM", text: "DEM - Germany Deutsche Marks" },
+    { code: "XAU", text: "XAU - Gold Ounces" },
+    { code: "GRD", text: "GRD - Greece Drachmae" },
+    { code: "GTQ", text: "GTQ - Guatemalan Quetzal" },
+    { code: "NLG", text: "NLG - Holland (Netherlands) Guilders" },
+    { code: "HKD", text: "HKD - Hong Kong Dollars" },
+    { code: "HUF", text: "HUF - Hungary Forint" },
+    { code: "ISK", text: "ISK - Iceland Kronur" },
+    { code: "XDR", text: "XDR - IMF Special Drawing Right" },
+    { code: "INR", text: "INR - India Rupees" },
+    { code: "IDR", text: "IDR - Indonesia Rupiahs" },
+    { code: "IRR", text: "IRR - Iran Rials" },
+    { code: "IQD", text: "IQD - Iraq Dinars" },
+    { code: "IEP", text: "IEP - Ireland Pounds" },
+    { code: "ILS", text: "ILS - Israel New Shekels" },
+    { code: "ITL", text: "ITL - Italy Lire" },
+    { code: "JMD", text: "JMD - Jamaica Dollars" },
+    { code: "JPY", text: "JPY - Japan Yen" },
+    { code: "JOD", text: "JOD - Jordan Dinars" },
+    { code: "KES", text: "KES - Kenya Shillings" },
+    { code: "KRW", text: "KRW - Korea (South) Won" },
+    { code: "KWD", text: "KWD - Kuwait Dinars" },
+    { code: "LBP", text: "LBP - Lebanon Pounds" },
+    { code: "LUF", text: "LUF - Luxembourg Francs" },
+    { code: "MYR", text: "MYR - Malaysia Ringgits" },
+    { code: "MTL", text: "MTL - Malta Liri" },
+    { code: "MUR", text: "MUR - Mauritius Rupees" },
+    { code: "MXN", text: "MXN - Mexico Pesos" },
+    { code: "MAD", text: "MAD - Morocco Dirhams" },
+    { code: "NLG", text: "NLG - Netherlands Guilders" },
+    { code: "NZD", text: "NZD - New Zealand Dollars" },
+    { code: "NOK", text: "NOK - Norway Kroner" },
+    { code: "OMR", text: "OMR - Oman Rials" },
+    { code: "PKR", text: "PKR - Pakistan Rupees" },
+    { code: "XPD", text: "XPD - Palladium Ounces" },
+    { code: "PEN", text: "PEN - Peru Nuevos Soles" },
+    { code: "PHP", text: "PHP - Philippines Pesos" },
+    { code: "XPT", text: "XPT - Platinum Ounces" },
+    { code: "PLN", text: "PLN - Poland Zlotych" },
+    { code: "PTE", text: "PTE - Portugal Escudos" },
+    { code: "QAR", text: "QAR - Qatar Riyals" },
+    { code: "RON", text: "RON - Romania New Lei" },
+    { code: "ROL", text: "ROL - Romania Lei" },
+    { code: "RUB", text: "RUB - Russia Rubles" },
+    { code: "SAR", text: "SAR - Saudi Arabia Riyals" },
+    { code: "XAG", text: "XAG - Silver Ounces" },
+    { code: "SGD", text: "SGD - Singapore Dollars" },
+    { code: "SKK", text: "SKK - Slovakia Koruny" },
+    { code: "SIT", text: "SIT - Slovenia Tolars" },
+    { code: "ZAR", text: "ZAR - South Africa Rand" },
+    { code: "KRW", text: "KRW - South Korea Won" },
+    { code: "ESP", text: "ESP - Spain Pesetas" },
+    { code: "XDR", text: "XDR - Special Drawing Rights (IMF)" },
+    { code: "LKR", text: "LKR - Sri Lanka Rupees" },
+    { code: "SDD", text: "SDD - Sudan Dinars" },
+    { code: "SEK", text: "SEK - Sweden Kronor" },
+    { code: "CHF", text: "CHF - Switzerland Francs" },
+    { code: "TWD", text: "TWD - Taiwan New Dollars" },
+    { code: "THB", text: "THB - Thailand Baht" },
+    { code: "TTD", text: "TTD - Trinidad and Tobago Dollars" },
+    { code: "TND", text: "TND - Tunisia Dinars" },
+    { code: "TRY", text: "TRY - Turkey New Lira" },
+    { code: "AED", text: "AED - United Arab Emirates Dirhams" },
+    { code: "GBP", text: "GBP - United Kingdom Pounds" },
+    { code: "USD", text: "USD - United States Dollars" },
+    { code: "VEB", text: "VEB - Venezuela Bolivares" },
+    { code: "VND", text: "VND - Vietnam Dong" },
+    { code: "ZMK", text: "ZMK - Zambia Kwacha" },
+];
+const payment_frequency = [
+    { text: "Annually" },
+    { text: "Daily" },
+    { text: "Hourly" },
+    { text: "Weekly" },
+    { text: "Monthly" },
+];
+const contract_detail = [
+    {
+        a: "Full-time",
+    },
+    {
+        a: "Part-time",
+    },
+    {
+        a: "Temporary",
+    },
+    {
+        a: "Freelance",
+    },
+    {
+        a: "Internship",
+    },
+    {
+        a: "Apprenticeship",
+    },
+    {
+        a: "Contractor",
+    },
+    {
+        a: "Consultancy",
+    },
+];
+const updateSummary = async () => {
+    const data_update = {
+        name: job.name,
+        location: job.location,
+        remote: job.remote,
+        contract_detail: dropdown_option.value.contract_detail.a || job.contract_detail,
+        headcount: job.headcount,
+        min_salary: job.min_salary,
+        max_salary: job.max_salary,
+        currency: dropdown_option.value.currency.code || job.currency,
+        payment_frequency: dropdown_option.value.payment_frequency.text || job.payment_frequency,
+    }
+    const response = await axios.put(config.API_BASE_URL + "update_job/" + route.params.id, data_update);
+    console.log(data_update);
+    console.log(response);
+    emit('closeModal');
+};
 </script>

@@ -130,7 +130,7 @@ const dropToPipeline = (id_candidate, index) => {
         "isCandidate": false,
         "status": "new"
     }).then(() => {
-        toast.add({ severity: "error", summary: "kandidat berkurang" });
+        toast.add({ severity: "error", summary: "kandidat berkurang", life:3000 });
         k(index, In_Pipeline, candidates);
     }).catch(err => {
         console.log(err);
@@ -157,7 +157,7 @@ const beCandidate = (id_candidate, index) => {
         "isCandidate": true,
         "status": "In Pipeline"
     }).then((mes) => {
-        toast.add({ severity: "info", summary: mes.data.message });
+        toast.add({ severity: "info", summary: mes.data.message, life: 3000 });
         displayModal.value = false;
     }).catch(err => {
         console.log(err);
