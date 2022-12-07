@@ -35,7 +35,7 @@
           <Button icon="pi pi-users" class="p-button-text p-button-plain" label="Guest" />
         </NuxtLink>
         <br />
-        <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" />
+        <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" style="width: 11.5em;"/>
       </div>
     </div>
     <div class="col-10">

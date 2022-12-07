@@ -12,8 +12,7 @@
         :rows="5"
         paginatorTemplate=" FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
         responsiveLayout="scroll"
-        removableSort
-      >
+        removableSort>
         <Column>
           <template #body="slotProps">
             <Avatar
@@ -34,7 +33,7 @@
             {{ reverseDate(slotProps.data.createdAt) }}
           </template>
         </Column>
-        <Column header="Last Active Date">
+        <Column header="Last Active Date" style="width: 8em; text-align: center;">
           <template #body="slotProps">
             {{ lastDate(slotProps.data.lastActive) }}
           </template></Column
