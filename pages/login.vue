@@ -58,11 +58,11 @@ const router = useRouter();
 const token = useCookie('token');
 const token_user = useCookie('user');
 const role = useCookie('role');
-
+const config = useRuntimeConfig();
 function login() {
   try {
     axios
-      .post("http://localhost:3000/api/1.0/login", {
+      .post(config.API_BASE_URL + "login", {
         email: user.email,
         password: user.password,
       })
@@ -83,6 +83,7 @@ function login() {
     console.log(err);
   }
 }
+
 const isRequired = (value) => {
   if (!value) {
     return "This field is required";

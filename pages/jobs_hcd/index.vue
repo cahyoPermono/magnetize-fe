@@ -51,10 +51,10 @@ onMounted(() => {
         })
         .catch(err => { console.log(err) })
 });
-definePageMeta({
-    middleware:'auth'
-});
 
+definePageMeta({
+  middleware: ['auth', 'isjob']
+});
 </script>
 
 <style>
