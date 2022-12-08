@@ -29,7 +29,12 @@
         <Column field="fullName" header="Full Name" :sortable="true"></Column>
         <Column field="email" header="Email Address" :sortable="true"></Column>
         <Column field="role.role" header="Role" :sortable="true"></Column>
-        <Column field="status" header="Status" :sortable="true"> </Column>
+        <Column field="status" header="Status" :sortable="true">
+          <template #body="slotProps">
+            <Badge severity="warning" class="mr-2" v-if="slotProps.data.status === 'Active'">{{slotProps.data.status}}</Badge>
+            <Badge severity="danger" class="mr-2" v-else>{{slotProps.data.status}}</Badge>
+          </template>
+        </Column>
         <Column header="Create On">
           <template #body="slotProps">
             {{ reverseDate(slotProps.data.createdAt) }}
@@ -58,18 +63,12 @@
 import axios from "axios";
 import dateFormat from "dateformat";
 import { ref,onMounted } from 'vue';
-import { useToast } from "primevue/usetoast";
 
 let dataUser = ref("");
 const router = useRouter();
-const toast = useToast();
 
 const reverseDate = (date) => {
   return dateFormat(date, "dd-mm-yyyy");
-};
-
-const showToast = () =>{
-  toast.add({severity:'success', summary: 'Create User Success', life: 3000});
 };
 
 const lastDate = (date) => {
