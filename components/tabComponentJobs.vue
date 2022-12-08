@@ -25,7 +25,7 @@
             <span>  - Team</span>
           </template>
           <div>
-            <tambah-attachment />
+            
           </div>
         </TabPanel>
         <TabPanel>
@@ -34,7 +34,7 @@
             <span>  - Recommendations</span>
           </template>
           <div>
-            <tambah-attachment />
+            
           </div>
         </TabPanel>
         <TabPanel>
@@ -43,7 +43,7 @@
             <span>  - Activities</span>
           </template>
           <div>
-            <tambah-attachment />
+            
           </div>
         </TabPanel>
         <TabPanel>
@@ -52,7 +52,7 @@
             <span>  - Sourcing</span>
           </template>
           <div>
-            <tambah-attachment />
+            
           </div>
         </TabPanel>
         <TabPanel>
@@ -61,7 +61,7 @@
             <span>  - Reports</span>
           </template>
           <div>
-            <tambah-attachment />
+            
           </div>
         </TabPanel>
       </TabView>
