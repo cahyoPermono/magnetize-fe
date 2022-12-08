@@ -1,7 +1,7 @@
 <template>
   <Button label="tambah departemen" icon="pi pi-plus" class="p-button-sm mt-3" @click="openModal" />
   <Dialog v-model:visible="displayModal" header="Tambah Departemen" :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
-    :style="{ width: '40vw' }" :modal="true">
+    :style="{ width: '60vw' }" :modal="true">
     <div class="card p-3">
       <Form @submit="save">
         <div class="mt-2">
@@ -56,6 +56,7 @@
 <script setup>
 import axios from "axios";
 const config = useRuntimeConfig();
+const router = useRouter();
 
 const displayModal = ref(false);
 const deskripsi = ref("");
@@ -67,6 +68,8 @@ const newDept = reactive({
   alamat: "",
   avatar: "",
 });
+let setAll = (obj, val) => Object.keys(obj).forEach(k => obj[k] = val);
+let setNull = obj => setAll(obj, null);
 
 function openModal() {
   displayModal.value = !displayModal.value;
@@ -79,6 +82,7 @@ const onUploadAva = (evt) => {
     newDept.avatar = reader.result;
   };
 };
+const emit = defineEmits(['loadData','showToast']);
 
 async function save() {
   if (newDept.avatar === null)
@@ -94,8 +98,11 @@ async function save() {
       deskripsi: deskripsi.value,
     }).then(() => {
       displayModal.value = false
-      alert("Departemen baru ditambahkan");
-      location.reload()
+      emit('showToast');
+      emit('loadData');
+    }).finally(() => {
+      setNull(newDept);
+      router.push({ path: "/departements" });
     });
   } catch (error) {
     console.log(error);
