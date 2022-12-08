@@ -32,21 +32,22 @@
                             <InputSwitch v-model="newJob.remote" name="remote" />
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-7">
-                        <label for="headcount"><small>Headcount</small><span style="color: red">*</span></label>
-                        <Field type="number" class="form-control" name="headcount" :rules="isRequired"
-                            v-model="newJob.headcount" />
-                        <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
-                        </ErrorMessage>
-                    </div>
-                    <div class="col-3">
-                        <label for="contract_detail"><small>Contract</small><span style="color: red">*</span></label>
-                        <Dropdown v-model="newJob.contract_detail" :options="contract_detail" optionLabel="a"
-                            optionValue="a" placeholder="Jenis Kontrak" />
-                        <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
-                        </ErrorMessage>
+                    <div class="row">
+                        <div class="col-7">
+                            <label for="headcount"><small>Headcount</small><span style="color: red">*</span></label>
+                            <Field type="number" class="form-control" name="headcount" :rules="isRequired"
+                                v-model="newJob.headcount" />
+                            <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
+                            </ErrorMessage>
+                        </div>
+                        <div class="col-3">
+                            <label for="contract_detail"><small>Contract</small><span
+                                    style="color: red">*</span></label>
+                            <Dropdown v-model="newJob.contract_detail" :options="contract_detail" optionLabel="a"
+                                optionValue="a" placeholder="Jenis Kontrak" />
+                            <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
+                            </ErrorMessage>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-6">
