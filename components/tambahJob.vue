@@ -271,16 +271,15 @@ async function save() {
         location: newJob.location,
         remote: newJob.remote,
         headcount: newJob.headcount,
-        contract_detail: newJob.contract_detail.a,
+        contract_detail: newJob.contract_detail,
         min_salary: newJob.min_salary,
         max_salary: newJob.max_salary,
-        currency: newJob.currency.code,
-        payment_frequency: newJob.payment_frequency.text,
+        currency: newJob.currency,
+        payment_frequency: newJob.payment_frequency,
         desc: desc.value,
         creator_id: token_user.value,
         status: "Active"
-
-    }
+    };
     try {
         await axios.post(config.API_BASE_URL + "jobs", data)
             .then(() => {
