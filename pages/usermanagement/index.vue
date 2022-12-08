@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <Toast />
   <div class="container-user">
     <div>
       <Breadcrumb :home="home" :model="items" aria-label="breadcrumb" />
@@ -23,11 +25,11 @@
             />
           </template>
         </Column>
-        <Column field="displayName" header="Display Name"></Column>
-        <Column field="fullName" header="Full Name"></Column>
-        <Column field="email" header="Email Address"></Column>
-        <Column field="role.role" header="Role"></Column>
-        <Column field="status" header="Status"> </Column>
+        <Column field="displayName" header="Display Name" :sortable="true"></Column>
+        <Column field="fullName" header="Full Name" :sortable="true"></Column>
+        <Column field="email" header="Email Address" :sortable="true"></Column>
+        <Column field="role.role" header="Role" :sortable="true"></Column>
+        <Column field="status" header="Status" :sortable="true"> </Column>
         <Column header="Create On">
           <template #body="slotProps">
             {{ reverseDate(slotProps.data.createdAt) }}
@@ -49,18 +51,25 @@
       </DataTable>
     </div>
   </div>
+  </div>
 </template>
 
 <script setup>
 import axios from "axios";
 import dateFormat from "dateformat";
 import { ref,onMounted } from 'vue';
+import { useToast } from "primevue/usetoast";
 
 let dataUser = ref("");
 const router = useRouter();
+const toast = useToast();
 
 const reverseDate = (date) => {
   return dateFormat(date, "dd-mm-yyyy");
+};
+
+const showToast = () =>{
+  toast.add({severity:'success', summary: 'Create User Success', life: 3000});
 };
 
 const lastDate = (date) => {
@@ -83,9 +92,11 @@ const items = ref([
 ]);
 
 onMounted(async () => {
-  const token = useCookie("token");
   const config = useRuntimeConfig();
-  const roleId = useCookie("role");
+  const token = useCookie('token');
+  const roleId = useCookie('role');
+  const token_user = useCookie('user');
+
   const response = await axios.get(
     config.API_BASE_URL + "all_users/" + roleId.value,
     {
@@ -97,8 +108,10 @@ onMounted(async () => {
   dataUser.value = response.data.data;
   
   await setTimeout(() => {
-    token.value = null;
-    alert("Waktu habis, silahkan login lagi");
+    token.value = null
+    token_user.value = null
+    roleId.value = null
+    alert("Time is up, please LogIn");
     router.push("/");
   }, 3600000);
 });
