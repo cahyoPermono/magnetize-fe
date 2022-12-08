@@ -10,6 +10,7 @@ export default defineNuxtConfig({
         'primevue/resources/primevue.css',
         'primeicons/primeicons.css',
         'primeflex/primeflex.css',
+        '@/assets/base.css',
     ],
     build: {
         transpile: ['primevue', '@vee-validate/rules']
@@ -19,7 +20,8 @@ export default defineNuxtConfig({
             title: 'Magnetize',
             link: [
                 { rel: 'icon', type: 'image/png', href: '/_nuxt/assets/favicon.png' },
-                { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,700,1,-25' }
+                { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,700,1,-25' },
+                { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto' },
             ],
         }
     },
