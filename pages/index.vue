@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="bg-bluegray-900 text-gray-100 py-2 text-center shadow-3">
-      <div class="align-items-center col-12 p-0 text-sm">
+      <div class="align-items-center col-12 p-0 text-sm ">
         <span>like/follow/subscribe semua sosial media kami untuk mendapatkan merchandise menarik</span>
       </div>
       <div class="align-items-center col-12">
@@ -34,10 +34,10 @@
         </span>
       </div>
     </div>
-    <div style="background-color:#129666; min-height: 100vh;">
+    <div class="bg-pattern" style="min-height: 100vh;">
       <div class="grid grid-nogutter first-land">
         <Toast />
-        <div class="bg-no-repeat bg-center md:col-6 col-12 m-0 mt-5 text-center container">
+        <div class="md:col-6 col-12 m-0 mt-5 text-center container">
           <div>
             <img src="~/assets/wearehiring.png" alt="Image" class="w-10 md:w-12">
           </div>
@@ -48,7 +48,7 @@
               <img src="~/assets/logoimani2.png" alt="Image" class="w-8 md:w-8">
             </div>
             <p class="text-center text-white text-sm m-0 p-0 mt-3">Anda layak jadi asset kami</p>
-            <h3 class="text-center m-0 p-0">Lowongan yang dibuka :</h3>
+            <h2 class="text-center m-0 p-0">Lowongan yang dibuka :</h2>
             <Accordion v-for="(tab, index) in tabs" :key="tab.title" @click="active(index)" :activeIndex="tab.isActive">
               <AccordionTab :header="tab.title">
                 <div v-if="tab.tugas">
@@ -89,7 +89,7 @@
               <small for="name" class="block text-900 font-medium mb-2">Nama<span style="color:red;">*</span></small>
               <span class="p-input-icon-left">
                 <i class="pi pi-user" />
-                <InputText type="text" v-model="data.name" placeholder="Nama" :rules="isRequired" name="name" />
+                <InputText type="text" v-model="data.name" placeholder="Nama" name="name" />
               </span>
             </div>
             <div class="mb-4">
@@ -138,9 +138,18 @@ const openPosition = (pos) => {
   position.value = pos;
   displayPosition.value = true;
 };
-
+const link = "https://recruitment.imaniprima.co.id/";
 const displayPosition = ref(false);
 const position = ref('center');
+const displayLink = ref(false);
+const shareLink = () => {
+    displayLink.value = !displayLink.value;
+};
+const copy = () => {
+    navigator.clipboard.writeText(link);
+    toast.add({ severity: "warn", summary: "Link Copied !", life:1000 });
+    return shareLink();
+};
 
 const active = (index) => {
   tabs.value.forEach((val, i) => {
@@ -185,6 +194,25 @@ const tabs = ref([
     tugas: [
       "Mengikuti App Developer Bootcamp Internal",
       "Implementasi hasil Bootcamp dengan include di enterprise project baik internal maupun eksternal",
+    ],
+    isActive: 1
+  },
+  {
+    title: "IT Helpdesk",
+    kualifikasi: [
+      "Usia maksimal 25 tahun",
+      "Berpengalaman minimal 1 tahun di posisi yang sama",
+      "Pendidikan minimal SMK jurusan Teknik Komputer & Jaringan",
+      "Menguasai Ms Office, internet, dan email",
+      "Memahami Network dan PC environment",
+      "Cepat tanggap, pekerja keras, dapat bekerja dengan baik di bawah tekanan, bersedia untuk bekerja lembur, bertanggung jawab, dan disiplin",
+      "Dapat bekerja dengan tim maupun secara individu",
+    ],
+    tugas: [
+      "Menyediakan respon dan bantuan terhadap complaint user",
+      "Monitoring seluruh jaringan, server, website, dan aplikasi",
+      "Melakukan setup dan menyelesaikan masalah pada komputer",
+      "Jam kerja dengan sistem shift",
     ],
     isActive: 1
   },

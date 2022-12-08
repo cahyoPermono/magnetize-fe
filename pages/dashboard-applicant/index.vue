@@ -40,11 +40,14 @@
                                 <DataTable :value="applicant" :paginator="true" :rows="5"
                                     paginatorTemplate=" FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
                                     responsiveLayout="scroll" removableSort>
+                                    <template #loading>
+                                        Loading applicant data. Please wait.
+                                    </template>
                                     <Column field="name" header="Nama"></Column>
                                     <Column field="posisi" header="Posisi" :sortable="true"></Column>
-                                    <Column header="Waktu Pendaftaran" :sortable="true">
-                                        <template #body="slotProps">
-                                            <p>{{ reverseDate(slotProps.data.createdAt) }}</p>
+                                    <Column field="createdAt" header="Waktu Pendaftaran" sortable>
+                                        <template #body="{data}">
+                                            <p>{{ reverseDate(data.createdAt) }}</p>
                                         </template>
                                     </Column>
                                     <Column header="CV">
@@ -96,6 +99,7 @@ const totalPendaftar = ref();
 onMounted(async () => {
     const getApplicant = await axios.get(config.API_BASE_URL + "guest");
     applicant.value = (getApplicant.data.data);
+    applicant.value = await applicant.value.reverse();
     totalPendaftarHariIni.value = computed(() => {
         let a = 0;
         applicant.value.forEach(element => {
@@ -109,6 +113,7 @@ onMounted(async () => {
     totalPendaftar.value = computed(() => {
         return applicant.value.length;
     })
+
 });
 
 definePageMeta({
