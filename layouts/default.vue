@@ -1,8 +1,10 @@
 <template>
-  <div class="topBar px-2 py-3 shadow-3">
-    <a href="/dashboard"><img src="~/assets/magnetize-logo.png" alt="Logo" style="height: 40px" /></a>
-    <div style="float: right" class="px-2">
-      <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="signout" v-if="isLoggedIn" />
+  <div>
+    <div class="topBar px-2 py-3 shadow-3">
+      <a href="/dashboard"><img src="~/assets/magnetize-logo.png" alt="Logo" style="height: 40px" /></a>
+      <div style="float: right" class="px-2">
+        <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="signout" v-if="isLoggedIn" />
+      </div>
     </div>
   </div>
   <div class="row" style="height: 90vh; width: 100%;">
@@ -37,9 +39,9 @@
         <br />
         <PanelMenu v-if="(isLoggedIn, isuser)" :model="items"/>
       </div>
-    </div>
-    <div class="col-10">
-      <slot />
+      <div class="col-10">
+        <slot />
+      </div>
     </div>
   </div>
 </template>
@@ -75,7 +77,6 @@ function signin() {
 const token = useCookie('token');
 const roleId = useCookie('role');
 const token_user = useCookie('user');
-// const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
 const isLoggedIn = computed(() => token.value);
 

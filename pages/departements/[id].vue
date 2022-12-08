@@ -84,14 +84,6 @@ div.b {
   display: inline-block;
 }
 
-.p-accordion-header-link .p-accordion-header-text a:hover {
-  text-decoration: none;
-}
-
-.p-accordion-content p {
-  font-size: 12pt;
-}
-
 .float {
   position: fixed;
   bottom: 40px;

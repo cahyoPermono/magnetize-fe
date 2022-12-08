@@ -33,7 +33,7 @@ onMounted(async () => {
 
 const emit = defineEmits(['closeModal', 'loadData']);
 const closeModal = () => {
-    emit('closeModal')
+    emit('closeModal');
 };
 
 const updateDesc = () => {
