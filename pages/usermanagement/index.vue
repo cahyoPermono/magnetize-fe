@@ -29,18 +29,18 @@
         <Column field="fullName" header="Full Name" :sortable="true" headerStyle="text-align: center"></Column>
         <Column field="email" header="Email Address" :sortable="true" headerStyle="text-align: center"></Column>
         <Column field="role.role" header="Role" :sortable="true" headerStyle="text-align: center"></Column>
-        <Column header="Status" :sortable="true" headerStyle="text-align: center">
+        <Column header="Status" :sortable="true" style="text-align: center">
           <template #body="slotProps">
-            <Badge severity="warning" class="mr-2" v-if="slotProps.data.status === 'Active'">{{slotProps.data.status}}</Badge>
+            <Badge severity="warning" class="mr-2" v-if="slotProps.data.status === 'Active'" >{{slotProps.data.status}}</Badge>
             <Badge severity="danger" class="mr-2" v-else>{{slotProps.data.status}}</Badge>
           </template>
         </Column>
-        <Column header="Create On" headerStyle="text-align: center">
+        <Column header="Create On" headerStyle="text-align: center; width: 120px">
           <template #body="slotProps">
             {{ reverseDate(slotProps.data.createdAt) }}
           </template>
         </Column>
-        <Column header="Last Active Date" headerStyle="text-align: center" style="width: 8em;">
+        <Column header="Last Active Date" headerStyle="text-align: center">
           <template #body="slotProps">
             {{ lastDate(slotProps.data.lastActive) }}
           </template>
