@@ -6,38 +6,34 @@
         <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="signout" v-if="isLoggedIn" />
       </div>
     </div>
-  </div>
-  <div class="row" style="height: 90vh; width: 100%;">
-    <div class="col-2 px-4 shadow-3">
-      <strong>
-        <p>Home</p>
-      </strong>
-      <div class="ml-3 mb-3">
-        <NuxtLink to="/dashboard">
-          <Button icon="pi pi-home" class="p-button-text p-button-plain" label="Home" @click="visibleLeft = false" />
-        </NuxtLink>
-      </div>
-      <strong>
-        <p>Feature</p>
-      </strong>
-      <div class="ml-3">
-        <NuxtLink v-if="(isLoggedIn, isdepartement)" to="/departements">
-          <Button
-            icon="pi pi-building"
-            class="p-button-text p-button-plain"
-            label="Departements"
-          />
-        </NuxtLink>
-        <br />
-        <NuxtLink v-if="(isLoggedIn, isjobs)" to="/jobs_hcd">
-          <Button icon="pi pi-sitemap" class="p-button-text p-button-plain" label="Jobs" />
-        </NuxtLink>
-        <br />
-        <NuxtLink to="/dashboard-applicant">
-          <Button icon="pi pi-users" class="p-button-text p-button-plain" label="Guest" />
-        </NuxtLink>
-        <br />
-        <PanelMenu v-if="(isLoggedIn, isuser)" :model="items"/>
+    <div class="row" style="height: 90vh; width: 100%;">
+      <div class="col-2 px-4 shadow-3">
+        <strong>
+          <p>Home</p>
+        </strong>
+        <div class="ml-3 mb-3">
+          <NuxtLink to="/dashboard">
+            <Button icon="pi pi-home" class="p-button-text p-button-plain" label="Home" @click="visibleLeft = false" />
+          </NuxtLink>
+        </div>
+        <strong>
+          <p>Feature</p>
+        </strong>
+        <div class="ml-3">
+          <NuxtLink v-if="(isLoggedIn, isdepartement)" to="/departements">
+            <Button icon="pi pi-building" class="p-button-text p-button-plain" label="Departements" />
+          </NuxtLink>
+          <br />
+          <NuxtLink v-if="(isLoggedIn, isjobs)" to="/jobs_hcd">
+            <Button icon="pi pi-sitemap" class="p-button-text p-button-plain" label="Jobs" />
+          </NuxtLink>
+          <br />
+          <NuxtLink to="/dashboard-applicant">
+            <Button icon="pi pi-users" class="p-button-text p-button-plain" label="Guest" />
+          </NuxtLink>
+          <br />
+          <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" />
+        </div>
       </div>
       <div class="col-10">
         <slot />
@@ -56,7 +52,7 @@ const config = useRuntimeConfig();
 
 const arr = reactive([]);
 
-onMounted(async ()=> {
+onMounted(async () => {
   await axios
     .get("http://localhost:3000/api/1.0/rolepermissions/" + roleId.value)
     .then((response) => {
