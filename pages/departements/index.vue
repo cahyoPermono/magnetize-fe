@@ -64,7 +64,8 @@ onMounted(async () => {
   setTimeout(() => {
     token.value = null
     token_user.value = null
-    alert("Waktu habis, silahkan login lagi");
+    roleId.value = null
+    alert("Time is up, please LogIn");
     router.push("/");
   }, 3600000);
 });

@@ -12,7 +12,6 @@
     :style="{ width: '60vw' }"
     :modal="true"
   >
-  <Toast />
     <div class="card p-3">
       <Form @submit="save">
         <div class="mt-2">
@@ -223,9 +222,8 @@ async function save() {
         location: newUser.location,
         image: newUser.image,
       })
-      .then(() => {
+      .then(async () => {
         displayModal.value = false;
-        toast.add({severity:'success', summary: 'Create Success', detail:'Success Create User', life: 3000});
         // alert("Create User Success");
         location.reload();
       });
