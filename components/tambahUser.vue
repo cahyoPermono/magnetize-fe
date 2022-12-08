@@ -12,6 +12,7 @@
     :style="{ width: '60vw' }"
     :modal="true"
   >
+  <Toast />
     <div class="card p-3">
       <Form @submit="save">
         <div class="mt-2">

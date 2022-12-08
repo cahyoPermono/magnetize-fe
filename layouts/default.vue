@@ -35,7 +35,7 @@
           <Button icon="pi pi-users" class="p-button-text p-button-plain" label="Guest" />
         </NuxtLink>
         <br />
-        <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" style="width: 11.5em;"/>
+        <PanelMenu v-if="(isLoggedIn, isuser)" :model="items"/>
       </div>
     </div>
     <div class="col-10">
@@ -54,8 +54,8 @@ const config = useRuntimeConfig();
 
 const arr = reactive([]);
 
-onMounted(()=> {
-  axios
+onMounted(async ()=> {
+  await axios
     .get("http://localhost:3000/api/1.0/rolepermissions/" + roleId.value)
     .then((response) => {
       response.data.data.forEach((element) => {

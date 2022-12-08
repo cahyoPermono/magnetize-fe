@@ -36,8 +36,8 @@
         <Column header="Last Active Date" style="width: 8em; text-align: center;">
           <template #body="slotProps">
             {{ lastDate(slotProps.data.lastActive) }}
-          </template></Column
-        >
+          </template>
+        </Column>
         <Column>
           <template #body="slotProps">
             <NuxtLink :to="`/usermanagement/${slotProps.data.id}`">
@@ -64,6 +64,9 @@ const reverseDate = (date) => {
 };
 
 const lastDate = (date) => {
+  if(date === null) {
+    return ''
+  } 
   return dateFormat(date, "dd-mm-yyyy, h:MM:ss TT");
 };
 
