@@ -32,22 +32,21 @@
                             <InputSwitch v-model="newJob.remote" name="remote" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-7">
-                            <label for="headcount"><small>Headcount</small><span style="color: red">*</span></label>
-                            <Field type="number" class="form-control" name="headcount" :rules="isRequired"
-                                v-model="newJob.headcount" />
-                            <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
-                            </ErrorMessage>
-                        </div>
-                        <div class="col-3">
-                            <label for="contract_detail"><small>Contract</small><span
-                                    style="color: red">*</span></label>
-                            <Dropdown v-model="newJob.contract_detail" :options="contract_detail" optionLabel="a"
-                                placeholder="Jenis Kontrak" />
-                            <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
-                            </ErrorMessage>
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-7">
+                        <label for="headcount"><small>Headcount</small><span style="color: red">*</span></label>
+                        <Field type="number" class="form-control" name="headcount" :rules="isRequired"
+                            v-model="newJob.headcount" />
+                        <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
+                        </ErrorMessage>
+                    </div>
+                    <div class="col-3">
+                        <label for="contract_detail"><small>Contract</small><span style="color: red">*</span></label>
+                        <Dropdown v-model="newJob.contract_detail" :options="contract_detail" optionLabel="a"
+                            optionValue="a" placeholder="Jenis Kontrak" />
+                        <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
+                        </ErrorMessage>
                     </div>
                     <div class="row">
                         <div class="col-6">
@@ -69,14 +68,14 @@
                         <div class="col-6">
                             <label><small>Currency</small><span style="color: red">*</span></label> <br>
                             <Dropdown v-model="newJob.currency" :options="CurrencyList" optionLabel="text"
-                                placeholder="Jenis Mata Uang" />
+                                optionValue="text" placeholder="Jenis Mata Uang" />
                             <ErrorMessage name="currency"><small style="color: red">Currency is required</small>
                             </ErrorMessage>
                         </div>
                         <div class="col-6">
                             <label><small>Frekuensi Penggajian</small><span style="color: red">*</span></label> <br>
                             <Dropdown v-model="newJob.payment_frequency" :options="payment_frequency" optionLabel="text"
-                                placeholder="Frekuensi Penggajian" />
+                                optionValue="text" placeholder="Frekuensi Penggajian" />
                             <ErrorMessage name="payment_frequency"><small style="color: red">payment frequency is
                                     required</small>
                             </ErrorMessage>

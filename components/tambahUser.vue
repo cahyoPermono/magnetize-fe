@@ -12,12 +12,13 @@
     :style="{ width: '60vw' }"
     :modal="true"
   >
+  <Toast />
     <div class="card p-3">
       <Form @submit="save">
         <div class="mt-2">
           <label for="pp"><small>Photo</small></label>
           <br />
-          <div class="b">
+          <div class="b" v-if="pict">
             <Avatar
               :image="newUser.image"
               class="mr-2"
@@ -26,7 +27,7 @@
               style="width: 100px; height: 100px"
             />
           </div>
-          <div class="b">
+          <div class="b" v-if="!pict">
             <FileUpload
               name="demo[]"
               mode="basic"
@@ -190,6 +191,8 @@ const onPhoneInput = (phone, phoneObject) => {
   newUser.phone = phoneObject.number;
 };
 
+const pict = computed(()=> newUser.image)
+
 onMounted(() => {
   getRole();
 });
@@ -208,7 +211,7 @@ const onUploadAva = (evt) => {
 
 async function save() {
   if (newUser.image === null)
-    return (newUser.image = "https://via.placeholder.com/150");
+    return (newUser.image = "https://ibb.co/zPT27kB");
   try {
     await axios
       .post(config.API_BASE_URL + "users", {
