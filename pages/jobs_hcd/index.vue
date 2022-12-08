@@ -32,6 +32,7 @@ import axios from "axios";
 const config = useRuntimeConfig();
 const displayed_data = ref([]);
 const getIndexJob = () => {
+    displayed_data.value = [];
     axios.get(config.API_BASE_URL + "jobs")
         .then(r => {
             const data = r.data.data;

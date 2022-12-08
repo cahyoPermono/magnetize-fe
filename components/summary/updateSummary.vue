@@ -1,84 +1,87 @@
 <template>
-    <Dialog v-model:visible="props.modalUpdateJob" header="Edit Job Detail"
-        :breakpoints="{ '960px': '75vw', '640px': '90vw' }" :style="{ width: '40vw' }" :modal="true">
-        <div class="card p-3">
-            <Form @submit="save">
-                <div class="row mt-2">
-                    <div class="col-12">
-                        <label for="name"><small>Posisi</small><span style="color: red">*</span></label>
-                        <Field class="form-control" name="name" :rules="isRequired" v-model="job.name" />
-                        <ErrorMessage name="name"><small style="color: red">Position Name is required</small>
-                        </ErrorMessage>
+    <div>
+        <Dialog v-model:visible="props.modalUpdateJob" header="Edit Job Detail"
+            :breakpoints="{ '960px': '75vw', '640px': '90vw' }" :style="{ width: '40vw' }" :modal="true">
+            <div class="card p-3">
+                <Form @submit="save">
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <label for="name"><small>Posisi</small><span style="color: red">*</span></label>
+                            <Field class="form-control" name="name" :rules="isRequired" v-model="job.name" />
+                            <ErrorMessage name="name"><small style="color: red">Position Name is required</small>
+                            </ErrorMessage>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-7">
-                        <label for="lokasi"><small>Lokasi</small><span style="color: red">*</span></label>
-                        <Field class="form-control" name="lokasi" :rules="isRequired" v-model="job.location" />
-                        <ErrorMessage name="lokasi"><small style="color: red">Location is required</small>
-                        </ErrorMessage>
+                    <div class="row">
+                        <div class="col-7">
+                            <label for="lokasi"><small>Lokasi</small><span style="color: red">*</span></label>
+                            <Field class="form-control" name="lokasi" :rules="isRequired" v-model="job.location" />
+                            <ErrorMessage name="lokasi"><small style="color: red">Location is required</small>
+                            </ErrorMessage>
+                        </div>
+                        <div class="col-3">
+                            <label><small>Remote</small></label><br>
+                            <InputSwitch v-model="job.remote" name="remote" />
+                        </div>
                     </div>
-                    <div class="col-3">
-                        <label><small>Remote</small></label><br>
-                        <InputSwitch v-model="job.remote" name="remote" />
+                    <div class="row">
+                        <div class="col-7">
+                            <label for="headcount"><small>Headcount</small><span style="color: red">*</span></label>
+                            <Field type="number" class="form-control" name="headcount" :rules="isRequired"
+                                v-model="job.headcount" />
+                            <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
+                            </ErrorMessage>
+                        </div>
+                        <div class="col-3">
+                            <label for="contract_detail"><small>Contract</small><span
+                                    style="color: red">*</span></label>
+                            <Dropdown v-model="dropdown_option.contract_detail" :options="contract_detail"
+                                optionLabel="a" :placeholder="job.contract_detail" />
+                            <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
+                            </ErrorMessage>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-7">
-                        <label for="headcount"><small>Headcount</small><span style="color: red">*</span></label>
-                        <Field type="number" class="form-control" name="headcount" :rules="isRequired"
-                            v-model="job.headcount" />
-                        <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
-                        </ErrorMessage>
+                    <div class="row">
+                        <div class="col-6">
+                            <label><small>Minimum Salary</small><span style="color: red">*</span></label>
+                            <Field type="number" class="form-control" name="min_salary" :rules="isRequired"
+                                v-model="job.min_salary" />
+                            <ErrorMessage name="min_salary"><small style="color: red">Minimum Salary is required</small>
+                            </ErrorMessage>
+                        </div>
+                        <div class="col-6">
+                            <label><small>Maximum Salary</small><span style="color: red">*</span></label>
+                            <Field type="number" class="form-control" name="max_salary" :rules="isRequired"
+                                v-model="job.max_salary" />
+                            <ErrorMessage name="max_salary"><small style="color: red">Maximum Salary is required</small>
+                            </ErrorMessage>
+                        </div>
                     </div>
-                    <div class="col-3">
-                        <label for="contract_detail"><small>Contract</small><span style="color: red">*</span></label>
-                        <Dropdown v-model="dropdown_option.contract_detail" :options="contract_detail" optionLabel="a"
-                            :placeholder="job.contract_detail" />
-                        <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
-                        </ErrorMessage>
+                    <div class="row">
+                        <div class="col-6">
+                            <label><small>Currency</small><span style="color: red">*</span></label> <br>
+                            <Dropdown v-model="dropdown_option.currency" :options="CurrencyList" optionLabel="text"
+                                :placeholder="job.currency" />
+                            <ErrorMessage name="currency"><small style="color: red">Currency is required</small>
+                            </ErrorMessage>
+                        </div>
+                        <div class="col-6">
+                            <label><small>Frekuensi Penggajian</small><span style="color: red">*</span></label> <br>
+                            <Dropdown v-model="dropdown_option.payment_frequency" :options="payment_frequency"
+                                optionLabel="text" :placeholder="job.payment_frequency" />
+                            <ErrorMessage name="payment_frequency"><small style="color: red">payment frequency is
+                                    required</small>
+                            </ErrorMessage>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <label><small>Minimum Salary</small><span style="color: red">*</span></label>
-                        <Field type="number" class="form-control" name="min_salary" :rules="isRequired"
-                            v-model="job.min_salary" />
-                        <ErrorMessage name="min_salary"><small style="color: red">Minimum Salary is required</small>
-                        </ErrorMessage>
-                    </div>
-                    <div class="col-6">
-                        <label><small>Maximum Salary</small><span style="color: red">*</span></label>
-                        <Field type="number" class="form-control" name="max_salary" :rules="isRequired"
-                            v-model="job.max_salary" />
-                        <ErrorMessage name="max_salary"><small style="color: red">Maximum Salary is required</small>
-                        </ErrorMessage>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <label><small>Currency</small><span style="color: red">*</span></label> <br>
-                        <Dropdown v-model="dropdown_option.currency" :options="CurrencyList" optionLabel="text"
-                            :placeholder="job.currency" />
-                        <ErrorMessage name="currency"><small style="color: red">Currency is required</small>
-                        </ErrorMessage>
-                    </div>
-                    <div class="col-6">
-                        <label><small>Frekuensi Penggajian</small><span style="color: red">*</span></label> <br>
-                        <Dropdown v-model="dropdown_option.payment_frequency" :options="payment_frequency"
-                            optionLabel="text" :placeholder="job.payment_frequency" />
-                        <ErrorMessage name="payment_frequency"><small style="color: red">payment frequency is
-                                required</small>
-                        </ErrorMessage>
-                    </div>
-                </div>
-            </Form>
-        </div>
-        <template #footer>
-            <Button label="Submit" icon="pi pi-check" @click="updateSummary()" />
-            <Button label="Cancel" icon="pi pi-times" class="p-button p-button-outlined" @click="closeModal()" />
-        </template>
-    </Dialog>
+                </Form>
+            </div>
+            <template #footer>
+                <Button label="Submit" icon="pi pi-check" @click="updateSummary()" />
+                <Button label="Cancel" icon="pi pi-times" class="p-button p-button-outlined" @click="closeModal()" />
+            </template>
+        </Dialog>
+    </div>
 </template>
 
 <script setup>
@@ -105,7 +108,6 @@ let job = reactive();
 onMounted(async () => {
     job = await axios.get(config.API_BASE_URL + "jobs/" + route.params.id);
     job = await job.data.data;
-    console.log(job);
 });
 const CurrencyList = [
     { code: "AFN", text: "AFN - Afghanistan Afghanis" },
@@ -258,9 +260,7 @@ const updateSummary = async () => {
         currency: dropdown_option.value.currency.code || job.currency,
         payment_frequency: dropdown_option.value.payment_frequency.text || job.payment_frequency,
     }
-    const response = await axios.put(config.API_BASE_URL + "update_job/" + route.params.id, data_update);
-    console.log(data_update);
-    console.log(response);
+    await axios.put(config.API_BASE_URL + "update_job/" + route.params.id, data_update);
     emit('closeModal');
 };
 </script>
