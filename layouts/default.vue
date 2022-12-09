@@ -54,7 +54,7 @@ const arr = reactive([]);
 
 onMounted(async () => {
   await axios
-    .get("http://localhost:3000/api/1.0/rolepermissions/" + roleId.value)
+    .get(config.API_BASE_URL +"rolepermissions/" + roleId.value)
     .then((response) => {
       response.data.data.forEach((element) => {
         arr.push(element.permission.permission);
