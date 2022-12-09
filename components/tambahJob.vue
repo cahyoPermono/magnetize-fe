@@ -69,7 +69,7 @@
                       <div class="col-6">
                           <label><small>Currency</small><span style="color: red">*</span></label> <br>
                           <Dropdown v-model="newJob.currency" :options="CurrencyList" optionLabel="text"
-                              optionValue="text" placeholder="Jenis Mata Uang" />
+                              optionValue="code" placeholder="Jenis Mata Uang" />
                           <ErrorMessage name="currency"><small style="color: red">Currency is required</small>
                           </ErrorMessage>
                       </div>
@@ -271,11 +271,11 @@ async function save() {
       location: newJob.location,
       remote: newJob.remote,
       headcount: newJob.headcount,
-      contract_detail: newJob.contract_detail.a,
+      contract_detail: newJob.contract_detail,
       min_salary: newJob.min_salary,
       max_salary: newJob.max_salary,
-      currency: newJob.currency.code,
-      payment_frequency: newJob.payment_frequency.text,
+      currency: newJob.currency,
+      payment_frequency: newJob.payment_frequency,
       desc: desc.value,
       creator_id: token_user.value,
       status: "Active"
