@@ -32,6 +32,7 @@ import InputSwitch from 'primevue/inputswitch';
 import PanelMenu from 'primevue/panelmenu';
 import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
+import Badge from 'primevue/badge';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, { ripple: true });
@@ -67,6 +68,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('PanelMenu', PanelMenu);
     nuxtApp.vueApp.component('Accordion', Accordion);
     nuxtApp.vueApp.component('AccordionTab', AccordionTab);
+    nuxtApp.vueApp.component('Badge', Badge)
 
    //other components that you need
 });

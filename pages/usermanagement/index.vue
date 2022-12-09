@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <Toast />
   <div class="container-user">
     <div>
       <Breadcrumb :home="home" :model="items" aria-label="breadcrumb" />
@@ -23,11 +25,16 @@
             />
           </template>
         </Column>
-        <Column field="displayName" header="Display Name"></Column>
-        <Column field="fullName" header="Full Name"></Column>
-        <Column field="email" header="Email Address"></Column>
-        <Column field="role.role" header="Role"></Column>
-        <Column field="status" header="Status"> </Column>
+        <Column field="displayName" header="Display Name" :sortable="true"></Column>
+        <Column field="fullName" header="Full Name" :sortable="true"></Column>
+        <Column field="email" header="Email Address" :sortable="true"></Column>
+        <Column field="role.role" header="Role" :sortable="true"></Column>
+        <Column field="status" header="Status" :sortable="true">
+          <template #body="slotProps">
+            <Badge severity="warning" class="mr-2" v-if="slotProps.data.status === 'Active'">{{slotProps.data.status}}</Badge>
+            <Badge severity="danger" class="mr-2" v-else>{{slotProps.data.status}}</Badge>
+          </template>
+        </Column>
         <Column header="Create On">
           <template #body="slotProps">
             {{ reverseDate(slotProps.data.createdAt) }}
@@ -48,6 +55,7 @@
         </Column>
       </DataTable>
     </div>
+  </div>
   </div>
 </template>
 
@@ -83,9 +91,11 @@ const items = ref([
 ]);
 
 onMounted(async () => {
-  const token = useCookie("token");
   const config = useRuntimeConfig();
-  const roleId = useCookie("role");
+  const token = useCookie('token');
+  const roleId = useCookie('role');
+  const token_user = useCookie('user');
+
   const response = await axios.get(
     config.API_BASE_URL + "all_users/" + roleId.value,
     {
@@ -97,8 +107,10 @@ onMounted(async () => {
   dataUser.value = response.data.data;
   
   await setTimeout(() => {
-    token.value = null;
-    alert("Waktu habis, silahkan login lagi");
+    token.value = null
+    token_user.value = null
+    roleId.value = null
+    alert("Time is up, please LogIn");
     router.push("/");
   }, 3600000);
 });

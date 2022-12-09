@@ -32,7 +32,7 @@
             <Button icon="pi pi-users" class="p-button-text p-button-plain" label="Guest" />
           </NuxtLink>
           <br />
-          <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" />
+          <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" style="width: 11.5em;"/>
         </div>
       </div>
       <div class="col-10">
@@ -45,13 +45,10 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted, computed } from "vue";
-
 const visibleLeft = ref(false);
 const router = useRouter();
 const config = useRuntimeConfig();
-
 const arr = reactive([]);
-
 onMounted(async () => {
   await axios
     .get(config.API_BASE_URL +"rolepermissions/" + roleId.value)
@@ -61,21 +58,16 @@ onMounted(async () => {
       });
     });
 })
-
 const isjobs = computed(() => arr.includes('menu_jobs_hcd'))
 const isdepartement = computed(() => arr.includes('menu_departements'))
 const isuser = computed(() => arr.includes('menu_users'))
-
 function signin() {
   router.push("/login");
 }
-
 const token = useCookie('token');
 const roleId = useCookie('role');
 const token_user = useCookie('user');
-
 const isLoggedIn = computed(() => token.value);
-
 async function signout() {
   const today = new Date();
   await axios.put(config.API_BASE_URL + "update/" + token_user.value, {
@@ -86,7 +78,6 @@ async function signout() {
   token_user.value = null;
   router.push("/login");
 }
-
 const items = ref([
   {
     key: "0",
