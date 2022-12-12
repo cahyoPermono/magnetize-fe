@@ -1,7 +1,8 @@
 <template>
-  <div>
-    <div class="bg-bluegray-900 text-gray-100 py-2 text-center shadow-3">
-      <div class="align-items-center col-12 p-0 text-sm ">
+  <div class="bg-pattern" style="min-height: 100vh;">
+    <div
+      class="bg-bluegray-900 text-gray-100 py-2 text-center shadow-3 animate__animated animate__fadeInDownBig header-anim">
+      <div class="align-items-center col-12 p-0 text-sm">
         <span>like/follow/subscribe semua sosial media kami untuk mendapatkan merchandise menarik</span>
       </div>
       <div class="align-items-center col-12">
@@ -34,16 +35,18 @@
         </span>
       </div>
     </div>
-    <div class="bg-pattern" style="min-height: 100vh;">
+    <div>
       <div class="grid grid-nogutter first-land">
         <Toast />
         <div class="md:col-6 col-12 m-0 mt-5 text-center container">
           <div>
-            <img src="~/assets/wearehiring.png" alt="Image" class="w-10 md:w-12">
+            <img src="~/assets/wearehiring.png" alt="Image"
+              class="w-10 md:w-12 animate__animated animate__bounceInLeft img1">
           </div>
         </div>
         <div class="md:col-6 col-12 md:mt-5">
-          <div class="md:mr-5 px-4 pt-2 pb-6 bg-green-400 border-round-xl shadow-3">
+          <div
+            class="md:mr-5 px-4 pt-2 pb-6 bg-green-400 border-round-xl shadow-3 animate__animated animate__bounceInUp form-anim">
             <div class="text-center">
               <img src="~/assets/logoimani2.png" alt="Image" class="w-8 md:w-8">
             </div>
@@ -79,9 +82,10 @@
           </div>
         </div>
       </div>
-      <Button icon="pi pi-file" label="Apply" class="p-button-rounded p-button-warning float"
+      <Button icon="pi pi-file" label="Apply"
+        class="p-button-rounded p-button-warning float animate__animated animate__bounceIn btn-anim"
         style="box-shadow: 2px 2px 3px #999" @click="openPosition('center')" />
-      <Dialog header="Buku Tamu" v-model:visible="displayPosition" :breakpoints="{ '640px': '75vw' }"
+      <Dialog class="bukuTamu" header="Buku Tamu" v-model:visible="displayPosition" :breakpoints="{ '640px': '75vw' }"
         :style="{ width: '40vw' }" :position="position" :modal="true">
         <Form>
           <div class="bg-yellow-400 py-4 px-4 mb-2 shadow-5 border-round-sm">
@@ -104,6 +108,7 @@
                       style="color:red;">*</span></small>
                   <FileUpload name="demo[]" mode="basic" :customUpload="true" @uploader="onUpload" accept=".pdf"
                     :maxFileSize="2000000" :auto="true" class="bg-yellow-700 border-yellow-700" />
+                  <small for="cv" class="block text-900 font-medium">Maksimal Ukuran File: 2MB</small>
                 </div>
               </div>
             </div>
@@ -118,6 +123,8 @@
 <script setup>
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
+import "animate.css";
+
 const toast = useToast();
 const router = useRouter();
 const config = useRuntimeConfig();
@@ -143,12 +150,12 @@ const displayPosition = ref(false);
 const position = ref('center');
 const displayLink = ref(false);
 const shareLink = () => {
-    displayLink.value = !displayLink.value;
+  displayLink.value = !displayLink.value;
 };
 const copy = () => {
-    navigator.clipboard.writeText(link);
-    toast.add({ severity: "warn", summary: "Link Copied !", life:1000 });
-    return shareLink();
+  navigator.clipboard.writeText(link);
+  toast.add({ severity: "warn", summary: "Link Copied !", life: 1000 });
+  return shareLink();
 };
 
 const active = (index) => {
@@ -236,9 +243,15 @@ const onUpload = (evt) => {
 };
 
 const masuk = () => {
+  const element = document.querySelector('.bukuTamu');
+  const btnAnim = document.querySelector('.btn-anim');
+  const headerAnim = document.querySelector('.header-anim');
+  const img1 = document.querySelector('.img1');
+  const formAnim = document.querySelector('.form-anim');
   const val = Object.values(data);
   if (val.includes("")) {
     toast.add({ severity: "error", summary: "Ada data yang belum diisi", life: 3000 });
+    element.classList.add('animate__animated', 'animate__shakeX'); animate__bounceOutLeft
     return router.push({ path: "/" });
   } else {
     try {
@@ -250,14 +263,20 @@ const masuk = () => {
       axios.post(config.API_BASE_URL + "guest", data_post)
         .then(() => {
           toast.add({ severity: "info", summary: "Enjoy the Carnaval", life: 3000 });
-          router.push({ path: "/jobs" });
-        })
+          displayPosition.value = false;
+          headerAnim.classList.add('animate__animated', 'animate__fadeOut');
+          img1.classList.add('animate__animated', 'animate__bounceOutLeft');
+          formAnim.classList.add('animate__animated', 'animate__bounceOutDown');
+          btnAnim.classList.add('animate__animated', 'animate__bounceOut')
+          setTimeout(() => {
+            router.push({ path: "/jobs" })
+          }, 3000)
+        });
     } catch (err) {
       console.log(err);
     }
   }
 };
-
 definePageMeta({
   layout: false,
 });
@@ -265,6 +284,22 @@ definePageMeta({
 </script>
 
 <style>
+.header-anim {
+  animation-delay: 300ms;
+}
+
+.btn-anim {
+  animation-delay: 1.8s;
+}
+
+.img1 {
+  animation-delay: 800ms;
+}
+
+.form-anim {
+  animation-delay: 1s;
+}
+
 .float {
   position: fixed;
   bottom: 40px;
