@@ -106,12 +106,12 @@ onMounted(async () => {
   );
   dataUser.value = response.data.data;
   
-  await setTimeout(() => {
+  await setTimeout(async () => {
     token.value = null
     token_user.value = null
     roleId.value = null
-    alert("Time is up, please LogIn");
-    router.push("/");
+    await alert("Time is up, please LogIn");
+    router.push("/login");
   }, 3600000);
 });
 
