@@ -251,7 +251,7 @@ const masuk = () => {
   const val = Object.values(data);
   if (val.includes("")) {
     toast.add({ severity: "error", summary: "Ada data yang belum diisi", life: 3000 });
-    element.classList.add('animate__animated', 'animate__shakeX'); animate__bounceOutLeft
+    element.classList.add('animate__animated', 'animate__shakeX');
     return router.push({ path: "/" });
   } else {
     try {

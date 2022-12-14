@@ -7,16 +7,15 @@
         <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="signout" v-if="isLoggedIn" />
       </div>
     </div>
-    <div v-if="isSidebarActive === true">
+    <div>
       <div class="row" style="height: 90vh; width: 100%;">
-        <div class="col-2 px-4 shadow-3">
+        <div v-show="isSidebarActive" class="col-2 px-4 shadow-3 sidebar animate__animated animate__faster">
           <strong>
             <p>Home</p>
           </strong>
           <div class="ml-3 mb-3">
             <NuxtLink to="/dashboard">
-              <Button icon="pi pi-home" class="p-button-text p-button-plain" label="Home"
-                @click="visibleLeft = false" />
+              <Button icon="pi pi-home" class="p-button-text p-button-plain" label="Home" />
             </NuxtLink>
           </div>
           <strong>
@@ -38,13 +37,10 @@
             <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" />
           </div>
         </div>
-        <div class="col-10">
+        <div :class="[isSidebarActive ? activeSidebar : '', !isSidebarActive ? deactiveSidebar : '']">
           <slot />
         </div>
       </div>
-    </div>
-    <div v-else>
-      sidebar off
     </div>
   </div>
 </template>
@@ -52,8 +48,8 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted, computed } from "vue";
+import "animate.css";
 
-const visibleLeft = ref(false);
 const router = useRouter();
 const config = useRuntimeConfig();
 
@@ -82,10 +78,22 @@ const roleId = useCookie('role');
 const token_user = useCookie('user');
 
 const isLoggedIn = computed(() => token.value);
-let isSidebarActive = true;
+
+let isSidebarActive = ref(true);
+let deactiveSidebar = ref("col-12 px-5");
+let activeSidebar = ref("col-10 px-5");
 const sidebar = () => {
-  console.log(isSidebarActive);
-  return isSidebarActive = !isSidebarActive;
+  const sidebar = document.querySelector('.sidebar');
+  if (isSidebarActive.value) {
+    sidebar.classList.add('animate__fadeOutLeft');
+    sidebar.classList.remove('animate__fadeInLeft');
+    console.log(sidebar)
+    setTimeout(() => { isSidebarActive.value = !isSidebarActive.value; }, 300)
+  }else{
+    isSidebarActive.value = !isSidebarActive.value; 
+    sidebar.classList.add('animate__fadeInLeft');
+    sidebar.classList.remove('animate__fadeOutLeft');
+  }
 }
 
 async function signout() {
