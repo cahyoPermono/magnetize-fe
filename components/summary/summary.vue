@@ -1,12 +1,11 @@
 <template>
-    <Toast />
     <div>
         <div class="grid">
             <div class="col">
                 <Panel>
                     <template #header>
-                        <b>Job Detail &nbsp;<span><i class="pi pi-pencil"
-                                    style="font-size: 0.5rem; cursor:pointer;" @click="openModalUpdate()"></i></span></b>
+                        <b>Job Detail &nbsp;<span><i class="pi pi-pencil" style="font-size: 0.5rem; cursor:pointer;"
+                                    @click="openModalUpdate()"></i></span></b>
                     </template>
                     <table border="0">
                         <tr>
@@ -109,7 +108,8 @@
                                     @click="openModalPackage()"></i></span></b>
                     </template>
                     <p>{{ job_data.package_detail }}</p>
-                    <SummaryUpdatePackage :modalUpdateDesc="visibleModalUpdatePackage" @closeModal="openModalPackage()" />
+                    <SummaryUpdatePackage :modalUpdateDesc="visibleModalUpdatePackage"
+                        @closeModal="openModalPackage()" />
                 </Panel>
             </div>
         </div>
@@ -118,7 +118,7 @@
   
 <script setup>
 import axios from "axios";
-import { useToast } from "primevue/usetoast";
+
 const config = useRuntimeConfig();
 const route = useRoute();
 const visibleModalUpdateDesc = ref(false);
@@ -143,7 +143,6 @@ const job_data = reactive({
 const id = route.params.id;
 let job = reactive();
 let creator_data = reactive();
-const toast = useToast();
 const getter = async () => {
     job = await axios.get(config.API_BASE_URL + "jobs/" + id);
     job = await job.data.data;
@@ -158,9 +157,7 @@ const getter = async () => {
     job_data.package_detail = job.package_detail;
     job_data.payment_frequency = job.payment_frequency;
     job_data.desc = job.desc;
-    creator_data = await axios.get(config.API_BASE_URL + "users/" + job.creator_id);
-    creator_data = await creator_data.data.data;
-    job_data.creator = creator_data.fullName;
+    job_data.creator = job.user.fullName;
 }
 const desc = ref('');
 onMounted(() => {

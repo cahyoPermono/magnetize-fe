@@ -1,4 +1,5 @@
 <template>
+    <Toast />
     <Dialog v-model:visible="props.modalUpdateDesc" header="Edit Job Package"
         :breakpoints="{ '960px': '75vw', '640px': '90vw' }" :style="{ width: '40vw' }" :modal="true">
         <div class="grid">
@@ -15,7 +16,8 @@
 
 <script setup>
 import axios from "axios";
-
+import { useToast } from "primevue/usetoast";
+const toast = useToast();
 const config = useRuntimeConfig();
 const route = useRoute();
 const props = defineProps({
@@ -36,7 +38,8 @@ onMounted(async () => {
 const updatePackage = async () => {
     axios.put(config.API_BASE_URL + "update_job/" + route.params.id, {
         package_detail: package_detail.value,
-    }).then(() => {
+    }).then((res) => {
+        toast.add({ severity: 'success', summary: res.data.message, life: 3000 });
         emit('closeModal');
     });
 };

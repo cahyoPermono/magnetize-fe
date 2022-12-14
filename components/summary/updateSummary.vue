@@ -1,5 +1,6 @@
 <template>
     <div>
+        <Toast />
         <Dialog v-model:visible="props.modalUpdateJob" header="Edit Job Detail"
             :breakpoints="{ '960px': '75vw', '640px': '90vw' }" :style="{ width: '40vw' }" :modal="true">
             <div class="card p-3">
@@ -86,6 +87,8 @@
 
 <script setup>
 import axios from "axios";
+import { useToast } from "primevue/usetoast";
+const toast = useToast();
 
 const config = useRuntimeConfig();
 const route = useRoute();
@@ -104,6 +107,7 @@ const dropdown_option = ref({
     currency: "",
     payment_frequency: "",
 });
+
 let job = reactive();
 onMounted(async () => {
     job = await axios.get(config.API_BASE_URL + "jobs/" + route.params.id);
@@ -260,7 +264,8 @@ const updateSummary = async () => {
         currency: dropdown_option.value.currency.code || job.currency,
         payment_frequency: dropdown_option.value.payment_frequency.text || job.payment_frequency,
     }
-    await axios.put(config.API_BASE_URL + "update_job/" + route.params.id, data_update);
+    const res = await axios.put(config.API_BASE_URL + "update_job/" + route.params.id, data_update);
+    toast.add({ severity: 'success', summary: res.data.message, life: 3000 });
     emit('closeModal');
 };
 </script>

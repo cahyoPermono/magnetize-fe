@@ -130,7 +130,7 @@ const dropToPipeline = (id_candidate, index) => {
         "isCandidate": false,
         "status": "new"
     }).then(() => {
-        toast.add({ severity: "error", summary: "kandidat berkurang", life:3000 });
+        toast.add({ severity: "error", summary: "kandidat berkurang", life: 3000 });
         k(index, In_Pipeline, candidates);
     }).catch(err => {
         console.log(err);
@@ -171,24 +171,18 @@ let In_Pipeline = reactive([]);
 
 const config = useRuntimeConfig();
 const getCandidates = async () => {
-    let data_job = reactive(null);
-    const job_now = await axios.get(config.API_BASE_URL + "jobs/" + id);
-    data_job = await job_now.data.data;
-
     let data_applicants = null;
-    const getApplicants = await axios.get(config.API_BASE_URL + "allapplicants");
+    const getApplicants = await axios.get(config.API_BASE_URL + "allapplicants/" + id);
     data_applicants = await getApplicants.data.data;
-
+    // console.log(data_applicants);
     await data_applicants.forEach(element => {
-        if (element.position === data_job.name) {
-            if (element.isCandidate === false) {
-                candidates.push(element)
-            } else {
-                In_Pipeline.push(element)
-            }
+        if (element.isCandidate === false) {
+            candidates.push(element)
+        } else {
+            In_Pipeline.push(element)
         }
     });
-}
+};
 
 onMounted(async () => {
     await getCandidates();
