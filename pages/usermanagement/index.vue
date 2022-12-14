@@ -25,22 +25,22 @@
             />
           </template>
         </Column>
-        <Column field="displayName" header="Display Name" :sortable="true"></Column>
-        <Column field="fullName" header="Full Name" :sortable="true"></Column>
-        <Column field="email" header="Email Address" :sortable="true"></Column>
-        <Column field="role.role" header="Role" :sortable="true"></Column>
-        <Column field="status" header="Status" :sortable="true">
+        <Column field="displayName" header="Display Name" :sortable="true" headerStyle="text-align: center"></Column>
+        <Column field="fullName" header="Full Name" :sortable="true" headerStyle="text-align: center"></Column>
+        <Column field="email" header="Email Address" :sortable="true" headerStyle="text-align: center"></Column>
+        <Column field="role.role" header="Role" :sortable="true" headerStyle="text-align: center"></Column>
+        <Column header="Status" :sortable="true" style="text-align: center">
           <template #body="slotProps">
-            <Badge severity="warning" class="mr-2" v-if="slotProps.data.status === 'Active'">{{slotProps.data.status}}</Badge>
+            <Badge severity="warning" class="mr-2" v-if="slotProps.data.status === 'Active'" >{{slotProps.data.status}}</Badge>
             <Badge severity="danger" class="mr-2" v-else>{{slotProps.data.status}}</Badge>
           </template>
         </Column>
-        <Column header="Create On">
+        <Column header="Create On" headerStyle="text-align: center; width: 120px">
           <template #body="slotProps">
             {{ reverseDate(slotProps.data.createdAt) }}
           </template>
         </Column>
-        <Column header="Last Active Date" style="width: 8em; text-align: center;">
+        <Column header="Last Active Date" headerStyle="text-align: center">
           <template #body="slotProps">
             {{ lastDate(slotProps.data.lastActive) }}
           </template>
