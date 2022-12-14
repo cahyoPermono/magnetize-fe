@@ -15,12 +15,12 @@ export const usePermission = defineStore("permission", () => {
       axios
         .get(config.API_BASE_URL + "rolepermissions/" + roleId.value)
         .then((response) => {
-          console.log(response.data.data)
+          // console.log(response.data.data)
           response.data.data.forEach((element) => {
             arr.push(element.permission.permission);
           });
           const p = arr;
-          console.log(p)
+          // console.log(p)
         });
 
     } catch (err) {
