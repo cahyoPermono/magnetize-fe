@@ -15,6 +15,7 @@
     "primevue": "3.10.0"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.4.6",
     "@vee-validate/rules": "^4.7.0",
     "animate.css": "^4.1.1",
     "axios": "^1.0.0",
@@ -22,6 +23,7 @@
     "dateformat": "^5.0.3",
     "dotenv": "^16.0.3",
     "lexical": "^0.5.0",
+    "pinia": "^2.0.28",
     "sass": "^1.55.0",
     "v-idle": "^0.2.1",
     "vee-validate": "^4.7.0",

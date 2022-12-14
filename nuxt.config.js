@@ -5,6 +5,9 @@ export default defineNuxtConfig({
         port: 3003, // default: 3000
         host: 'localhost', // default: localhost,
     },
+    modules: [
+        '@pinia/nuxt',
+    ],
     css: [
         'primevue/resources/themes/saga-blue/theme.css',
         'primevue/resources/primevue.css',
