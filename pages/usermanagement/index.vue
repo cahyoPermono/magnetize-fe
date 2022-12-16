@@ -7,7 +7,7 @@
       </div>
       <h1>User Management</h1>
       <tambah-user />
-      <div class="card shadow mt-4 ml-4 w-95">
+      <div class="card shadow mt-3 ml w-100">
         <DataTable :value="dataUser" :paginator="true" :rows="5"
           paginatorTemplate=" FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
           responsiveLayout="scroll" removableSort>
@@ -20,10 +20,6 @@
           <Column field="fullName" header="Full Name" :sortable="true" headerStyle="text-align: center"></Column>
           <Column field="email" header="Email Address" :sortable="true" headerStyle="text-align: center"></Column>
           <Column field="role.role" header="Role" :sortable="true" headerStyle="text-align: center"></Column>
-          <Column field="displayName" header="Display Name" :sortable="true" headerStyle="text-align: center"></Column>
-          <Column field="fullName" header="Full Name" :sortable="true" headerStyle="text-align: center"></Column>
-          <Column field="email" header="Email Address" :sortable="true" headerStyle="text-align: center"></Column>
-          <Column field="role.role" header="Role" :sortable="true" headerStyle="text-align: center"></Column>
           <Column header="Status" :sortable="true" style="text-align: center">
             <template #body="slotProps">
               <Badge severity="warning" class="mr-2" v-if="slotProps.data.status === 'Active'">
@@ -32,7 +28,7 @@
               <Badge severity="danger" class="mr-2" v-else>{{ slotProps.data.status }}</Badge>
             </template>
           </Column>
-          <Column header="Create On" headerStyle="text-align: center; width: 100px">
+          <Column header="Create On" headerStyle="text-align: center; width: 150px">
             <template #body="slotProps">
               {{ reverseDate(slotProps.data.createdAt) }}
             </template>
