@@ -12,15 +12,15 @@
           removableSort >
           <Column field="id" header="ID" :sortable="true" headerStyle="text-align: center"></Column>
           <Column field="role" header="Role" :sortable="true" headerStyle="text-align: center"></Column>
-          <Column header="Permission" :sortable="true" headerStyle="text-align: center">
+          <Column header="Permission" :sortable="true" headerStyle="text-align: center" >
             <template #body="slotProps">
-              {{slotProps.data.permissions.join()}}
+              {{ slotProps.data.permissions.join(', ') }}
             </template>
           </Column>
           <Column>
             <template #body="slotProps">
               <NuxtLink :to="`/rolepermission/${slotProps.data.id}`">
-                <Button label="Edit Permission" icon="pi pi-pencil" class="p-button-sm"  />
+                <Button label="Edit Permission" icon="pi pi-pencil" class="p-button-sm"/>
               </NuxtLink>
             </template>
           </Column>
@@ -49,7 +49,7 @@ onMounted(async () => {
       Authorization: `Bearer ${token.value}`,
     },
   });
-  
+
   rolePermission.value = response.data.data;
   rolePermission.value.forEach((element) => {
     let permissions = [];
@@ -70,9 +70,5 @@ onMounted(async () => {
     await alert("Time is up, please LogIn");
     router.push("/login");
   }, 3600000);
-});
-
-definePageMeta({
-  middleware: ["auth"],
 });
 </script>

@@ -9,6 +9,7 @@ export const usePermission = defineStore("permission", () => {
   const roleId = useCookie("role");
   const token_user = useCookie("user");
   const arr = reactive([])
+  let a = ref(false)
 
   function getPermission() {
     try {
@@ -20,7 +21,8 @@ export const usePermission = defineStore("permission", () => {
             arr.push(element.permission.permission);
           });
           const p = arr;
-          // console.log(p)
+          a.value = arr.includes('menu_users')
+          console.log(a.value)
         });
 
     } catch (err) {
@@ -28,5 +30,5 @@ export const usePermission = defineStore("permission", () => {
     }
   }
 
-  return { permission, getPermission, token, token_user, roleId, arr };
+  return { permission, getPermission, token, token_user, roleId, arr, a };
 });
