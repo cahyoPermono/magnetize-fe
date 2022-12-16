@@ -1,42 +1,28 @@
 <template>
   <div class="md:min-h-screen">
+    <Toast />
     <div class="m-0 py-3 md:min-h-screen">
       <div class="text-600">
         <h5>Role Permission Management</h5>
       </div>
       <div class="col-md">
         <Panel :header="role.role" class="shadow-2">
-          <div class="shadow-2 w-100">
+          <div class="shadow-2 w-80">
             <Form class="mb-3" @submit="save">
-              <div class="card mt-3 p-5">
-                <p>Permission</p>
-                <div
-                  v-for="permission of rolePermission"
-                  :key="permission.id"
-                  class="field-checkbox"
-                >
-                  <Checkbox
-                    :inputId="permission.id"
-                    name="permission"
-                    :value="permission.id"
-                    v-model="selectedPermission"
-                  />
-                  <label :for="permission.id">{{
-                    permission.permission
-                  }}</label>
+              <div class="card mt-3">
+                <p style="margin-top: 20px; margin-left: 30px;">Permission</p>
+                <div v-for="permission of rolePermission" :key="permission.id" class="field-checkbox" style="margin-left: 35px;">
+                  <Checkbox :inputId="permission.id" name="permission" 
+                    :value="permission.id" v-model="selectedPermission" />
+                  <label :for="permission.id">{{ permission.permission }}</label>
                 </div>
-                <div class="mt-3" style="float: right">
-                  <Button
-                    label="No"
-                    icon="pi pi-times"
-                    class="p-button-text mb-5 mr-3"
-                  />
-                  <Button
-                    class="mb-5"
-                    label="Update"
-                    icon="pi pi-check"
-                    type="submit"
-                  />
+                <div class="mt-3">
+                  <Button class="p-button-sm" label="Update" icon="pi pi-check" type="submit" 
+                    style="float: right; margin-right: 20px;" />
+                  <NuxtLink to="/rolepermission">
+                    <Button label="No" icon="pi pi-times" class="p-button-sm p-button-warning" 
+                      style="float: right; margin-right: 10px; margin-bottom: 15px;"/>
+                  </NuxtLink>
                 </div>
               </div>
             </Form>
@@ -49,30 +35,28 @@
 
 <script setup>
 import axios from "axios";
+import { useToast } from "primevue/usetoast";
 
+const toast = useToast();
 const route = useRoute();
 const router = useRouter();
 const config = useRuntimeConfig();
 const rolePermission = ref("");
 const role = ref("");
 let permissions = ref([]);
-const selectedPermission = ref(permissions.value.id);
+const selectedPermission = ref(permissions.value);
 
 onMounted(async () => {
   const res = await axios.get(config.API_BASE_URL + "roles/" + route.params.id);
-  role.value = res.data.data
+  role.value = res.data.data;
+  role.value.permissions.forEach((element) => {
+    permissions.value.push(element.id);
+  });
   const response = await axios.get(config.API_BASE_URL + "permissions");
   rolePermission.value = response.data.data;
-  rolePermission.value.forEach(element => {
-    console.log(element.roles)
-    const a = element.roles.includes({id:route.params.id});
-    console.log(a)
-  });
-  
 });
 
 async function save() {
-  // console.log(selectedPermission.value)
   try {
     selectedPermission.value.forEach(async (element) => {
       axios
@@ -84,8 +68,14 @@ async function save() {
           });
         });
     });
-    await alert("update sukses");
-    navigateTo("/rolepermission");
+    setTimeout(async () => {
+      toast.add({
+        severity: "success",
+        summary: "Success Message",
+        detail: "Message Content",
+      });
+      router.push("/rolepermission");
+    }, 1000);
   } catch (error) {
     alert(error);
   }

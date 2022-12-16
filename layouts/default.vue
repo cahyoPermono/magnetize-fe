@@ -34,7 +34,11 @@
               <Button icon="pi pi-users" class="p-button-text p-button-plain" label="Guest" />
             </NuxtLink>
             <br />
-            <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" />
+            <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" style="width: 11.5em;"/>
+            <br />
+            <NuxtLink to="/rolepermission">
+              <Button icon="pi pi-cog" class="p-button-text p-button-plain" label="Role Permission" />
+            </NuxtLink>
           </div>
         </div>
         <div :class="[isSidebarActive ? activeSidebar : '', !isSidebarActive ? deactiveSidebar : '']">
