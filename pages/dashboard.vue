@@ -6,9 +6,13 @@
 
 <script setup>
 import { onMounted } from "vue";
-import { usePermission } from "~~/stores/permission";
 
 const store = usePermission()
+const router = useRouter();
+
+definePageMeta({
+  middleware: "auth",
+});
 
 onMounted(async () => {
   await store.getPermission();

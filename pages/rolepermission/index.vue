@@ -8,15 +8,15 @@
           responsiveLayout="scroll" removableSort>
           <Column field="id" header="ID" :sortable="true" headerStyle="text-align: center"></Column>
           <Column field="role" header="Role" :sortable="true" headerStyle="text-align: center"></Column>
-          <Column header="Permission" :sortable="true" headerStyle="text-align: center">
+          <Column header="Permission" :sortable="true" headerStyle="text-align: center" >
             <template #body="slotProps">
-              {{ slotProps.data.permissions.join() }}
+              {{ slotProps.data.permissions.join(', ') }}
             </template>
           </Column>
           <Column>
             <template #body="slotProps">
               <NuxtLink :to="`/rolepermission/${slotProps.data.id}`">
-                <Button label="Edit Permission" icon="pi pi-pencil" class="p-button-sm" />
+                <Button label="Edit Permission" icon="pi pi-pencil" class="p-button-sm"/>
               </NuxtLink>
             </template>
           </Column>

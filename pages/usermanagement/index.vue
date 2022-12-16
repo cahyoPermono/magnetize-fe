@@ -20,21 +20,24 @@
           <Column field="fullName" header="Full Name" :sortable="true" headerStyle="text-align: center"></Column>
           <Column field="email" header="Email Address" :sortable="true" headerStyle="text-align: center"></Column>
           <Column field="role.role" header="Role" :sortable="true" headerStyle="text-align: center"></Column>
+          <Column field="displayName" header="Display Name" :sortable="true" headerStyle="text-align: center"></Column>
+          <Column field="fullName" header="Full Name" :sortable="true" headerStyle="text-align: center"></Column>
+          <Column field="email" header="Email Address" :sortable="true" headerStyle="text-align: center"></Column>
+          <Column field="role.role" header="Role" :sortable="true" headerStyle="text-align: center"></Column>
           <Column header="Status" :sortable="true" style="text-align: center">
             <template #body="slotProps">
-              <Badge severity="warning" class="mr-2" v-if="slotProps.data.status === 'Active'">{{ slotProps.data.status
-              }}</Badge>
-              <Badge severity="danger" class="mr-2" v-else>{{
-                  slotProps.data.status
-              }}</Badge>
+              <Badge severity="warning" class="mr-2" v-if="slotProps.data.status === 'Active'">
+                {{ slotProps.data.status }}
+              </Badge>
+              <Badge severity="danger" class="mr-2" v-else>{{ slotProps.data.status }}</Badge>
             </template>
           </Column>
-          <Column header="Create On" headerStyle="text-align: center; width: 120px">
+          <Column header="Create On" headerStyle="text-align: center; width: 100px">
             <template #body="slotProps">
               {{ reverseDate(slotProps.data.createdAt) }}
             </template>
           </Column>
-          <Column header="Last Active Date" headerStyle="text-align: center">
+          <Column header="Last Active Date" headerStyle="text-align: center; width: 150px">
             <template #body="slotProps">
               {{ lastDate(slotProps.data.lastActive) }}
             </template>
@@ -42,8 +45,7 @@
           <Column>
             <template #body="slotProps">
               <NuxtLink :to="`/usermanagement/${slotProps.data.id}`">
-                <Button type="button" icon="pi pi-eye" class="p-button-outlined">
-                </Button>
+                <Button type="button" icon="pi pi-eye" class="p-button-outlined p-button-sm"></Button>
               </NuxtLink>
             </template>
           </Column>
@@ -55,9 +57,8 @@
 
 <script setup>
 import axios from "axios";
-import dateFormat from "dateformat";
 import { ref, onMounted } from "vue";
-import { usePermission } from "~~/stores/permission";
+import dateFormat from "dateformat";
 
 const config = useRuntimeConfig();
 const store = usePermission();
