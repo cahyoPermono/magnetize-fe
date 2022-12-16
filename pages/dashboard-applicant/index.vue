@@ -75,6 +75,7 @@
 <script setup>
 import axios from "axios";
 import dateFormat from "dateformat";
+import { usePermission } from "~~/stores/permission";
 
 const reverseDate = (date) => {
     return dateFormat(date, "d mmm yyyy, h:MM TT");
@@ -117,6 +118,11 @@ onMounted(async () => {
 });
 
 definePageMeta({
-    middleware: 'auth'
+    middleware: [
+    async function (to, from) {
+      const store = usePermission();
+      await store.auth();
+    }
+  ],
 });
 </script>

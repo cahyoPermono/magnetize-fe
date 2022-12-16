@@ -36,14 +36,12 @@
 <script setup>
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
+import { usePermission } from "~~/stores/permission";
 
 const toast = useToast();
-const router = useRouter();
 const config = useRuntimeConfig();
+const store = usePermission();
 
-const token = useCookie('token');
-const roleId = useCookie('role');
-const token_user = useCookie('user');
 let dataDept = ref("");
 
 const showToast = () =>{
@@ -51,9 +49,9 @@ const showToast = () =>{
 };
 
 const getDepartement = async () => {
-  const response = await axios.get(config.API_BASE_URL + "all_departements/" + roleId.value, {
+  const response = await axios.get(config.API_BASE_URL + "all_departements/" + store.roleId, {
     headers: {
-      'Authorization': `Bearer ${token.value}`
+      'Authorization': `Bearer ${store.token}`
     }
   });
   dataDept.value = response.data.departements;
@@ -62,16 +60,19 @@ const getDepartement = async () => {
 onMounted(async () => {
   await getDepartement();
   setTimeout(async () => {
-    token.value = null
-    token_user.value = null
-    roleId.value = null
-    await alert("Time is up, please LogIn");
-    router.push("/login");
+    alert("Time is up, please LogIn");
+    await store.logout();
   }, 3600000);
 });
 
 definePageMeta({
-  middleware: ['auth', 'isdepartement']
+  middleware: [
+    async function (to, from) {
+      const store = usePermission();
+      await store.auth();
+      await store.checkPermission("menu_departements");
+    },
+  ],
 });
 
 </script>

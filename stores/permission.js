@@ -3,30 +3,52 @@ import { defineStore } from "pinia";
 import axios from "axios";
 
 export const usePermission = defineStore("permission", () => {
-  const permission = ref([]);
   const config = useRuntimeConfig();
+
   const token = useCookie("token");
   const roleId = useCookie("role");
   const token_user = useCookie("user");
-  const arr = reactive([])
+  let arr = reactive([]);
 
-  function getPermission() {
+  const checkPermission = async (permission) => {
+    await getPermission();
+    const dataPermission = arr.includes(permission);
+    if (!dataPermission) {
+      navigateTo("/dashboard");
+    }
+    return
+  };
+
+  const auth = async () => {
+    if (!token.value) {
+      return navigateTo('/login')
+    }
+  };
+
+  const logout = async () => {
+    const today = new Date();
+    await axios.put(config.API_BASE_URL + "update/" + token_user.value, {
+      lastActive: today,
+    });
+    token.value = null;
+    roleId.value = null;
+    token_user.value = null;
+    arr = []
+    navigateTo("/login");
+  };
+
+  const getPermission = async () => {
     try {
-      axios
-        .get(config.API_BASE_URL + "rolepermissions/" + roleId.value)
-        .then((response) => {
-          // console.log(response.data.data)
-          response.data.data.forEach((element) => {
-            arr.push(element.permission.permission);
-          });
-          const p = arr;
-          // console.log(p)
-        });
-
+      const response = await axios.get(config.API_BASE_URL + "rolepermissions/" + roleId.value);
+      const response_promise = response.data.data;
+      response_promise.forEach(el => {
+        arr.push(el.permission.permission);
+      });
+      return arr;
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
-  return { permission, getPermission, token, token_user, roleId, arr };
+  return { getPermission, checkPermission, auth, logout, token, token_user, roleId, arr };
 });
