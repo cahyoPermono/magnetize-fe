@@ -29,11 +29,11 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted } from "vue";
-import { usePermission } from "~~/stores/permission";
+import { usePermission } from "@/stores/permission";
 
-const store = usePermission();
 const config = useRuntimeConfig();
 const router = useRouter();
+const store = usePermission();
 
 let rolePermission = ref("");
 let view_data = reactive([]);
@@ -69,6 +69,7 @@ definePageMeta({
     async function (to, from) {
       const store = usePermission();
       await store.auth();
+      await store.checkPermission("menu_rolepermission");
     },
   ],
 });

@@ -36,7 +36,7 @@
 <script setup>
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
-import { usePermission } from "~~/stores/permission";
+import { usePermission } from "@/stores/permission";
 
 const toast = useToast();
 const config = useRuntimeConfig();
