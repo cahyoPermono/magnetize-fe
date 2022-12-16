@@ -9,9 +9,9 @@
     </div>
     <div>
       <div class="row" style="height: 90vh; width: 100%;">
-        <div v-show="isSidebarActive" class="col-2 px-4 shadow-3 sidebar animate__animated animate__faster">
+        <div v-show="isSidebarActive" class="col-2 px-3 shadow-3 sidebar animate__animated animate__faster">
           <strong>
-            <p>Home</p>
+            <p style="margin-left: 5px;">Home</p>
           </strong>
           <div class="ml-3 mb-3">
             <NuxtLink to="/dashboard">
@@ -19,7 +19,7 @@
             </NuxtLink>
           </div>
           <strong>
-            <p>Feature</p>
+            <p style="margin-left: 5px;">Feature</p>
           </strong>
           <div class="ml-3">
             <NuxtLink v-if="(isLoggedIn, isdepartement)" to="/departements">
