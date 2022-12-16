@@ -58,11 +58,12 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted } from "vue";
+import { usePermission } from "@/stores/permission";
 import dateFormat from "dateformat";
 
 const config = useRuntimeConfig();
-const store = usePermission();
 let dataUser = ref("");
+const store = usePermission();
 
 const reverseDate = (date) => {
   return dateFormat(date, "dd-mm-yyyy");

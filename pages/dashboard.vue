@@ -1,21 +1,16 @@
 <template>
   <div>
-    <h2>Dashboard</h2>{{ store.$state.arr }}
+    <h2>Dashboard</h2>
   </div>
 </template>
 
 <script setup>
 import { onMounted } from "vue";
+import { usePermission } from "@/stores/permission";
 
-const store = usePermission()
 const router = useRouter();
 
-definePageMeta({
-  middleware: "auth",
-});
-
 onMounted(async () => {
-  await store.getPermission();
   setTimeout(async () => {
     alert("Time is up, please LogIn");
     await store.logout();
