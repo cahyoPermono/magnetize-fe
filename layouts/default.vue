@@ -4,7 +4,7 @@
       <Button icon="pi pi-bars" class="p-button-text p-button-plain" @click="sidebar()" />
       <a href="/dashboard"><img src="~/assets/magnetize-logo.png" alt="Logo" style="height: 40px" /></a>
       <div style="float: right" class="px-2">
-        <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="signout" v-if="isLoggedIn" />
+        <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="store.logout()" v-if="isLoggedIn" />
       </div>
     </div>
     <div>
@@ -50,38 +50,26 @@
 </template>
 
 <script setup>
-import axios from "axios";
 import { ref, onMounted, computed } from "vue";
+import { usePermission } from "~~/stores/permission";
 import "animate.css";
 
+const store = usePermission();
 const router = useRouter();
-const config = useRuntimeConfig();
-
-const arr = reactive([]);
 
 onMounted(async () => {
-  await axios
-    .get(config.API_BASE_URL + "rolepermissions/" + roleId.value)
-    .then((response) => {
-      response.data.data.forEach((element) => {
-        arr.push(element.permission.permission);
-      });
-    });
+  await store.getPermission();
 })
 
-const isjobs = computed(() => arr.includes('menu_jobs_hcd'))
-const isdepartement = computed(() => arr.includes('menu_departements'))
-const isuser = computed(() => arr.includes('menu_users'))
+const isjobs = computed(() => store.arr.includes('menu_jobs_hcd'))
+const isdepartement = computed(() => store.arr.includes('menu_departements'))
+const isuser = computed(() => store.arr.includes('menu_users'))
+
+const isLoggedIn = computed(() => store.token);
 
 function signin() {
   router.push("/login");
-}
-
-const token = useCookie('token');
-const roleId = useCookie('role');
-const token_user = useCookie('user');
-
-const isLoggedIn = computed(() => token.value);
+};
 
 let isSidebarActive = ref(true);
 let deactiveSidebar = ref("col-12 px-5");
@@ -91,24 +79,12 @@ const sidebar = () => {
   if (isSidebarActive.value) {
     sidebar.classList.add('animate__fadeOutLeft');
     sidebar.classList.remove('animate__fadeInLeft');
-    console.log(sidebar)
     setTimeout(() => { isSidebarActive.value = !isSidebarActive.value; }, 300)
-  }else{
-    isSidebarActive.value = !isSidebarActive.value; 
+  } else {
+    isSidebarActive.value = !isSidebarActive.value;
     sidebar.classList.add('animate__fadeInLeft');
     sidebar.classList.remove('animate__fadeOutLeft');
   }
-}
-
-async function signout() {
-  const today = new Date();
-  await axios.put(config.API_BASE_URL + "update/" + token_user.value, {
-    lastActive: today,
-  });
-  token.value = null;
-  roleId.value = null;
-  token_user.value = null;
-  router.push("/login");
 }
 
 const items = ref([
@@ -145,6 +121,7 @@ const items = ref([
     ],
   },
 ]);
+
 </script>
 
 <style>

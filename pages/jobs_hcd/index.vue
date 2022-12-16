@@ -29,6 +29,9 @@
 
 <script setup>
 import axios from "axios";
+import { usePermission } from "~~/stores/permission";
+
+const store = usePermission();
 const config = useRuntimeConfig();
 const displayed_data = ref([]);
 const getIndexJob = () => {
@@ -55,10 +58,20 @@ const getIndexJob = () => {
 
 onMounted(() => {
     getIndexJob();
+    setTimeout(async () => {
+        alert("Time is up, please LogIn");
+        await store.logout();
+    }, 3600000);
 });
 
 definePageMeta({
-    middleware: ['auth', 'isjob']
+    middleware: [
+        async function (to, from) {
+            const store = usePermission();
+            await store.auth();
+            await store.checkPermission("menu_jobs_hcd");
+        },
+    ],
 });
 </script>
 

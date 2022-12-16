@@ -1,5 +1,7 @@
 <template>
-  <div><h2>Dashboard</h2></div>
+  <div>
+    <h2>Dashboard</h2>{{ store.$state.arr }}
+  </div>
 </template>
 
 <script setup>
@@ -13,15 +15,19 @@ definePageMeta({
 });
 
 onMounted(async () => {
-  const token = useCookie("token");
-  const roleId = useCookie("role");
-  const token_user = useCookie("user");
-  await setTimeout(async () => {
-    token.value = null;
-    roleId.value = null;
-    token_user.value = null;
-   await  alert("Time is up, please LogIn");
-    router.push("/login");
+  await store.getPermission();
+  setTimeout(async () => {
+    alert("Time is up, please LogIn");
+    await store.logout();
   }, 3600000);
+});
+
+definePageMeta({
+  middleware: [
+    async function (to, from) {
+      const store = usePermission();
+      await store.auth();
+    }
+  ],
 });
 </script>
