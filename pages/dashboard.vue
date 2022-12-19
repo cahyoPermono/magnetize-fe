@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Dashboard</h2>{{ store.$state.arr }}
+    <h2>Dashboard</h2>
   </div>
 </template>
 
@@ -11,7 +11,6 @@ import { usePermission } from "~~/stores/permission";
 const store = usePermission()
 
 onMounted(async () => {
-  await store.getPermission();
   setTimeout(async () => {
     alert("Time is up, please LogIn");
     await store.logout();

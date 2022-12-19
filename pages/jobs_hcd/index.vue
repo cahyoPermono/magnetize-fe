@@ -29,9 +29,8 @@
 
 <script setup>
 import axios from "axios";
-import { usePermission } from "~~/stores/permission";
+import { usePermission } from "@/stores/permission";
 
-const store = usePermission();
 const config = useRuntimeConfig();
 const displayed_data = ref([]);
 const getIndexJob = () => {

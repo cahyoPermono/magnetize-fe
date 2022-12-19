@@ -23,9 +23,9 @@
     </div>
     <div>
       <div class="row" style="height: 90vh; width: 100%;">
-        <div v-show="isSidebarActive" class="col-2 px-4 shadow-3 sidebar animate__animated animate__faster">
+        <div v-show="isSidebarActive" class="col-2 px-3 shadow-3 sidebar animate__animated animate__faster">
           <strong>
-            <p>Home</p>
+            <p style="margin-left: 5px;">Home</p>
           </strong>
           <div class="ml-3 mb-3">
             <NuxtLink to="/dashboard">
@@ -33,7 +33,7 @@
             </NuxtLink>
           </div>
           <strong>
-            <p>Feature</p>
+            <p style="margin-left: 5px;">Feature</p>
           </strong>
           <div class="ml-3">
             <NuxtLink v-if="(isLoggedIn, isdepartement)" to="/departements">
@@ -50,7 +50,7 @@
             <br />
             <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" style="width: 11.5em;" />
             <br />
-            <NuxtLink to="/rolepermission">
+            <NuxtLink v-if="(isLoggedIn, isrolepermission)" to="/rolepermission">
               <Button icon="pi pi-cog" class="p-button-text p-button-plain" label="Role Permission" />
             </NuxtLink>
           </div>
@@ -78,7 +78,7 @@ onMounted(async () => {
 const isjobs = computed(() => store.arr.includes('menu_jobs_hcd'))
 const isdepartement = computed(() => store.arr.includes('menu_departements'))
 const isuser = computed(() => store.arr.includes('menu_users'))
-
+const isrolepermission = computed(() => store.arr.includes('menu_rolepermission'))
 const isLoggedIn = computed(() => store.token);
 
 const displayModal = ref(false);
