@@ -57,8 +57,8 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted } from "vue";
 import dateFormat from "dateformat";
+import { usePermission } from "~~/stores/permission";
 
 const config = useRuntimeConfig();
 const store = usePermission();

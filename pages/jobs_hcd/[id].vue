@@ -39,9 +39,9 @@
 
 <script setup>
 import axios from 'axios';
+import { usePermission } from '~~/stores/permission';
 
 const route = useRoute();
-const router = useRouter();
 const config = useRuntimeConfig();
 
 const id = route.params.id;
@@ -59,8 +59,12 @@ onMounted(async () => {
 });
 
 definePageMeta({
-    middleware:'auth'
-});
+  middleware: [
+    async function (to, from) {
+      const store = usePermission();
+      await store.auth();
+    },
+  ],});
 
 </script>
 

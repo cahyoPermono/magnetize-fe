@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const usePermission = defineStore("permission", () => {
   const config = useRuntimeConfig();
-
+  const router = useRouter();
   const token = useCookie("token");
   const roleId = useCookie("role");
   const token_user = useCookie("user");
@@ -34,7 +34,7 @@ export const usePermission = defineStore("permission", () => {
     roleId.value = null;
     token_user.value = null;
     arr = []
-    navigateTo("/login");
+    router.push({ path: "/login" });
   };
 
   const getPermission = async () => {
