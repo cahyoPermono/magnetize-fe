@@ -11,17 +11,18 @@
             <Form class="mb-3" @submit="save">
               <div class="card mt-3">
                 <p style="margin-top: 20px; margin-left: 30px;">Permission</p>
-                <div v-for="permission of rolePermission" :key="permission.id" class="field-checkbox" style="margin-left: 35px;">
-                  <Checkbox :inputId="permission.id" name="permission" 
-                    :value="permission.id" v-model="selectedPermission" />
+                <div v-for="permission of rolePermission" :key="permission.id" class="field-checkbox"
+                  style="margin-left: 35px;">
+                  <Checkbox :inputId="permission.id" name="permission" :value="permission.id"
+                    v-model="selectedPermission" />
                   <label :for="permission.id">{{ permission.permission }}</label>
                 </div>
                 <div class="mt-3">
-                  <Button class="p-button-sm" label="Update" icon="pi pi-check" type="submit" 
+                  <Button class="p-button-sm" label="Update" icon="pi pi-check" type="submit"
                     style="float: right; margin-right: 20px;" />
                   <NuxtLink to="/rolepermission">
-                    <Button label="No" icon="pi pi-times" class="p-button-sm p-button-warning" 
-                      style="float: right; margin-right: 10px; margin-bottom: 15px;"/>
+                    <Button label="No" icon="pi pi-times" class="p-button-sm p-button-warning"
+                      style="float: right; margin-right: 10px; margin-bottom: 15px;" />
                   </NuxtLink>
                 </div>
               </div>
@@ -68,14 +69,10 @@ async function save() {
           });
         });
     });
+    toast.add({ severity: "success", summary: "Berhasil", detail: "Permission Role Berhasil diupdate", });
     setTimeout(async () => {
-      toast.add({
-        severity: "success",
-        summary: "Success Message",
-        detail: "Message Content",
-      });
       router.push("/rolepermission");
-    }, 1000);
+    }, 2000);
   } catch (error) {
     alert(error);
   }

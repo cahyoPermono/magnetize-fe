@@ -53,9 +53,8 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted } from "vue";
-import { usePermission } from "@/stores/permission";
 import dateFormat from "dateformat";
+import { usePermission } from "~~/stores/permission";
 
 const config = useRuntimeConfig();
 let dataUser = ref("");

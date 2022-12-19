@@ -44,14 +44,16 @@ const store = usePermission();
 
 let dataDept = ref("");
 
-const showToast = () =>{
-  toast.add({severity:'success', summary: 'departemen bertambah', life: 3000});
+const showToast = () => {
+  toast.add({ severity: 'success', summary: 'departemen bertambah', life: 3000 });
 };
 
 const getDepartement = async () => {
-  const response = await axios.get(config.API_BASE_URL + "all_departements/" + store.roleId, {
+  const roleId = useCookie("role");
+  const token = useCookie("token");
+  const response = await axios.get(config.API_BASE_URL + "all_departements/" + roleId.value, {
     headers: {
-      'Authorization': `Bearer ${store.token}`
+      'Authorization': `Bearer ${token.value}`
     }
   });
   dataDept.value = response.data.departements;

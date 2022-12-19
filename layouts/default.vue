@@ -4,7 +4,21 @@
       <Button icon="pi pi-bars" class="p-button-text p-button-plain" @click="sidebar()" />
       <a href="/dashboard"><img src="~/assets/magnetize-logo.png" alt="Logo" style="height: 40px" /></a>
       <div style="float: right" class="px-2">
-        <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="store.logout()" v-if="isLoggedIn" />
+        <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="signOut()" v-if="isLoggedIn" />
+        <Dialog v-model:visible="displayModal" :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
+          :style="{ width: '30vw' }" :modal="true">
+          <template #header>
+            <h4><strong>Sign Out Confirmation</strong></h4>
+          </template>
+          <div class="grid pt-3">
+            <div class="col-1 col-offset-1"> <i class="pi pi-exclamation-triangle" style="font-size: 1.5rem;"></i></div>
+            <div class="col font-bold">&nbsp;&nbsp;Do you want to log out ?</div>
+          </div>
+          <template #footer>
+            <Button label="No" icon="pi pi-times" @click="closeModal()" class="p-button-text" />
+            <Button label="Yes" icon="pi pi-check" @click="store.logout()" class="p-button-danger" />
+          </template>
+        </Dialog>
       </div>
     </div>
     <div>
@@ -34,7 +48,7 @@
               <Button icon="pi pi-users" class="p-button-text p-button-plain" label="Guest" />
             </NuxtLink>
             <br />
-            <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" style="width: 11.5em;"/>
+            <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" style="width: 11.5em;" />
             <br />
             <NuxtLink v-if="(isLoggedIn, isrolepermission)" to="/rolepermission">
               <Button icon="pi pi-cog" class="p-button-text p-button-plain" label="Role Permission" />
@@ -66,6 +80,14 @@ const isdepartement = computed(() => store.arr.includes('menu_departements'))
 const isuser = computed(() => store.arr.includes('menu_users'))
 const isrolepermission = computed(() => store.arr.includes('menu_rolepermission'))
 const isLoggedIn = computed(() => store.token);
+
+const displayModal = ref(false);
+const signOut = () => {
+  displayModal.value = true;
+};
+const closeModal = () => {
+  displayModal.value = false;
+};
 
 function signin() {
   router.push("/login");

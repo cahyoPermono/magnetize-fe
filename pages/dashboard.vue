@@ -6,9 +6,9 @@
 
 <script setup>
 import { onMounted } from "vue";
-import { usePermission } from "@/stores/permission";
+import { usePermission } from "~~/stores/permission";
 
-const router = useRouter();
+const store = usePermission()
 
 onMounted(async () => {
   setTimeout(async () => {
