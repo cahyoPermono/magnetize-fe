@@ -55,6 +55,9 @@
 
 <script setup>
 import axios from "axios";
+import { usePermission } from "~~/stores/permission";
+
+const store = usePermission()
 const config = useRuntimeConfig();
 const router = useRouter();
 
