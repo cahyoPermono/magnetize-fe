@@ -96,6 +96,10 @@ async function save() {
       alamat: newDept.alamat,
       avatar: newDept.avatar,
       deskripsi: deskripsi.value,
+    }, {
+      headers: {
+        'Authorization': `Bearer ${store.token}`
+      }
     }).then(() => {
       displayModal.value = false
       emit('showToast');
@@ -107,7 +111,8 @@ async function save() {
   } catch (error) {
     console.log(error);
   }
-}
+};
+
 const isRequired = (value) => {
   if (!value) {
     return "This field is required";
