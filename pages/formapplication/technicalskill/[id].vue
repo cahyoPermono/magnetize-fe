@@ -176,7 +176,7 @@ async function getJob() {
   try {
     await axios.get(config.API_BASE_URL + "jobs").then((response) => {
       response.data.data.forEach((element) => {
-        if (element.name === applicants.value[0].position) {
+        if (element.id === applicants.value[0].JobId) {
           jobs.value = element;
         }
       });

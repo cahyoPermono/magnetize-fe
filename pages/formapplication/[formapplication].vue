@@ -45,9 +45,9 @@
                 <select
                   name="jobs"
                   class="form-control"
-                  v-model="applicant.position"
+                  v-model="applicant.JobId"
                 >
-                  <option v-for="job in jobs" :value="job.name" :key="job.id">
+                  <option v-for="job in jobs" :value="job.id" :key="job.id">
                     {{ job.name }}
                   </option>
                 </select>
@@ -1724,7 +1724,7 @@ const applicant = reactive({
   npwp_no: "",
   account_no: "",
   religion: "",
-  position: "",
+  JobId: "",
   photo: "",
   marital_status: "",
   year_marriage: "",
@@ -1838,7 +1838,7 @@ async function save() {
           npwp_no: applicant.npwp_no,
           account_no: applicant.account_no,
           religion: applicant.religion,
-          position: applicant.position,
+          JobId: applicant.JobId,
           photo: applicant.photo,
           marital_status: applicant.marital_status,
           year_marriage: applicant.year_marriage,
