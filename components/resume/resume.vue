@@ -22,9 +22,10 @@ const id = route.params.id;
 let form = reactive();
 
 const downloadCV = async (form) => {
+  const linkSource = `data:application/pdf;base64,${form}`;
   const a = document.createElement("a");
-  a.href = form;
-  a.download = "resume.pdf";
+  a.href = linkSource;
+  a.download = `applicantDocs_${id}.pdf`
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -33,6 +34,7 @@ const downloadCV = async (form) => {
 async function getForm() {
   form = await axios.get(config.API_BASE_URL + "download_pdf/" + id);
   form = form.data.dataPDF;
+  // console.log(form)
 }
 
 onMounted(() => {
