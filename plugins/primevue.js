@@ -34,6 +34,7 @@ import Accordion from 'primevue/accordion';
 import AccordionTab from 'primevue/accordiontab';
 import Badge from 'primevue/badge';
 import Checkbox from 'primevue/checkbox';
+import SplitButton from 'primevue/splitbutton';
 
 export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.use(PrimeVue, { ripple: true });
@@ -71,5 +72,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('AccordionTab', AccordionTab);
     nuxtApp.vueApp.component('Badge', Badge)
     nuxtApp.vueApp.component('Checkbox', Checkbox)
+    nuxtApp.vueApp.component('SplitButton', SplitButton)
    //other components that you need
 });

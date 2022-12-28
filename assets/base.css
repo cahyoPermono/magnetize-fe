@@ -7,6 +7,13 @@ small {
     opacity: 0.7;
 }
 
+.dot {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
 body a:hover {
     text-decoration: none;
 }
@@ -62,14 +69,19 @@ body a:hover {
     color: #6c757d;
 }
 
-.p-panelmenu .p-panelmenu-header.p-highlight:not(.p-disabled) > a:hover{
+.p-panelmenu .p-panelmenu-header.p-highlight:not(.p-disabled)>a:hover {
     color: #6c757d;
 }
 
-.p-panelmenu .p-panelmenu-content{
+.p-panelmenu .p-panelmenu-content {
     border: none;
 }
+
 .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link .p-menuitem-text,
-.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link:not(.p-disabled):hover .p-menuitem-text{
+.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link:not(.p-disabled):hover .p-menuitem-text {
     color: #6c757d;
+}
+
+.card .tabview {
+    width: 70vw;
 }
