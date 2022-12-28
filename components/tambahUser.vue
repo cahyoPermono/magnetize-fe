@@ -223,6 +223,7 @@ async function save() {
         image: newUser.image,
       })
       .then(async () => {
+        await toast.add({ severity: "success", summary: "Berhasil", detail: "User baru telah ditambahkan", life: 3000 });
         displayModal.value = false;
         // alert("Create User Success");
         location.reload();
@@ -249,4 +250,3 @@ const isRequired = (value) => {
   return true;
 };
 </script>
-

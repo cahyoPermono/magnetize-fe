@@ -69,10 +69,10 @@ async function save() {
           });
         });
     });
-    toast.add({ severity: "success", summary: "Berhasil", detail: "Permission Role Berhasil diupdate", });
+    await toast.add({ severity: "success", summary: "Berhasil", detail: "Permission Role Berhasil diupdate", });
     setTimeout(async () => {
       router.push("/rolepermission");
-    }, 2000);
+    }, 1000);
   } catch (error) {
     alert(error);
   }

@@ -44,6 +44,10 @@
               <Button icon="pi pi-sitemap" class="p-button-text p-button-plain" label="Jobs" />
             </NuxtLink>
             <br />
+            <NuxtLink to="/candidate">
+              <Button icon="pi pi-book" class="p-button-text p-button-plain" label="Candidate" />
+            </NuxtLink>
+            <br />
             <NuxtLink to="/dashboard-applicant">
               <Button icon="pi pi-users" class="p-button-text p-button-plain" label="Guest" />
             </NuxtLink>
@@ -128,7 +132,7 @@ const items = ref([
               {
                 key: "0_0_0_0",
                 label: "User Management",
-                icon: "pi pi-bars",
+                icon: "pi pi-list",
                 to: "/usermanagement",
               },
             ],
