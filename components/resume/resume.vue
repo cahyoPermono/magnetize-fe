@@ -23,7 +23,7 @@ let form = reactive();
 
 const downloadCV = async (form) => {
   const a = document.createElement("a");
-  a.href = form;
+  a.href = 'data:application/pdf;base64,'+form;
   a.download = "resume.pdf";
   document.body.appendChild(a);
   a.click();
