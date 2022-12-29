@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Toast />
+    <div>
+      <Toast />
+    </div>
     <div class="card">
       <Form v-slot="{ meta }" @submit="save">
         <div v-if="apply">
