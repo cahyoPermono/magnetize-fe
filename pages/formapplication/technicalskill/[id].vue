@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Toast />
+    <div><Toast /></div>
+    
     <ConfirmDialog></ConfirmDialog>
     <div class="card" style="margin-bottom: 15px">
       <Form @submit="save">
