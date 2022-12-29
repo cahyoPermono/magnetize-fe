@@ -44,7 +44,7 @@
               <Button icon="pi pi-sitemap" class="p-button-text p-button-plain" label="Jobs" />
             </NuxtLink>
             <br />
-            <NuxtLink to="/candidate">
+            <NuxtLink v-if="(isLoggedIn, iscandidate)" to="/candidate">
               <Button icon="pi pi-book" class="p-button-text p-button-plain" label="Candidate" />
             </NuxtLink>
             <br />
@@ -80,6 +80,7 @@ onMounted(async () => {
 })
 
 const isjobs = computed(() => store.arr.includes('menu_jobs_hcd'))
+const iscandidate = computed(() => store.arr.includes('menu_candidates'))
 const isdepartement = computed(() => store.arr.includes('menu_departements'))
 const isuser = computed(() => store.arr.includes('menu_users'))
 const isrolepermission = computed(() => store.arr.includes('menu_rolepermission'))

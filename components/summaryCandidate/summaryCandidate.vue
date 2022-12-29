@@ -144,7 +144,7 @@
                                 Experience in Telecomunication
                             </td>
                             <td>
-                                &nbsp;: {{ candidate_data.experience_telecomunication }}
+                                &nbsp;: {{ candidate_data.experience_tellecomunication }}
                             </td>
                         </tr>
                         <tr>
@@ -228,7 +228,7 @@ const candidate_data = reactive({
     mobile: null,
     office_parent_phone: null,
     email: null,
-    experience_telecomunication: null,
+    experience_tellecomunication: null,
     experience_it: null,
     graduation: null,
     current_sallary: null,

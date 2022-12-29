@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Toast />
+    <div>
+      <Toast />
+    </div>
     <div class="card">
       <Form v-slot="{ meta }" @submit="save">
         <div v-if="apply">
@@ -29,7 +31,7 @@
                   <small>Posisi yang dilamar</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <select name="jobs" class="form-control" v-model="applicant.position">
+                  <select name="jobs" class="form-control" v-model="applicant.JobId">
                     <option v-for="job in jobs" :value="job.id" :key="job.id">
                       {{ job.name }}
                     </option>
