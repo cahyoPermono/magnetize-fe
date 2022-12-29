@@ -1293,6 +1293,8 @@ async function save() {
           photo: applicant.photo,
           marital_status: applicant.marital_status,
           year_marriage: applicant.year_marriage,
+          status: "shortlisted",
+          isCandidate: 0,
         },
         family: families,
         formaleducation: {

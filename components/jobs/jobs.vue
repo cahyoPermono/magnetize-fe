@@ -55,17 +55,14 @@ async function getCandidate() {
 }
 
 const assignJob = (id) => {
-  axios
-    .put(config.API_BASE_URL + "tocandidate/" + id, {
-      isCandidate: true,
-    })
-    .then(async (mes) => {
-      await toast.add({
-        severity: "info",
-        summary: mes.data.message,
-        life: 3000,
-      });
-      window.location.reload();
+    axios.put(config.API_BASE_URL + "tocandidate/" + id, {
+        "isCandidate": true,
+        "status" : "shortlisted"
+    }).then(async (mes) => {
+        await toast.add({ severity: "info", summary: mes.data.message, life: 3000 });
+        window.location.reload()
+    }).catch(err => {
+        console.log(err);
     })
     .catch((err) => {
       console.log(err);
