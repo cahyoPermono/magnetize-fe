@@ -144,7 +144,7 @@
                                 Experience in Telecomunication
                             </td>
                             <td>
-                                &nbsp;: {{ candidate_data.experience_telecomunication }}
+                                &nbsp;: {{ candidate_data.experience_tellecomunication }}
                             </td>
                         </tr>
                         <tr>
@@ -228,7 +228,7 @@ const candidate_data = reactive({
     mobile: null,
     office_parent_phone: null,
     email: null,
-    experience_telecomunication: null,
+    experience_tellecomunication: null,
     experience_it: null,
     graduation: null,
     current_sallary: null,
@@ -260,12 +260,13 @@ const getter = async () => {
     candidate_data.diploma = candidate.formaleducations[0].major;
     candidate_data.university = candidate.formaleducations[0].name_location;
     candidate_data.current_company = candidate.employmenthistories[0].name_company;
-    candidate_data.current_position = candidate.employmenthistories[0].position;  
-    candidate_data.experience_telecomunication = candidate.otherinformation.experience_telecomunication;
+    candidate_data.current_position = candidate.employmenthistories[0].position;
+    candidate_data.current_sallary = candidate.employmenthistories[0].take_home_pay  
+    candidate_data.experience_tellecomunication = candidate.otherinformation.experience_tellecomunication;
     candidate_data.experience_it = candidate.otherinformation.experience_it;
     candidate_data.graduation = candidate.formaleducations[0].graduate;
     candidate_data.expected_salary = candidate.otherinformation.salary_expect;
-    candidate_data.candidate_reference_name = candidate.relative_in_ip;
+    candidate_data.candidate_reference_name = candidate.otherinformation.relatives_in_ip;
     candidate_data.notice_period = candidate.otherinformation.able_to_start;
     candidate_data.status = candidate.status;
 }
