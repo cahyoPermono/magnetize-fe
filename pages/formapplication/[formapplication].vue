@@ -17,21 +17,38 @@
                 </div>
                 <div class="col-sm">
                   <div class="b">
-                    <Avatar class="mr-2" :image="applicant.photo" size="xlarge" style="width: 120px; height: 120px" />
+                    <Avatar
+                      class="mr-2"
+                      :image="applicant.photo"
+                      size="xlarge"
+                      style="width: 120px; height: 120px"
+                    />
                   </div>
                   <div class="b">
                     <label for="pp">Foto</label>
-                    <FileUpload name="demo[]" mode="basic" :customUpload="true" @uploader="onUploadAva" accept="image/*"
-                      :maxFileSize="2000000" :auto="true" />
+                    <FileUpload
+                      name="demo[]"
+                      mode="basic"
+                      :customUpload="true"
+                      @uploader="onUploadAva"
+                      accept="image/*"
+                      :maxFileSize="2000000"
+                      :auto="true"
+                    />
                   </div>
                 </div>
               </div>
               <div class="row" style="margin-top: 35px">
                 <label for="position" class="col-sm-2 col-form-label">
-                  <small>Posisi yang dilamar</small><span style="color: red">*</span>
+                  <small>Posisi yang dilamar</small
+                  ><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <select name="jobs" class="form-control" v-model="applicant.JobId">
+                  <select
+                    name="jobs"
+                    class="form-control"
+                    v-model="applicant.JobId"
+                  >
                     <option v-for="job in jobs" :value="job.id" :key="job.id">
                       {{ job.name }}
                     </option>
@@ -41,8 +58,13 @@
             </div>
           </div>
           <div class="card-footer">
-            <Button class="p-button-sm" icon="pi pi-arrow-right"
-              @click="(apply = false), (personal1 = true)" style="float: right" />
+            <Button class="p-button-text" :disabled="true" />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-right"
+              @click="(apply = false), (personal1 = true)"
+              style="float: right"
+            />
           </div>
         </div>
 
@@ -57,7 +79,12 @@
                   <small>Nama Lengkap</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="name" :rules="isRequired" v-model="applicant.name" />
+                  <Field
+                    class="form-control"
+                    name="name"
+                    :rules="isRequired"
+                    v-model="applicant.name"
+                  />
                   <ErrorMessage name="name">
                     <small style="color: red">Name is required</small>
                   </ErrorMessage>
@@ -71,13 +98,26 @@
                   <small>Gender</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field type="radio" name="applicant_gender" value="L" :rules="isRequired"
-                    v-model="applicant.gender" />&nbsp;&nbsp;
-                  <label for="applicant_gender"
-                    class="col-form-label"><small>Laki-Laki</small></label>&nbsp;&nbsp;&nbsp;&nbsp;
-                  <Field type="radio" name="applicant_gender" value="P" :rules="isRequired"
-                    v-model="applicant.gender" />&nbsp;&nbsp;
-                  <label for="applicant_gender" class="col-form-label"><small>Perempuan</small></label>
+                  <Field
+                    type="radio"
+                    name="applicant_gender"
+                    value="L"
+                    :rules="isRequired"
+                    v-model="applicant.gender"
+                  />&nbsp;&nbsp;
+                  <label for="applicant_gender" class="col-form-label"
+                    ><small>Laki-Laki</small></label
+                  >&nbsp;&nbsp;&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="applicant_gender"
+                    value="P"
+                    :rules="isRequired"
+                    v-model="applicant.gender"
+                  />&nbsp;&nbsp;
+                  <label for="applicant_gender" class="col-form-label"
+                    ><small>Perempuan</small></label
+                  >
                   <ErrorMessage name="applicant_gender">
                     <small style="color: red">Gender is required</small>
                   </ErrorMessage>
@@ -91,8 +131,12 @@
                   <small>Tempat Lahir</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="place_of_birth" :rules="isRequired"
-                    v-model="applicant.place_of_birth" />
+                  <Field
+                    class="form-control"
+                    name="place_of_birth"
+                    :rules="isRequired"
+                    v-model="applicant.place_of_birth"
+                  />
                   <ErrorMessage name="place_of_birth">
                     <small style="color: red">Place of Birth is required</small>
                   </ErrorMessage>
@@ -106,7 +150,13 @@
                   <small>Tanggal Lahir</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="date" type="date" :rules="isRequired" v-model="applicant.date" />
+                  <Field
+                    class="form-control"
+                    name="date"
+                    type="date"
+                    :rules="isRequired"
+                    v-model="applicant.date"
+                  />
                   <ErrorMessage name="date">
                     <small style="color: red">Date of Birth is required</small>
                   </ErrorMessage>
@@ -114,13 +164,68 @@
               </div>
             </div>
 
+            <!-- <div class="mt-2">
+              <div class="row">
+                <label for="blood_type" class="col-sm-2 col-form-label">
+                  <small>Gol Darah</small>
+                </label>
+                <div class="col-sm">
+                  <Field
+                    class="form-control"
+                    name="blood_type"
+                    v-model="applicant.blood_type"
+                  />
+                </div>
+              </div>
+            </div> -->
+
             <div class="mt-2">
               <div class="row">
                 <label for="blood_type" class="col-sm-2 col-form-label">
                   <small>Gol Darah</small>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="blood_type" v-model="applicant.blood_type" />
+                  <Field
+                    type="radio"
+                    name="blood_type"
+                    value="A"
+                    v-model="applicant.blood_type"
+                  />
+                  &nbsp;
+                  <label for="blood_type" class="col-form-label"
+                    ><small>A</small></label
+                  >&nbsp;&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="blood_type"
+                    value="B"
+                    v-model="applicant.blood_type"
+                  />&nbsp;
+                  <label for="blood_type" class="col-form-label"
+                    ><small>B</small></label
+                  >&nbsp;&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="blood_type"
+                    value="AB"
+                    v-model="applicant.blood_type"
+                  />&nbsp;
+                  <label for="blood_type" class="col-form-label"
+                    ><small>AB</small></label
+                  >&nbsp;&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="blood_type"
+                    value="O"
+                    v-model="applicant.blood_type"
+                  />
+                  &nbsp;
+                  <label for="blood_type" class="col-form-label"
+                    ><small>O</small></label
+                  >&nbsp;&nbsp;&nbsp;
+                  <ErrorMessage name="religion">
+                    <small style="color: red">Religion is required</small>
+                  </ErrorMessage>
                 </div>
               </div>
             </div>
@@ -131,7 +236,12 @@
                   <small>Handphone</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="mobile" :rules="isRequired" v-model="applicant.mobile" />
+                  <Field
+                    class="form-control"
+                    name="mobile"
+                    :rules="isRequired"
+                    v-model="applicant.mobile"
+                  />
                   <ErrorMessage name="mobile">
                     <small style="color: red">Mobile is required</small>
                   </ErrorMessage>
@@ -145,7 +255,13 @@
                   <small>Email</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" type="email" name="email" :rules="isRequired" v-model="applicant.email" />
+                  <Field
+                    class="form-control"
+                    type="email"
+                    name="email"
+                    :rules="isRequired"
+                    v-model="applicant.email"
+                  />
                   <ErrorMessage name="email">
                     <small style="color: red">Email is required</small>
                   </ErrorMessage>
@@ -156,24 +272,18 @@
             <div class="mt-2">
               <div class="row">
                 <label for="id_sim_no" class="col-sm-2 col-form-label">
-                  <small>No. KTP/SIM</small><span style="color: red">*</span>
+                  <small>No. KTP</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="id_sim_no" :rules="isRequired" v-model="applicant.id_sim_no" />
+                  <Field
+                    class="form-control"
+                    name="id_sim_no"
+                    :rules="isRequired"
+                    v-model="applicant.id_sim_no"
+                  />
                   <ErrorMessage name="id_sim_no">
                     <small style="color: red">ID No. is required</small>
                   </ErrorMessage>
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-2">
-              <div class="row">
-                <label for="valid_to" class="col-sm-2 col-form-label">
-                  <small>Berlaku s.d</small>
-                </label>
-                <div class="col-sm">
-                  <Field class="form-control" name="valid_to" v-model="applicant.valid_to" />
                 </div>
               </div>
             </div>
@@ -184,24 +294,69 @@
                   <small>Agama</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field type="radio" name="religion" value="islam" :rules="isRequired" v-model="applicant.religion" />
+                  <Field
+                    type="radio"
+                    name="religion"
+                    value="islam"
+                    :rules="isRequired"
+                    v-model="applicant.religion"
+                  />
                   &nbsp;
-                  <label for="religion" class="col-form-label"><small>Islam</small></label>&nbsp;&nbsp;
-                  <Field type="radio" name="religion" value="katholik" :rules="isRequired"
-                    v-model="applicant.religion" />&nbsp;
-                  <label for="religion" class="col-form-label"><small>Katholik</small></label>&nbsp;&nbsp;
-                  <Field type="radio" name="religion" value="protestan" :rules="isRequired"
-                    v-model="applicant.religion" />&nbsp;
-                  <label for="religion" class="col-form-label"><small>Protestan</small></label>&nbsp;&nbsp;
-                  <Field type="radio" name="religion" value="budha" :rules="isRequired" v-model="applicant.religion" />
+                  <label for="religion" class="col-form-label"
+                    ><small>Islam</small></label
+                  >&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="religion"
+                    value="katholik"
+                    :rules="isRequired"
+                    v-model="applicant.religion"
+                  />&nbsp;
+                  <label for="religion" class="col-form-label"
+                    ><small>Katholik</small></label
+                  >&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="religion"
+                    value="protestan"
+                    :rules="isRequired"
+                    v-model="applicant.religion"
+                  />&nbsp;
+                  <label for="religion" class="col-form-label"
+                    ><small>Protestan</small></label
+                  >&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="religion"
+                    value="budha"
+                    :rules="isRequired"
+                    v-model="applicant.religion"
+                  />
                   &nbsp;
-                  <label for="religion" class="col-form-label"><small>Budha</small></label>&nbsp;&nbsp;
-                  <Field type="radio" name="religion" value="hindu" :rules="isRequired" v-model="applicant.religion" />
+                  <label for="religion" class="col-form-label"
+                    ><small>Budha</small></label
+                  >&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="religion"
+                    value="hindu"
+                    :rules="isRequired"
+                    v-model="applicant.religion"
+                  />
                   &nbsp;
-                  <label for="religion" class="col-form-label"><small>Hindu</small></label>&nbsp;&nbsp;
-                  <Field type="radio" name="religion" value="lainnya" :rules="isRequired"
-                    v-model="applicant.religion" />&nbsp;
-                  <label for="religion" class="col-form-label"><small>Lainnya</small></label>&nbsp;&nbsp;
+                  <label for="religion" class="col-form-label"
+                    ><small>Hindu</small></label
+                  >&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="religion"
+                    value="lainnya"
+                    :rules="isRequired"
+                    v-model="applicant.religion"
+                  />&nbsp;
+                  <label for="religion" class="col-form-label"
+                    ><small>Lainnya</small></label
+                  >&nbsp;&nbsp;
                   <ErrorMessage name="religion">
                     <small style="color: red">Religion is required</small>
                   </ErrorMessage>
@@ -210,9 +365,18 @@
             </div>
           </div>
           <div class="card-footer text-muted">
-            <Button class="p-button-sm" icon="pi pi-arrow-left" @click="(personal1 = false), (apply = true)" />
-            <Button class="p-button-sm" icon="pi pi-arrow-right" @click="(personal1 = false), (personal2 = true)"
-              :disabled="!(meta.valid && meta.dirty)" style="float: right" />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-left"
+              @click="(personal1 = false), (apply = true)"
+            />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-right"
+              @click="(personal1 = false), (personal2 = true)"
+              :disabled="!(meta.valid && meta.dirty)"
+              style="float: right"
+            />
           </div>
         </div>
 
@@ -224,10 +388,16 @@
             <div class="mt-2">
               <div class="row">
                 <label for="address" class="col-sm-2 col-form-label">
-                  <small>Alamat Rumah (sesuai KTP)</small><span style="color: red">*</span>
+                  <small>Alamat Rumah (sesuai KTP)</small
+                  ><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="address" :rules="isRequired" v-model="applicant.address" />
+                  <Field
+                    class="form-control"
+                    name="address"
+                    :rules="isRequired"
+                    v-model="applicant.address"
+                  />
                   <ErrorMessage name="address">
                     <small style="color: red">Address is required</small>
                   </ErrorMessage>
@@ -236,14 +406,23 @@
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="postal_code_address" class="col-sm-2 col-form-label">
+                <label
+                  for="postal_code_address"
+                  class="col-sm-2 col-form-label"
+                >
                   <small>Kode Pos</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="postal_code_address" :rules="isRequired"
-                    v-model="applicant.postal_code_address" />
+                  <Field
+                    class="form-control"
+                    name="postal_code_address"
+                    :rules="isRequired"
+                    v-model="applicant.postal_code_address"
+                  />
                   <ErrorMessage name="postal_code_address">
-                    <small style="color: red">Postal Code Addess is required</small>
+                    <small style="color: red"
+                      >Postal Code Addess is required</small
+                    >
                   </ErrorMessage>
                 </div>
               </div>
@@ -255,40 +434,47 @@
                   <small>Alamat Rumah (Domisili)</small>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="domicile" v-model="applicant.domicile" />
+                  <Field
+                    class="form-control"
+                    name="domicile"
+                    v-model="applicant.domicile"
+                  />
                 </div>
               </div>
             </div>
 
             <div class="mt-2">
               <div class="row">
-                <label for="postal_code_domicile" class="col-sm-2 col-form-label">
+                <label
+                  for="postal_code_domicile"
+                  class="col-sm-2 col-form-label"
+                >
                   <small>Kode Pos (Domisili)</small>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="postal_code_domicile" v-model="applicant.postal_code_domicile" />
+                  <Field
+                    class="form-control"
+                    name="postal_code_domicile"
+                    v-model="applicant.postal_code_domicile"
+                  />
                 </div>
               </div>
             </div>
 
             <div class="mt-2">
               <div class="row">
-                <label for="phome" class="col-sm-2 col-form-label">
-                  <small>Telpon</small>
+                <label
+                  for="office_parent_phone"
+                  class="col-sm-2 col-form-label"
+                >
+                  <small>No HP Orang Tua</small>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="phome" v-model="applicant.phone" />
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-2">
-              <div class="row">
-                <label for="office_parent_phone" class="col-sm-2 col-form-label">
-                  <small>Telpon Kantor/Orang Tua</small>
-                </label>
-                <div class="col-sm">
-                  <Field class="form-control" name="office_parent_phone" v-model="applicant.office_parent_phone" />
+                  <Field
+                    class="form-control"
+                    name="office_parent_phone"
+                    v-model="applicant.office_parent_phone"
+                  />
                 </div>
               </div>
             </div>
@@ -299,7 +485,11 @@
                   <small>No. NPWP (jika ada)</small>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="npwp_no" v-model="applicant.npwp_no" />
+                  <Field
+                    class="form-control"
+                    name="npwp_no"
+                    v-model="applicant.npwp_no"
+                  />
                 </div>
               </div>
             </div>
@@ -310,16 +500,29 @@
                   <small>No. Rekening (jika ada)</small>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="account_no" v-model="applicant.account_no" />
+                  <Field
+                    class="form-control"
+                    name="account_no"
+                    v-model="applicant.account_no"
+                  />
                 </div>
               </div>
             </div>
           </div>
 
           <div class="card-footer text-muted">
-            <Button class="p-button-sm" icon="pi pi-arrow-left" @click="(personal2 = false), (personal1 = true)" />
-            <Button class="p-button-sm" icon="pi pi-arrow-right" @click="(personal2 = false), (family = true)"
-              :disabled="!(meta.valid && meta.dirty)" style="float: right" />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-left"
+              @click="(personal2 = false), (personal1 = true)"
+            />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-right"
+              @click="(personal2 = false), (family = true)"
+              :disabled="!(meta.valid && meta.dirty)"
+              style="float: right"
+            />
           </div>
         </div>
 
@@ -331,26 +534,58 @@
             <div class="mt-2">
               <div class="row">
                 <label for="marital_status" class="col-sm-2 col-form-label">
-                  <small>Status Perkawinan</small><span style="color: red">*</span>
+                  <small>Status Perkawinan</small
+                  ><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field type="radio" name="marital_status" value="lajang" :rules="isRequired"
-                    v-model="applicant.marital_status" />&nbsp;
-                  <label for="marital_status"
-                    class="col-form-label"><small>Lajang</small></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <Field type="radio" name="marital_status" value="janda/duda" :rules="isRequired"
-                    v-model="applicant.marital_status" />&nbsp;
-                  <label for="marital_status"
-                    class="col-form-label"><small>Janda/Duda</small></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <Field type="radio" name="marital_status" value="menikah" :rules="isRequired"
-                    v-model="applicant.marital_status" />&nbsp;
-                  <label for="marital_status" class="col-form-label"><small>Menikah, Tahun</small></label>&nbsp;&nbsp;
-                  <InputText v-if="
-  applicant.marital_status === 'lajang' ||
-  applicant.marital_status === 'janda/duda'
-" class="p-inputtext-sm" name="year_marriage" type="text" v-model="applicant.year_marriage" readonly />
-                  <InputText v-else class="p-inputtext-sm" name="year_marriage" type="text"
-                    v-model="applicant.year_marriage" />
+                  <Field
+                    type="radio"
+                    name="marital_status"
+                    value="lajang"
+                    :rules="isRequired"
+                    v-model="applicant.marital_status"
+                  />&nbsp;
+                  <label for="marital_status" class="col-form-label"
+                    ><small>Lajang</small></label
+                  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="marital_status"
+                    value="janda/duda"
+                    :rules="isRequired"
+                    v-model="applicant.marital_status"
+                  />&nbsp;
+                  <label for="marital_status" class="col-form-label"
+                    ><small>Janda/Duda</small></label
+                  >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="marital_status"
+                    value="menikah"
+                    :rules="isRequired"
+                    v-model="applicant.marital_status"
+                  />&nbsp;
+                  <label for="marital_status" class="col-form-label"
+                    ><small>Menikah, Tahun</small></label
+                  >&nbsp;&nbsp;
+                  <InputText
+                    v-if="
+                      applicant.marital_status === 'lajang' ||
+                      applicant.marital_status === 'janda/duda'
+                    "
+                    class="p-inputtext-sm"
+                    name="year_marriage"
+                    type="text"
+                    v-model="applicant.year_marriage"
+                    readonly
+                  />
+                  <InputText
+                    v-else
+                    class="p-inputtext-sm"
+                    name="year_marriage"
+                    type="text"
+                    v-model="applicant.year_marriage"
+                  />
 
                   <ErrorMessage name="marital_status">
                     <small style="color: red">Marital Status is required</small>
@@ -358,17 +593,28 @@
                 </div>
               </div>
             </div>
-            <Button @click="addFamily" icon="pi pi-plus" class="p-button-warning"
-              v-tooltip.right="'Klik untuk menambahkan'" />
+            <Button
+              @click="addFamily"
+              icon="pi pi-plus"
+              class="p-button-warning"
+              v-tooltip.right="'Klik untuk menambahkan'"
+            />
             <div v-for="(fams, index) in families" :key="index">
               <div class="mt-2">
                 <div class="row">
                   <label for="member" class="col-sm-2 col-form-label">
-                    <small>Anggota Keluarga</small><span style="color: red">*</span>
+                    <small>Anggota Keluarga</small
+                    ><span style="color: red">*</span>
                   </label>
                   <div class="col-sm">
-                    <Dropdown v-model="fams.member" :name="`families[${index}][member]`" :options="members"
-                      optionLabel="member_name" optionValue="code" placeholder="Select a Member" />
+                    <Dropdown
+                      v-model="fams.member"
+                      :name="`families[${index}][member]`"
+                      :options="members"
+                      optionLabel="member_name"
+                      optionValue="code"
+                      placeholder="Select a Member"
+                    />
                   </div>
                 </div>
               </div>
@@ -378,8 +624,12 @@
                     <small>Nama</small><span style="color: red">*</span>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" :name="`families[${index}][name]`" :rules="isRequired"
-                      v-model="fams.name" />
+                    <Field
+                      class="form-control"
+                      :name="`families[${index}][name]`"
+                      :rules="isRequired"
+                      v-model="fams.name"
+                    />
                     <ErrorMessage :name="`families[${index}][name]`">
                       <small style="color: red">Family Name is required</small>
                     </ErrorMessage>
@@ -389,17 +639,30 @@
               <div class="mt-2">
                 <div class="row">
                   <label for="fams_gender" class="col-sm-2 col-form-label">
-                    <small>Jenis Kelamin</small><span style="color: red">*</span>
+                    <small>Jenis Kelamin</small
+                    ><span style="color: red">*</span>
                   </label>
                   <div class="col-sm">
-                    <Field type="radio" value="L" :rules="isRequired" v-model="fams.gender"
-                      :name="`families[${index}][gender]`" />&nbsp;
-                    <label for="fams_gender"
-                      class="col-form-label"><small>Laki-Laki</small></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <Field type="radio" :name="`families[${index}][gender]`" value="P" :rules="isRequired"
-                      v-model="fams.gender" />&nbsp;
-                    <label for="fams_gender"
-                      class="col-form-label"><small>Perempuan</small></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Field
+                      type="radio"
+                      value="L"
+                      :rules="isRequired"
+                      v-model="fams.gender"
+                      :name="`families[${index}][gender]`"
+                    />&nbsp;
+                    <label for="fams_gender" class="col-form-label"
+                      ><small>Laki-Laki</small></label
+                    >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Field
+                      type="radio"
+                      :name="`families[${index}][gender]`"
+                      value="P"
+                      :rules="isRequired"
+                      v-model="fams.gender"
+                    />&nbsp;
+                    <label for="fams_gender" class="col-form-label"
+                      ><small>Perempuan</small></label
+                    >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <ErrorMessage :name="`families[${index}][gender]`">
                       <small style="color: red">Gender is required</small>
                     </ErrorMessage>
@@ -409,13 +672,21 @@
               <div class="mt-2">
                 <div class="row">
                   <label for="fams_date" class="col-sm-2 col-form-label">
-                    <small>Tanggal Lahir</small><span style="color: red">*</span>
+                    <small>Tanggal Lahir</small
+                    ><span style="color: red">*</span>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" type="date" :name="`families[${index}][date]`" :rules="isRequired"
-                      v-model="fams.date" />
+                    <Field
+                      class="form-control"
+                      type="date"
+                      :name="`families[${index}][date]`"
+                      :rules="isRequired"
+                      v-model="fams.date"
+                    />
                     <ErrorMessage :name="`families[${index}][date]`">
-                      <small style="color: red">Date of Birth is required</small>
+                      <small style="color: red"
+                        >Date of Birth is required</small
+                      >
                     </ErrorMessage>
                   </div>
                 </div>
@@ -426,18 +697,29 @@
                     <small>Pendidikan</small>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" :name="`families[${index}][education]`" v-model="fams.education" />
+                    <Field
+                      class="form-control"
+                      :name="`families[${index}][education]`"
+                      v-model="fams.education"
+                    />
                   </div>
                 </div>
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="occupation_company" class="col-sm-2 col-form-label">
+                  <label
+                    for="occupation_company"
+                    class="col-sm-2 col-form-label"
+                  >
                     <small>Pekerjaan & Perusahaan</small>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" :name="`families[${index}][occupation_company]`"
-                      v-model="fams.occupation_company" v-tooltip.top="'Pekerjaan - Perusahaan'" />
+                    <Field
+                      class="form-control"
+                      :name="`families[${index}][occupation_company]`"
+                      v-model="fams.occupation_company"
+                      v-tooltip.top="'Pekerjaan - Perusahaan'"
+                    />
                   </div>
                 </div>
               </div>
@@ -445,9 +727,18 @@
             </div>
           </div>
           <div class="card-footer text-muted">
-            <Button class="p-button-sm" icon="pi pi-arrow-left" @click="(family = false), (personal2 = true)" />
-            <Button class="p-button-sm" icon="pi pi-arrow-right" @click="(family = false), (formaleducation = true)"
-              :disabled="!(meta.valid && meta.dirty)" style="float: right" />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-left"
+              @click="(family = false), (personal2 = true)"
+            />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-right"
+              @click="(family = false), (formaleducation = true)"
+              :disabled="!(meta.valid && meta.dirty)"
+              style="float: right"
+            />
           </div>
         </div>
 
@@ -458,12 +749,17 @@
           <div class="card-body">
             <div class="mt-2">
               <div class="row">
-                <label for="level" class="col-sm-2 col-form-label">
+                <label for="level" class="col-sm-3 col-form-label">
                   <small>Level</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Dropdown v-model="formaleducate.level" :options="levels" optionLabel="level_name" optionValue="code"
-                    placeholder="Select a Level" />
+                  <Dropdown
+                    v-model="formaleducate.level"
+                    :options="levels"
+                    optionLabel="level_name"
+                    optionValue="code"
+                    placeholder="Select a Level"
+                  />
                   <ErrorMessage name="level">
                     <small style="color: red">Education is required</small>
                   </ErrorMessage>
@@ -472,25 +768,53 @@
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="name_location" class="col-sm-2 col-form-label">
-                  <small>Nama & Lokasi / Tempat</small><span style="color: red">*</span>
+                <label for="name_location" class="col-sm-3 col-form-label">
+                  <small>Nama Sekolah / Perguruan Tinggi</small
+                  ><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="name_location" :rules="isRequired"
-                    v-model="formaleducate.name_location" v-tooltip.top="'Nama - Lokasi'" />
+                  <Field
+                    class="form-control"
+                    name="name_location"
+                    :rules="isRequired"
+                    v-model="formaleducate.name_location"
+                  />
                   <ErrorMessage name="name_location">
-                    <small style="color: red">Name & Location is required</small>
+                    <small style="color: red">Name is required</small>
                   </ErrorMessage>
                 </div>
               </div>
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="major" class="col-sm-2 col-form-label">
+                <label for="location" class="col-sm-3 col-form-label">
+                  <small>Lokasi</small><span style="color: red">*</span>
+                </label>
+                <div class="col-sm">
+                  <Field
+                    class="form-control"
+                    name="location"
+                    :rules="isRequired"
+                    v-model="formaleducate.location"
+                  />
+                  <ErrorMessage name="location">
+                    <small style="color: red">Location is required</small>
+                  </ErrorMessage>
+                </div>
+              </div>
+            </div>
+            <div class="mt-2">
+              <div class="row">
+                <label for="major" class="col-sm-3 col-form-label">
                   <small>Jurusan</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="major" :rules="isRequired" v-model="formaleducate.major" />
+                  <Field
+                    class="form-control"
+                    name="major"
+                    :rules="isRequired"
+                    v-model="formaleducate.major"
+                  />
                   <ErrorMessage name="major">
                     <small style="color: red">Major is required</small>
                   </ErrorMessage>
@@ -499,12 +823,17 @@
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="entry" class="col-sm-2 col-form-label">
+                <label for="entry" class="col-sm-3 col-form-label">
                   <small>Tahun Masuk</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="entry" type="month" :rules="isRequired"
-                    v-model="formaleducate.entry" />
+                  <Field
+                    class="form-control"
+                    name="entry"
+                    type="month"
+                    :rules="isRequired"
+                    v-model="formaleducate.entry"
+                  />
                   <ErrorMessage name="entry">
                     <small style="color: red">Entry is required</small>
                   </ErrorMessage>
@@ -513,88 +842,147 @@
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="graduate" class="col-sm-2 col-form-label">
+                <label for="graduate" class="col-sm-3 col-form-label">
                   <small>Tahun Lulus</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
-                  <Field class="form-control" name="graduate" type="month" :rules="isRequired"
-                    v-model="formaleducate.graduate" />
+                  <Field
+                    class="form-control"
+                    name="graduate"
+                    type="month"
+                    :rules="isRequired"
+                    v-model="formaleducate.graduate"
+                  />
                   <ErrorMessage name="graduate">
                     <small style="color: red">Graduate is required</small>
                   </ErrorMessage>
                 </div>
               </div>
             </div>
+            <div class="mt-2">
+              <div class="row">
+                <label for="ip_rata" class="col-sm-3 col-form-label">
+                  <small>IPK / Nilai Rata-Rata</small
+                  ><span style="color: red">*</span>
+                </label>
+                <div class="col-sm">
+                  <Field
+                    class="form-control"
+                    name="ip_rata"
+                    :rules="isRequired"
+                    v-model="formaleducate.ip_rata"
+                  />
+                  <ErrorMessage name="ip_rata">
+                    <small style="color: red">IPK is required</small>
+                  </ErrorMessage>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="card-footer text-muted">
-            <Button class="p-button-sm" icon="pi pi-arrow-left" @click="(formaleducation = false), (family = true)" />
-            <Button class="p-button-sm" icon="pi pi-arrow-right"
-              @click="(formaleducation = false), (nonformaleducation = true)" :disabled="!(meta.valid && meta.dirty)"
-              style="float: right" />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-left"
+              @click="(formaleducation = false), (family = true)"
+            />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-right"
+              @click="(formaleducation = false), (nonformaleducation = true)"
+              :disabled="!(meta.valid && meta.dirty)"
+              style="float: right"
+            />
           </div>
         </div>
 
         <div v-if="nonformaleducation">
           <div class="card-header">
-            Pendidikan Non Formal<span><small> <i>(Non Formal Education)</i></small></span>
+            Pendidikan Non Formal<span
+              ><small> <i>(Non Formal Education)</i></small></span
+            >
           </div>
           <div class="card-body">
-            <Button @click="addnonFormal" icon="pi pi-plus" class="p-button-warning"
-              v-tooltip.right="'Klik untuk menambahkan'" />
-            <div v-for="(nonformaleducate, index) in nonformaleducations" :key="index">
+            <Button
+              @click="addnonFormal"
+              icon="pi pi-plus"
+              class="p-button-warning"
+              v-tooltip.right="'Klik untuk menambahkan'"
+            />
+            <div
+              v-for="(nonformaleducate, index) in nonformaleducations"
+              :key="index"
+            >
               <div class="mt-2">
                 <div class="row">
-                  <label for="course" class="col-sm-2 col-form-label">
+                  <label for="course" class="col-sm-3 col-form-label">
                     <small>Jenis Kursus / Training / Seminar</small>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" :name="`nonformaleducations[${index}][course]`"
-                      v-model="nonformaleducate.course" />
+                    <Field
+                      class="form-control"
+                      :name="`nonformaleducations[${index}][course]`"
+                      v-model="nonformaleducate.course"
+                    />
                   </div>
                 </div>
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="year" class="col-sm-2 col-form-label">
+                  <label for="year" class="col-sm-3 col-form-label">
                     <small>Tahun</small>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" :name="`nonformaleducations[${index}][year]`"
-                      v-model="nonformaleducate.year" />
+                    <Field
+                      class="form-control"
+                      :name="`nonformaleducations[${index}][year]`"
+                      v-model="nonformaleducate.year"
+                    />
                   </div>
                 </div>
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="duration" class="col-sm-2 col-form-label">
+                  <label for="duration" class="col-sm-3 col-form-label">
                     <small>Lama</small>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" :name="`nonformaleducations[${index}][duration]`"
-                      v-model="nonformaleducate.duration" />
+                    <Field
+                      class="form-control"
+                      :name="`nonformaleducations[${index}][duration]`"
+                      v-model="nonformaleducate.duration"
+                    />
                   </div>
                 </div>
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="certificate" class="col-sm-2 col-form-label">
+                  <label for="certificate" class="col-sm-3 col-form-label">
                     <small>Sertifikat</small>
                   </label>
                   <div class="col-sm">
-                    <FileUpload name="demo[]" mode="basic" @upload="onUploadCerti($event, index)" accept="image/*,.pdf"
-                      :maxFileSize="1000000" :auto="true">
+                    <FileUpload
+                      name="demo[]"
+                      mode="basic"
+                      @upload="onUploadCerti($event, index)"
+                      accept="image/*,.pdf"
+                      :maxFileSize="1000000"
+                      :auto="true"
+                    >
                     </FileUpload>
                   </div>
                 </div>
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="sponsored_by" class="col-sm-2 col-form-label">
+                  <label for="sponsored_by" class="col-sm-3 col-form-label">
                     <small>Dibiayai Oleh</small>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" :name="`nonformaleducations[${index}][sponsored_by]`"
-                      v-model="nonformaleducate.sponsored_by" />
+                    <Field
+                      class="form-control"
+                      :name="`nonformaleducations[${index}][sponsored_by]`"
+                      v-model="nonformaleducate.sponsored_by"
+                    />
                   </div>
                 </div>
               </div>
@@ -602,30 +990,49 @@
             </div>
           </div>
           <div class="card-footer text-muted">
-            <Button class="p-button-sm" icon="pi pi-arrow-left"
-              @click="(nonformaleducation = false), (formaleducation = true)" />
-            <Button class="p-button-sm" icon="pi pi-arrow-right"
-              @click="(nonformaleducation = false), (computer = true)" style="float: right" />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-left"
+              @click="(nonformaleducation = false), (formaleducation = true)"
+            />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-right"
+              @click="(nonformaleducation = false), (computer = true)"
+              style="float: right"
+            />
           </div>
         </div>
 
         <div v-if="computer">
           <div class="card-header">
-            Penguasaan Komputer dan Keahlian Khusus<span><small><i>(Computer Literate and Special
-                  Skills)</i></small></span>
+            Penguasaan Komputer dan Keahlian Khusus<span
+              ><small
+                ><i>(Computer Literate and Special Skills)</i></small
+              ></span
+            >
           </div>
           <div class="card-body">
-            <Button @click="addComputer" icon="pi pi-plus" class="p-button-warning"
-              v-tooltip.right="'Klik untuk menambahkan'" />
+            <Button
+              @click="addComputer"
+              icon="pi pi-plus"
+              class="p-button-warning"
+              v-tooltip.right="'Klik untuk menambahkan'"
+            />
             <div v-for="(compute, index) in computers" :key="index">
               <div class="mt-2">
                 <div class="row">
                   <label for="skill" class="col-sm-2 col-form-label">
-                    <small>Jenis Program Aplikasi dan Keahlian Khusus</small><span style="color: red">*</span>
+                    <small>Jenis Program Aplikasi dan Keahlian Khusus</small
+                    ><span style="color: red">*</span>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" v-model="compute.skill" :rules="isRequired"
-                      :name="`computers[${index}][skill]`" />
+                    <Field
+                      class="form-control"
+                      v-model="compute.skill"
+                      :rules="isRequired"
+                      :name="`computers[${index}][skill]`"
+                    />
                     <ErrorMessage :name="`computers[${index}][skill]`">
                       <small style="color: red">Skill is required</small>
                     </ErrorMessage>
@@ -635,11 +1042,18 @@
               <div class="mt-2">
                 <div class="row">
                   <label for="level" class="col-sm-2 col-form-label">
-                    <small>Tingkat Penguasaan</small><span style="color: red">*</span>
+                    <small>Tingkat Penguasaan</small
+                    ><span style="color: red">*</span>
                   </label>
                   <div class="col-sm">
-                    <Dropdown v-model="compute.level" :options="proficiens" optionLabel="proficiens_name"
-                      optionValue="code" placeholder="Select a Proficiency" :name="`computers[${index}][level]`" />
+                    <Dropdown
+                      v-model="compute.level"
+                      :options="proficiens"
+                      optionLabel="proficiens_name"
+                      optionValue="code"
+                      placeholder="Select a Proficiency"
+                      :name="`computers[${index}][level]`"
+                    />
                     <ErrorMessage :name="`computers[${index}][level]`">
                       <small style="color: red">Level is required</small>
                     </ErrorMessage>
@@ -650,29 +1064,54 @@
             </div>
           </div>
           <div class="card-footer text-muted">
-            <Button class="p-button-sm" icon="pi pi-arrow-left"
-              @click="(computer = false), (nonformaleducation = true)" />
-            <Button class="p-button-sm" icon="pi pi-arrow-right" @click="(computer = false), (employhistory = true)"
-              :disabled="!(meta.valid && meta.dirty)" style="float: right" />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-left"
+              @click="(computer = false), (nonformaleducation = true)"
+            />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-right"
+              @click="(computer = false), (employhistory = true)"
+              :disabled="!(meta.valid && meta.dirty)"
+              style="float: right"
+            />
           </div>
         </div>
 
         <div v-if="employhistory">
           <div class="card-header">
-            Riwayat Pekerjaan<span><small><i> (Mulai dari pekerjaan terakhir)</i></small></span>
+            Riwayat Pekerjaan<span
+              ><small
+                ><i>
+                  (Mulai dari pekerjaan pertama s/d pekerjaan terakhir)</i
+                ></small
+              ></span
+            >
           </div>
           <div class="card-body">
-            <Button @click="addhistory" icon="pi pi-plus" class="p-button-warning"
-              v-tooltip.right="'Klik untuk menambahkan'" />
-            <div v-for="(employmenthistory, index) in employmenthistories" :key="index">
+            <Button
+              @click="addhistory"
+              icon="pi pi-plus"
+              class="p-button-warning"
+              v-tooltip.right="'Klik untuk menambahkan'"
+            />
+            <div
+              v-for="(employmenthistory, index) in employmenthistories"
+              :key="index"
+            >
               <div class="mt-2">
                 <div class="row">
                   <label for="start" class="col-sm-2 col-form-label">
                     <small>Bulan / Tahun Mulai</small>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" :name="`employmenthistories[${index}][start]`" type="month"
-                      v-model="employmenthistory.start" />
+                    <Field
+                      class="form-control"
+                      :name="`employmenthistories[${index}][start]`"
+                      type="month"
+                      v-model="employmenthistory.start"
+                    />
                   </div>
                 </div>
               </div>
@@ -682,8 +1121,12 @@
                     <small>Bulan / Tahun Selesai</small>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" :name="`employmenthistories[${index}][end]`" type="month"
-                      v-model="employmenthistory.end" />
+                    <Field
+                      class="form-control"
+                      :name="`employmenthistories[${index}][end]`"
+                      type="month"
+                      v-model="employmenthistory.end"
+                    />
                   </div>
                 </div>
               </div>
@@ -693,8 +1136,11 @@
                     <small>Nama Perusahaan</small>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" :name="`employmenthistories[${index}][name_company]`"
-                      v-model="employmenthistory.name_company" />
+                    <Field
+                      class="form-control"
+                      :name="`employmenthistories[${index}][name_company]`"
+                      v-model="employmenthistory.name_company"
+                    />
                   </div>
                 </div>
               </div>
@@ -704,19 +1150,28 @@
                     <small>Jabatan</small>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" :name="`employmenthistories[${index}][position]`"
-                      v-model="employmenthistory.position" />
+                    <Field
+                      class="form-control"
+                      :name="`employmenthistories[${index}][position]`"
+                      v-model="employmenthistory.position"
+                    />
                   </div>
                 </div>
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="direct_supervisor" class="col-sm-2 col-form-label">
+                  <label
+                    for="direct_supervisor"
+                    class="col-sm-2 col-form-label"
+                  >
                     <small>Atasan Langsung</small>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" :name="`employmenthistories[${index}][direct_supervisor]`"
-                      v-model="employmenthistory.direct_supervisor" />
+                    <Field
+                      class="form-control"
+                      :name="`employmenthistories[${index}][direct_supervisor]`"
+                      v-model="employmenthistory.direct_supervisor"
+                    />
                   </div>
                 </div>
               </div>
@@ -726,8 +1181,14 @@
                     <small>Total Gaji</small>
                   </label>
                   <div class="col-sm">
-                    <InputNumber mode="currency" currency="IDR" locale="id-ID" v-model="employmenthistory.take_home_pay"
-                      :name="`employmenthistories[${index}][take_home_pay]`" style="width: 100%" />
+                    <InputNumber
+                      mode="currency"
+                      currency="IDR"
+                      locale="id-ID"
+                      v-model="employmenthistory.take_home_pay"
+                      :name="`employmenthistories[${index}][take_home_pay]`"
+                      style="width: 100%"
+                    />
                   </div>
                 </div>
               </div>
@@ -737,8 +1198,11 @@
                     <small>Alasan Keluar</small>
                   </label>
                   <div class="col-sm">
-                    <textarea class="form-control" :name="`employmenthistories[${index}][reason_leaving]`"
-                      v-model="employmenthistory.reason_leaving" />
+                    <textarea
+                      class="form-control"
+                      :name="`employmenthistories[${index}][reason_leaving]`"
+                      v-model="employmenthistory.reason_leaving"
+                    />
                   </div>
                 </div>
               </div>
@@ -746,15 +1210,25 @@
             </div>
           </div>
           <div class="card-footer text-muted">
-            <Button class="p-button-sm" icon="pi pi-arrow-left" @click="(employhistory = false), (computer = true)" />
-            <Button class="p-button-sm" icon="pi pi-arrow-right" @click="(employhistory = false), (jobdesc = true)"
-              style="float: right" />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-left"
+              @click="(employhistory = false), (computer = true)"
+            />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-right"
+              @click="(employhistory = false), (jobdesc = true)"
+              style="float: right"
+            />
           </div>
         </div>
 
         <div v-if="jobdesc">
           <div class="card-header">
-            Tugas dan Tanggung Jawab Pekerjaan<span><small> <i> (Di tempat terakhir anda bekerja)</i></small></span>
+            Tugas dan Tanggung Jawab Pekerjaan<span
+              ><small> <i> (Di tempat terakhir anda bekerja)</i></small></span
+            >
           </div>
           <div class="card-body">
             <div class="mt-2">
@@ -763,32 +1237,55 @@
                   <small>Job Deskripsi</small>
                 </label>
                 <div class="col-sm">
-                  <textarea class="form-control" name="start" v-model="jobdescription.description"
-                    v-tooltip.top="'Gambarkan deskripsi pekerjaan terakhir'"></textarea>
+                  <Textarea
+                    v-model="jobdescription.description"
+                    rows="15"
+                    cols="115"
+                  />
+                  <!-- <textarea
+                    class="form-control"
+                    name="start"
+                    v-model="jobdescription.description"
+                    v-tooltip.top="'Gambarkan deskripsi pekerjaan terakhir'"
+                  ></textarea> -->
                 </div>
               </div>
             </div>
           </div>
           <div class="card-footer text-muted">
-            <Button class="p-button-sm" icon="pi pi-arrow-left" @click="(jobdesc = false), (employhistory = true)" />
-            <Button class="p-button-sm" icon="pi pi-arrow-right" @click="(jobdesc = false), (otherinfo = true)"
-              style="float: right" />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-left"
+              @click="(jobdesc = false), (employhistory = true)"
+            />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-right"
+              @click="(jobdesc = false), (otherinfo = true)"
+              style="float: right"
+            />
           </div>
         </div>
 
         <div v-if="otherinfo">
           <div class="card-header">
-            Keterangan Lainnya<span><small><i> (Other Informations)</i></small></span>
+            Keterangan Lainnya<span
+              ><small><i> (Other Informations)</i></small></span
+            >
           </div>
           <div class="card-body">
             <div class="mt-2">
               <label for="hospitalized">
-                <small>Apakah anda pernah dirawat di rumah sakit dan atau menderita
-                  sakit yang lama ? Have you been hospitalized and / or
-                  seriouslyill for a long time?</small>
+                <small
+                  >Apakah anda pernah dirawat di rumah sakit dan atau menderita
+                  sakit yang lama ?
+                </small>
                 <span style="color: red">*</span>
               </label>
-              <select v-model="otherinformation.hospitalized" class="form-control">
+              <select
+                v-model="otherinformation.hospitalized"
+                class="form-control"
+              >
                 <option value="ya">Ya</option>
                 <option value="tidak">Tidak</option>
               </select>
@@ -804,204 +1301,319 @@
             </div>
             <div class="mt-2" v-if="otherinformation.hospitalized === 'ya'">
               <label for="disease">
-                <small>(Jika Ya) Sakit apa ? (If Yes) What kind of disease ?</small>
+                <small>(Jika Ya) Sakit apa ? </small>
               </label>
-              <Field class="form-control" name="disease" v-model="otherinformation.disease" />
+              <Field
+                class="form-control"
+                name="disease"
+                v-model="otherinformation.disease"
+              />
+              <label for="year">
+                <small>Kapan ? </small>
+              </label>
+              <Field
+                class="form-control"
+                name="year"
+                v-model="otherinformation.year"
+              />
             </div>
 
             <div class="mt-2">
               <label for="psycological_test">
-                <small>Kapan terakhir anda mengikuti evaluasi psikologis (psikotest) ?
-                  When t you taken a psycological test ?</small>
+                <small
+                  >Kapan terakhir anda mengikuti evaluasi psikologis (psikotest)
+                  ?</small
+                >
                 <span style="color: red">*</span>
               </label>
-              <Field class="form-control" name="psycological_test" v-model="otherinformation.psycological_test"
-                :rules="isRequired" />
+              <Field
+                class="form-control"
+                name="psycological_test"
+                v-model="otherinformation.psycological_test"
+                :rules="isRequired"
+              />
               <ErrorMessage name="psycological_test">
                 <small style="color: red">Psycological Test is required</small>
               </ErrorMessage>
             </div>
             <div class="mt-2">
               <label for="experience_tellecomunication">
-                <small>Berapa lama pengalaman anda didalam area kerja industri
-                  telekomunikasi ? How long have your experience in the work area
-                  telecommunication industry?</small>
+                <small
+                  >Berapa lama pengalaman anda didalam area kerja industri
+                  telekomunikasi ?
+                </small>
               </label>
-              <Field class="form-control" name="experience_tellecomunication"
-                v-model="otherinformation.experience_tellecomunication" />
+              <Field
+                class="form-control"
+                name="experience_tellecomunication"
+                v-model="otherinformation.experience_tellecomunication"
+              />
             </div>
             <div class="mt-2">
               <label for="experience_it">
-                <small>Berapa lama pengalaman anda didalam area kerja teknologi IT ?
-                  How long have your experience in the work area IT
-                  Technology?</small>
+                <small
+                  >Berapa lama pengalaman anda didalam area kerja teknologi IT
+                  ?</small
+                >
               </label>
-              <Field class="form-control" name="experience_it" v-model="otherinformation.experience_it" />
+              <Field
+                class="form-control"
+                name="experience_it"
+                v-model="otherinformation.experience_it"
+              />
             </div>
             <div class="mt-2">
               <label for="reason_join">
-                <small>Sebutkan alasan anda ingin bergabung dengan PT Imani Prima? Why
-                  do you want to join with PT Imani Prima?</small>
+                <small
+                  >Sebutkan alasan anda ingin bergabung dengan PT Imani Prima?
+                </small>
                 <span style="color: red">*</span>
               </label>
-              <Field class="form-control" name="reason_join" v-model="otherinformation.reason_join"
-                :rules="isRequired" />
+              <Field
+                class="form-control"
+                name="reason_join"
+                v-model="otherinformation.reason_join"
+                :rules="isRequired"
+              />
               <ErrorMessage name="reason_join">
                 <small style="color: red">Reason Join is required</small>
               </ErrorMessage>
             </div>
             <div class="mt-2">
               <label for="reason_hire">
-                <small>Mengapa kami bisa mempekerjakan anda? Why we can hire
-                  you?</small>
+                <small>Mengapa kami bisa mempekerjakan anda? </small>
                 <span style="color: red">*</span>
               </label>
-              <Field class="form-control" name="reason_hire" v-model="otherinformation.reason_hire"
-                :rules="isRequired" />
+              <Field
+                class="form-control"
+                name="reason_hire"
+                v-model="otherinformation.reason_hire"
+                :rules="isRequired"
+              />
               <ErrorMessage name="reason_hire">
                 <small style="color: red">Reason Hire is required</small>
               </ErrorMessage>
             </div>
             <div class="mt-2">
               <label for="opinion_teamwork">
-                <small>Informasikan pendapat anda tentang Kerjasama (Team Work) ?
-                  Inform your opinion about team work?</small>
+                <small
+                  >Informasikan pendapat anda tentang Kerjasama (Team Work)
+                  ?</small
+                >
                 <span style="color: red">*</span>
               </label>
-              <Field class="form-control" name="opinion_teamwork" v-model="otherinformation.opinion_teamwork"
-                :rules="isRequired" />
+              <Field
+                class="form-control"
+                name="opinion_teamwork"
+                v-model="otherinformation.opinion_teamwork"
+                :rules="isRequired"
+              />
               <ErrorMessage name="opinion_teamwork">
-                <small style="color: red">Opinion About Teamwork is required</small>
+                <small style="color: red"
+                  >Opinion About Teamwork is required</small
+                >
               </ErrorMessage>
             </div>
             <div class="mt-2">
               <label for="plan">
-                <small>Sebutkan rencana jangka pendek dan rencana jangka panjang anda?
-                  Mention your short term plan and your long term plan?</small>
+                <small
+                  >Sebutkan rencana jangka pendek dan rencana jangka panjang
+                  anda?</small
+                >
                 <span style="color: red">*</span>
               </label>
-              <Field class="form-control" name="plan" v-model="otherinformation.plan" :rules="isRequired" />
+              <Field
+                class="form-control"
+                name="plan"
+                v-model="otherinformation.plan"
+                :rules="isRequired"
+              />
               <ErrorMessage name="plan">
                 <small style="color: red">Plan is required</small>
               </ErrorMessage>
             </div>
             <div class="mt-2">
               <label for="respond_target">
-                <small>Bagaimana tanggapan anda mengenai target yang akan diberikan
-                  oleh perusahaan kepada anda? How do your respond to the target
-                  will company will give you?</small>
+                <small
+                  >Bagaimana tanggapan anda mengenai target yang akan diberikan
+                  oleh perusahaan kepada anda?
+                </small>
                 <span style="color: red">*</span>
               </label>
-              <Field class="form-control" name="respond_target" v-model="otherinformation.respond_target"
-                :rules="isRequired" />
+              <Field
+                class="form-control"
+                name="respond_target"
+                v-model="otherinformation.respond_target"
+                :rules="isRequired"
+              />
               <ErrorMessage name="respond_target">
-                <small style="color: red">Respond about target is required</small>
+                <small style="color: red"
+                  >Respond about target is required</small
+                >
               </ErrorMessage>
             </div>
             <div class="mt-2">
               <label for="respond_preasure">
-                <small>Bagaimana tanggapan anda mengenai tekanan dalam pekerjaan? How
-                  do your respond to pressure at work?</small>
+                <small
+                  >Bagaimana tanggapan anda mengenai tekanan dalam pekerjaan?
+                </small>
                 <span style="color: red">*</span>
               </label>
-              <Field class="form-control" name="respond_preasure" v-model="otherinformation.respond_preasure"
-                :rules="isRequired" />
+              <Field
+                class="form-control"
+                name="respond_preasure"
+                v-model="otherinformation.respond_preasure"
+                :rules="isRequired"
+              />
               <ErrorMessage name="respond_preasure">
-                <small style="color: red">Respond about preasure is required</small>
+                <small style="color: red"
+                  >Respond about preasure is required</small
+                >
               </ErrorMessage>
             </div>
             <div class="mt-2">
               <label for="reason_leave_last_company">
-                <small>Mengapa anda ingin keluar dari perusahaan terakhir ? Why do you
-                  want to leave the last company?</small>
+                <small
+                  >Mengapa anda ingin keluar dari perusahaan terakhir ?
+                </small>
               </label>
-              <Field class="form-control" name="reason_leave_last_company"
-                v-model="otherinformation.reason_leave_last_company" />
+              <Field
+                class="form-control"
+                name="reason_leave_last_company"
+                v-model="otherinformation.reason_leave_last_company"
+              />
             </div>
             <div class="mt-2">
               <label for="salary_expect">
-                <small>Berapa gaji yang anda inginkan ? How much salary do you expect
-                  ?</small>
+                <small>Berapa gaji yang anda inginkan ? </small>
                 <span style="color: red">*</span>
               </label>
-              <InputNumber mode="currency" currency="IDR" locale="id-ID" v-model="otherinformation.salary_expect"
-                name="salary_expect" :rules="isRequired" style="width: 100%" />
+              <InputNumber
+                mode="currency"
+                currency="IDR"
+                locale="id-ID"
+                v-model="otherinformation.salary_expect"
+                name="salary_expect"
+                :rules="isRequired"
+                style="width: 100%"
+              />
             </div>
             <div class="mt-2">
               <label for="able_to_start">
-                <small>Kapan anda dapat mulai bekerja ? When will you be able to start
-                  to work ?</small>
+                <small>Kapan anda dapat mulai bekerja ? </small>
                 <span style="color: red">*</span>
               </label>
-              <Field class="form-control" name="able_to_start" v-model="otherinformation.able_to_start"
-                :rules="isRequired" />
+              <Field
+                class="form-control"
+                name="able_to_start"
+                v-model="otherinformation.able_to_start"
+                :rules="isRequired"
+              />
               <ErrorMessage name="able_to_start">
                 <small style="color: red">Able to start is required</small>
               </ErrorMessage>
             </div>
             <div class="mt-2">
               <label for="contact_emergency">
-                <small>Sebutkan orang terdekat yang bisa dihubungi dalam keadaan
-                  darurat ? Person to contact in case of emergency?</small>
+                <small
+                  >Sebutkan orang terdekat yang bisa dihubungi dalam keadaan
+                  darurat ?
+                </small>
                 <span style="color: red">*</span>
               </label>
-              <Field class="form-control" name="contact_emergency" v-model="otherinformation.contact_emergency"
-                :rules="isRequired" v-tooltip.top="'Hubungan - Telpon'" />
+              <Field
+                class="form-control"
+                name="contact_emergency"
+                v-model="otherinformation.contact_emergency"
+                :rules="isRequired"
+                v-tooltip.top="'Hubungan - Telpon'"
+              />
               <ErrorMessage name="contact_emergency">
                 <small style="color: red">Contact Emergency is required</small>
               </ErrorMessage>
             </div>
             <div class="mt-2">
               <label for="relatives_in_ip">
-                <small>Sebutkan nama kenalan anda di PT. Imani Prima dan hubungan anda
-                  dengannya sebagai ? Name your friends / relatives in PT. Imani
-                  Prima and the relationship as ?
+                <small
+                  >Sebutkan nama kenalan anda di PT. Imani Prima dan hubungan
+                  anda dengannya sebagai ?
                 </small>
               </label>
-              <Field class="form-control" name="relatives_in_ip" v-model="otherinformation.relatives_in_ip"
-                v-tooltip.top="'Nama Kenalan - Hubungan'" />
+              <Field
+                class="form-control"
+                name="relatives_in_ip"
+                v-model="otherinformation.relatives_in_ip"
+                v-tooltip.top="'Nama Kenalan - Hubungan'"
+              />
             </div>
             <div class="mt-2">
               <label for="strength">
-                <small>Menurut anda apa kelebihan pada diri anda ? Sebutkan
-                  masing-masing 3 item. What do you think is your strengths ?
-                  Please state 3 items.</small>
+                <small
+                  >Menurut anda apa kelebihan pada diri anda ? Sebutkan
+                  masing-masing 3 item.
+                </small>
                 <span style="color: red">*</span>
               </label>
-              <Field class="form-control" name="strength" v-model="otherinformation.strength" :rules="isRequired"
-                v-tooltip.top="'Batasi dengan ( , )'" />
+              <Field
+                class="form-control"
+                name="strength"
+                v-model="otherinformation.strength"
+                :rules="isRequired"
+                v-tooltip.top="'Batasi dengan ( , )'"
+              />
               <ErrorMessage name="strength">
                 <small style="color: red">Strength is required</small>
               </ErrorMessage>
             </div>
             <div class="mt-2">
               <label for="weakness">
-                <small>Menurut anda apa kekurangan pada diri anda ? Sebutkan
-                  masing-masing 3 item. What do you think is your weaknesses ?
-                  Please state 3 items.</small>
+                <small
+                  >Menurut anda apa kekurangan pada diri anda ? Sebutkan
+                  masing-masing 3 item.
+                </small>
                 <span style="color: red">*</span>
               </label>
-              <Field class="form-control" name="weakness" v-model="otherinformation.weakness" :rules="isRequired"
-                v-tooltip.top="'Batasi dengan ( , )'" />
+              <Field
+                class="form-control"
+                name="weakness"
+                v-model="otherinformation.weakness"
+                :rules="isRequired"
+                v-tooltip.top="'Batasi dengan ( , )'"
+              />
               <ErrorMessage name="weakness">
                 <small style="color: red">Weakness is required</small>
               </ErrorMessage>
             </div>
           </div>
           <div class="card-footer text-muted">
-            <Button class="p-button-sm" icon="pi pi-arrow-left" @click="(otherinfo = false), (jobdesc = true)" />
-            <Button class="p-button-sm" icon="pi pi-arrow-right" @click="(otherinfo = false), (attach = true)"
-              :disabled="!(meta.valid && meta.dirty)" style="float: right" />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-left"
+              @click="(otherinfo = false), (jobdesc = true)"
+            />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-right"
+              @click="(otherinfo = false), (attach = true)"
+              :disabled="!(meta.valid && meta.dirty)"
+              style="float: right"
+            />
           </div>
         </div>
 
         <div v-if="attach">
           <div class="card-header">
-            Berkas<span><small><i> (Attachments)</i></small></span>
+            Berkas<span
+              ><small><i> (Attachments)</i></small></span
+            >
           </div>
           <div class="card-body">
-            <Button @click="addAttachment" icon="pi pi-plus" class="p-button-warning"
-              v-tooltip.right="'Klik untuk menambahkan'" />
+            <Button
+              @click="addAttachment"
+              icon="pi pi-plus"
+              class="p-button-warning"
+              v-tooltip.right="'Klik untuk menambahkan'"
+            />
             <div v-for="(attachment, index) in attachments" :key="index">
               <div class="mt-2">
                 <div class="row">
@@ -1009,8 +1621,12 @@
                     <small>Jenis File</small><span style="color: red">*</span>
                   </label>
                   <div class="col-sm">
-                    <Field class="form-control" :name="`attachments[${index}][type]`" :rules="isRequired"
-                      v-model="attachment.type" />
+                    <Field
+                      class="form-control"
+                      :name="`attachments[${index}][type]`"
+                      :rules="isRequired"
+                      v-model="attachment.type"
+                    />
                     <ErrorMessage :name="`attachments[${index}][type]`">
                       <small style="color: red">Type is required</small>
                     </ErrorMessage>
@@ -1023,8 +1639,14 @@
                     <small>File</small>
                   </label>
                   <div class="col-sm">
-                    <FileUpload name="demo[]" mode="basic" @upload="onUpload($event, index)" accept="image/*,.pdf"
-                      :maxFileSize="1000000" :auto="true">
+                    <FileUpload
+                      name="demo[]"
+                      mode="basic"
+                      @upload="onUpload($event, index)"
+                      accept="image/*,.pdf"
+                      :maxFileSize="1000000"
+                      :auto="true"
+                    >
                     </FileUpload>
                   </div>
                 </div>
@@ -1033,9 +1655,19 @@
             </div>
           </div>
           <div class="card-footer text-muted">
-            <Button class="p-button-sm" icon="pi pi-arrow-left" @click="(attach = false), (otherinfo = true)" />
-            <Button class="p-button-sm" icon="pi pi-save" type="submit" :loading="loading"
-              :disabled="!(meta.valid && meta.dirty)" style="float: right" />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-arrow-left"
+              @click="(attach = false), (otherinfo = true)"
+            />
+            <Button
+              class="p-button-sm"
+              icon="pi pi-save"
+              type="submit"
+              :loading="loading"
+              :disabled="!(meta.valid && meta.dirty)"
+              style="float: right"
+            />
           </div>
         </div>
       </Form>
@@ -1062,10 +1694,12 @@ onMounted(() => {
 
 const showWarn = () => {
   toast.add({
-    severity: 'warn', summary: 'Sukses isi Form',
-    detail: 'Form Anda Lengkap, Silahkan tunggu halaman selanjutnya', life: 3000
+    severity: "warn",
+    summary: "Sukses isi Form",
+    detail: "Form Anda Lengkap, Silahkan tunggu halaman selanjutnya",
+    life: 3000,
   });
-}
+};
 
 function getJob() {
   try {
@@ -1196,9 +1830,11 @@ const members = ref([
 const formaleducate = reactive({
   level: "",
   name_location: "",
+  location: "",
   major: "",
   entry: "",
   graduate: "",
+  ip_rata: "",
 });
 
 const levels = ref([
@@ -1226,6 +1862,7 @@ const jobdescription = reactive({
 const otherinformation = reactive({
   hospitalized: "",
   disease: "",
+  year: "",
   psycological_test: "",
   experience_tellecomunication: "",
   experience_it: "",
@@ -1262,7 +1899,7 @@ const isRequired = (value) => {
     return "This field is required";
   }
   return true;
-}
+};
 
 async function save() {
   if (applicant.photo === null)
@@ -1300,9 +1937,11 @@ async function save() {
         formaleducation: {
           level: formaleducate.level,
           name_location: formaleducate.name_location,
+          location: formaleducate.location,
           major: formaleducate.major,
           entry: formaleducate.entry,
           graduate: formaleducate.graduate,
+          ip_rata: formaleducate.ip_rata,
         },
         nonformaleducation: nonformaleducations,
         computerliterate: computers,
@@ -1313,6 +1952,7 @@ async function save() {
         otherinformation: {
           hospitalized: otherinformation.hospitalized,
           disease: otherinformation.disease,
+          year: otherinformation.year,
           psycological_test: otherinformation.psycological_test,
           experience_tellecomunication:
             otherinformation.experience_tellecomunication,
@@ -1338,7 +1978,7 @@ async function save() {
         loading.value = true;
       });
     const applicantNow = await axios.get(config.API_BASE_URL + "applicants");
-    console.log(applicantNow.data.data[0].id)
+    console.log(applicantNow.data.data[0].id);
     const pdf = await axios.get(
       config.API_BASE_URL + "topdf/" + applicantNow.data.data[0].id
     );
@@ -1372,7 +2012,7 @@ const onUpload = (evt, index) => {
       attachments[index].file = reader.result;
     };
     // alert("File Uploaded");
-    toast.add({ severity: 'success', summary: 'File Uploaded', life: 3000 });
+    toast.add({ severity: "success", summary: "File Uploaded", life: 3000 });
   } catch (err) {
     alert(err);
   }
@@ -1388,7 +2028,7 @@ const onUploadCerti = (evt, index) => {
       nonformaleducations[index].certificate = reader.result;
     };
     // alert("File Uploaded");
-    toast.add({ severity: 'success', summary: 'File Uploaded', life: 3000 });
+    toast.add({ severity: "success", summary: "File Uploaded", life: 3000 });
   } catch (err) {
     alert(err);
   }
