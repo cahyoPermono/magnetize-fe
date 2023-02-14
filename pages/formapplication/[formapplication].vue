@@ -950,7 +950,7 @@
             <div class="mt-2">
               <div class="row">
                 <label for="name_location" class="col-sm-2 col-form-label">
-                  <small>Nama & Lokasi / Tempat</small
+                  <small>Sekolah / Perguruan Tinggi</small
                   ><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
@@ -971,6 +971,28 @@
             </div>
             <div class="mt-2">
               <div class="row">
+                <label for="location" class="col-sm-2 col-form-label">
+                  <small>Lokasi</small
+                  ><span style="color: red">*</span>
+                </label>
+                <div class="col-sm">
+                  <Field
+                    class="form-control"
+                    name="location"
+                    :rules="isRequired"
+                    v-model="formaleducate.location"
+                    v-tooltip.top="'Lokasi'"
+                  />
+                  <ErrorMessage name="location">
+                    <small style="color: red"
+                      >Location is required</small
+                    >
+                  </ErrorMessage>
+                </div>
+              </div>
+            </div>
+            <div class="mt-2">
+              <div class="row">
                 <label for="major" class="col-sm-2 col-form-label">
                   <small>Jurusan</small><span style="color: red">*</span>
                 </label>
@@ -983,6 +1005,24 @@
                   />
                   <ErrorMessage name="major">
                     <small style="color: red">Major is required</small>
+                  </ErrorMessage>
+                </div>
+              </div>
+            </div>
+            <div class="mt-2">
+              <div class="row">
+                <label for="gpa" class="col-sm-2 col-form-label">
+                  <small>Nilai rata-rata</small><span style="color: red">*</span>
+                </label>
+                <div class="col-sm">
+                  <Field
+                    class="form-control"
+                    name="gpa"
+                    :rules="isRequired"
+                    v-model="formaleducate.gpa"
+                  />
+                  <ErrorMessage name="gpa">
+                    <small style="color: red">GPA is required</small>
                   </ErrorMessage>
                 </div>
               </div>
@@ -2009,7 +2049,9 @@ const members = ref([
 const formaleducate = reactive({
   level: "",
   name_location: "",
+  location: "",
   major: "",
+  gpa: "",
   entry: "",
   graduate: "",
 });
@@ -2130,7 +2172,9 @@ async function save() {
         formaleducation: {
           level: formaleducate.level,
           name_location: formaleducate.name_location,
+          location: formaleducate.location,
           major: formaleducate.major,
+          gpa: formaleducate.gpa,
           entry: formaleducate.entry,
           graduate: formaleducate.graduate,
         },
