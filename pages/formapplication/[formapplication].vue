@@ -71,7 +71,7 @@
           <div class="card-header">
             Data Pribadi&nbsp;<span><small>(Personal Data)</small></span>
           </div>
-          
+
           <div class="card-body">
             <div class="mt-2">
               <div class="row">
@@ -369,7 +369,7 @@
                     <option
                       v-for="data in dataProvinsi"
                       :key="data.id"
-                      :value="[data.id,data.nama]"
+                      :value="[data.id, data.nama]"
                     >
                       {{ data.nama }}
                     </option>
@@ -389,7 +389,7 @@
                     <option
                       v-for="data in dataKotaKab"
                       :key="data.id"
-                      :value="[data.id,data.nama]"
+                      :value="[data.id, data.nama]"
                     >
                       {{ data.nama }}
                     </option>
@@ -409,7 +409,7 @@
                     <option
                       v-for="data in dataKecamatan"
                       :key="data.id"
-                      :value="[data.id,data.nama]"
+                      :value="[data.id, data.nama]"
                     >
                       {{ data.nama }}
                     </option>
@@ -428,7 +428,7 @@
                     <option
                       v-for="data in dataDesaKel"
                       :key="data.id"
-                      :value="[data.id,data.nama]"
+                      :value="[data.id, data.nama]"
                     >
                       {{ data.nama }}
                     </option>
@@ -486,7 +486,7 @@
                     <option
                       v-for="data in dataProvinsi"
                       :key="data.id"
-                      :value="[data.id,data.nama]"
+                      :value="[data.id, data.nama]"
                     >
                       {{ data.nama }}
                     </option>
@@ -507,7 +507,7 @@
                     <option
                       v-for="data in dataKotaKab_dom"
                       :key="data.id"
-                      :value="[data.id,data.nama]"
+                      :value="[data.id, data.nama]"
                     >
                       {{ data.nama }}
                     </option>
@@ -528,7 +528,7 @@
                     <option
                       v-for="data in dataKecamatan_dom"
                       :key="data.id"
-                      :value="[data.id,data.nama]"
+                      :value="[data.id, data.nama]"
                     >
                       {{ data.nama }}
                     </option>
@@ -548,13 +548,15 @@
                     <option
                       v-for="data in dataDesaKel_dom"
                       :key="data.id"
-                      :value="[data.id,data.nama]"
+                      :value="[data.id, data.nama]"
                     >
                       {{ data.nama }}
                     </option>
                   </Field>
                   <ErrorMessage name="subdistrict_dom">
-                    <small style="color: red">subdistrict_dom is required</small>
+                    <small style="color: red"
+                      >subdistrict_dom is required</small
+                    >
                   </ErrorMessage>
                 </div>
                 <div class="col-sm-2">
@@ -648,19 +650,19 @@
             />
           </div>
         </div>
-
         <div v-if="family">
           <div class="card-header">
             Data Keluarga&nbsp;<span><small>(Family Data)</small></span>
           </div>
+
           <div class="card-body">
             <div class="mt-2">
               <div class="row">
-                <label for="marital_status" class="col-sm-2 col-form-label">
+                <label for="marital_status" class="col-2 col-form-label">
                   <small>Status Perkawinan</small
                   ><span style="color: red">*</span>
                 </label>
-                <div class="col-sm">
+                <div class="col">
                   <Field
                     type="radio"
                     name="marital_status"
@@ -717,19 +719,66 @@
               </div>
             </div>
             <Button
-              @click="addFamily"
+              @click="openModal"
               icon="pi pi-plus"
               class="p-button-warning"
+              label="tambah anggota keluarga"
               v-tooltip.right="'Klik untuk menambahkan'"
             />
-            <div v-for="(fams, index) in families" :key="index">
+            <div class="mt-2">
+              <div class="row">
+                <div
+                  class="col-4"
+                  v-for="(family, index) in families"
+                  :key="index"
+                  style="min-width: 0vw"
+                >
+                  <div class="card">
+                    <div class="row">
+                      <div
+                        class="col-sm-2 col-offset-10 text-secondary"
+                        style="cursor: pointer"
+                        @click="popIndex(index)"
+                      >
+                        x
+                      </div>
+                    </div>
+                    <div class="p-2">
+                      <p class="fs-6 my-1"><b>Nama : </b> {{ family.name }}</p>
+                      <p class="fs-6 my-1">
+                        <b>Sebagai : </b> {{ family.member }}
+                      </p>
+                      <p class="fs-6 my-1">
+                        <b>Gender : </b> {{ family.gender }}
+                      </p>
+                      <p class="fs-6 my-1">
+                        <b>Tanggal Lahir : </b> {{ family.date }}
+                      </p>
+                      <p class="fs-6 my-1">
+                        <b>Pendidikan : </b> {{ family.education }}
+                      </p>
+                      <p class="fs-6 my-1">
+                        <b>Pekerjaan : </b> {{ family.occupation_company }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Dialog
+              header="Tambah Data Keluarga"
+              v-model:visible="displayModal"
+              :breakpoints="{ '960px': '85vw', '640px': '90vw' }"
+              :style="{ width: '50vw' }"
+              :modal="true"
+            >
               <div class="mt-2">
                 <div class="row">
-                  <label for="member" class="col-sm-2 col-form-label">
+                  <label for="member" class="col-3 col-form-label">
                     <small>Anggota Keluarga</small
                     ><span style="color: red">*</span>
                   </label>
-                  <div class="col-sm">
+                  <div class="col">
                     <Dropdown
                       v-model="fams.member"
                       :name="`families[${index}][member]`"
@@ -743,10 +792,10 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="fams_name" class="col-sm-2 col-form-label">
+                  <label for="fams_name" class="col-3 col-form-label">
                     <small>Nama</small><span style="color: red">*</span>
                   </label>
-                  <div class="col-sm">
+                  <div class="col">
                     <Field
                       class="form-control"
                       :name="`families[${index}][name]`"
@@ -761,11 +810,11 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="fams_gender" class="col-sm-2 col-form-label">
+                  <label for="fams_gender" class="col-3 col-form-label">
                     <small>Jenis Kelamin</small
                     ><span style="color: red">*</span>
                   </label>
-                  <div class="col-sm">
+                  <div class="col">
                     <Field
                       type="radio"
                       value="L"
@@ -794,11 +843,11 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="fams_date" class="col-sm-2 col-form-label">
+                  <label for="fams_date" class="col-3 col-form-label">
                     <small>Tanggal Lahir</small
                     ><span style="color: red">*</span>
                   </label>
-                  <div class="col-sm">
+                  <div class="col">
                     <Field
                       class="form-control"
                       type="date"
@@ -816,10 +865,10 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="education" class="col-sm-2 col-form-label">
+                  <label for="education" class="col-3 col-form-label">
                     <small>Pendidikan</small>
                   </label>
-                  <div class="col-sm">
+                  <div class="col">
                     <Field
                       class="form-control"
                       :name="`families[${index}][education]`"
@@ -830,13 +879,10 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label
-                    for="occupation_company"
-                    class="col-sm-2 col-form-label"
-                  >
+                  <label for="occupation_company" class="col-3 col-form-label">
                     <small>Pekerjaan & Perusahaan</small>
                   </label>
-                  <div class="col-sm">
+                  <div class="col">
                     <Field
                       class="form-control"
                       :name="`families[${index}][occupation_company]`"
@@ -846,8 +892,20 @@
                   </div>
                 </div>
               </div>
-              <Divider />
-            </div>
+              <template #footer>
+                <Button
+                  label="No"
+                  icon="pi pi-times"
+                  @click="closeModal"
+                  class="p-button-text"
+                />
+                <Button
+                  label="Tambahkan"
+                  icon="pi pi-check"
+                  @click="addFamily"
+                />
+              </template>
+            </Dialog>
           </div>
           <div class="card-footer text-muted">
             <Button
@@ -1777,6 +1835,14 @@ definePageMeta({
   layout: false,
 });
 
+const displayModal = ref(false);
+const openModal = () => {
+  displayModal.value = true;
+};
+const closeModal = () => {
+  displayModal.value = false;
+};
+
 const toast = useToast();
 
 const jobs = ref([]);
@@ -1818,26 +1884,37 @@ function addComputer() {
   });
 }
 
-const families = reactive([
-  {
-    member: "",
-    name: "",
-    gender: "",
-    date: "",
-    education: "",
-    occupation_company: "",
-  },
-]);
+const families = reactive([]);
+const fams = ref({
+  member: "",
+  name: "",
+  gender: "",
+  date: "",
+  education: "",
+  occupation_company: "",
+});
 function addFamily() {
   families.push({
+    member: fams.value.member,
+    name: fams.value.name,
+    gender: fams.value.gender,
+    date: fams.value.date,
+    education: fams.value.education,
+    occupation_company: fams.value.occupation_company,
+  });
+  fams.value = {
     member: "",
     name: "",
     gender: "",
     date: "",
     education: "",
     occupation_company: "",
-  });
+  };
+  closeModal();
 }
+const popIndex = (index) => {
+  families.splice(index, 1);
+};
 
 const nonformaleducations = reactive([]);
 function addnonFormal() {
@@ -2013,13 +2090,9 @@ async function save() {
           place_of_birth: applicant.value.place_of_birth,
           date: applicant.value.date,
           blood_type: applicant.value.blood_type,
-          province: applicant.value.province
-            ? applicant.value.province[1]
-            : "",
+          province: applicant.value.province ? applicant.value.province[1] : "",
           city: applicant.value.city ? applicant.value.city[1] : "",
-          district: applicant.value.district
-            ? applicant.value.district[1]
-            : "",
+          district: applicant.value.district ? applicant.value.district[1] : "",
           subdistrict: applicant.value.subdistrict
             ? applicant.value.subdistrict[1]
             : "",
@@ -2028,9 +2101,7 @@ async function save() {
           province_dom: applicant.value.province_dom
             ? applicant.value.province_dom[1]
             : "",
-          city_dom: applicant.value.city_dom
-            ? applicant.value.city_dom[1]
-            : "",
+          city_dom: applicant.value.city_dom ? applicant.value.city_dom[1] : "",
           district_dom: applicant.value.district_dom
             ? applicant.value.district_dom[1]
             : "",
