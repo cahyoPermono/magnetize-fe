@@ -4,7 +4,7 @@
       <Button icon="pi pi-bars" class="p-button-text p-button-plain" @click="sidebar()" />
       <a href="/dashboard"><img src="~/assets/magnetize-logo.png" alt="Logo" style="height: 40px" /></a>
       <div style="float: right" class="px-2">
-        <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="signOut()" v-if="isLoggedIn" />
+        <Button icon="pi pi-sign-out" class="p-button-text p-button-plain" @click="signOut()" />
         <Dialog v-model:visible="displayModal" :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
           :style="{ width: '30vw' }" :modal="true">
           <template #header>
@@ -36,15 +36,15 @@
             <p style="margin-left: 5px;">Feature</p>
           </strong>
           <div class="ml-3">
-            <NuxtLink v-if="(isLoggedIn, isdepartement)" to="/departements">
+            <NuxtLink v-if="(isdepartement)" to="/departements">
               <Button icon="pi pi-building" class="p-button-text p-button-plain" label="Departements" />
             </NuxtLink>
             <br />
-            <NuxtLink v-if="(isLoggedIn, isjobs)" to="/jobs_hcd">
+            <NuxtLink v-if="(isjobs)" to="/jobs_hcd">
               <Button icon="pi pi-sitemap" class="p-button-text p-button-plain" label="Jobs" />
             </NuxtLink>
             <br />
-            <NuxtLink v-if="(isLoggedIn, iscandidate)" to="/candidate">
+            <NuxtLink v-if="(iscandidate)" to="/candidate">
               <Button icon="pi pi-book" class="p-button-text p-button-plain" label="Candidate" />
             </NuxtLink>
             <br />
@@ -52,9 +52,9 @@
               <Button icon="pi pi-users" class="p-button-text p-button-plain" label="Guest" />
             </NuxtLink>
             <br />
-            <PanelMenu v-if="(isLoggedIn, isuser)" :model="items" style="width: 11.5em;" />
+            <PanelMenu v-if="(isuser)" :model="items" style="width: 11.5em;" />
             <br />
-            <NuxtLink v-if="(isLoggedIn, isrolepermission)" to="/rolepermission">
+            <NuxtLink v-if="(isrolepermission)" to="/rolepermission">
               <Button icon="pi pi-cog" class="p-button-text p-button-plain" label="Role Permission" />
             </NuxtLink>
           </div>
@@ -84,7 +84,6 @@ const iscandidate = computed(() => store.arr.includes('menu_candidates'))
 const isdepartement = computed(() => store.arr.includes('menu_departements'))
 const isuser = computed(() => store.arr.includes('menu_users'))
 const isrolepermission = computed(() => store.arr.includes('menu_rolepermission'))
-const isLoggedIn = computed(() => store.token);
 
 const displayModal = ref(false);
 const signOut = () => {
@@ -92,10 +91,6 @@ const signOut = () => {
 };
 const closeModal = () => {
   displayModal.value = false;
-};
-
-function signin() {
-  router.push("/login");
 };
 
 let isSidebarActive = ref(true);

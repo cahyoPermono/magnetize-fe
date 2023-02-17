@@ -72,6 +72,7 @@
           <div class="card-header">
             Data Pribadi&nbsp;<span><small>(Personal Data)</small></span>
           </div>
+
           <div class="card-body">
             <div class="mt-2">
               <div class="row">
@@ -287,7 +288,20 @@
                 </div>
               </div>
             </div>
-
+            <div class="mt-2">
+              <div class="row">
+                <label for="valid_to" class="col-sm-2 col-form-label">
+                  <small>Berlaku s.d</small>
+                </label>
+                <div class="col-sm">
+                  <Field
+                    class="form-control"
+                    name="valid_to"
+                    v-model="applicant.valid_to"
+                  />
+                </div>
+              </div>
+            </div>
             <div class="mt-2">
               <div class="row">
                 <label for="religion" class="col-sm-2 col-form-label">
@@ -385,18 +399,116 @@
             Data Pribadi&nbsp;<span><small>(Personal Data)</small></span>
           </div>
           <div class="card-body">
-            <div class="mt-2">
+            <div class="mt-4">
               <div class="row">
-                <label for="address" class="col-sm-2 col-form-label">
-                  <small>Alamat Rumah (sesuai KTP)</small
-                  ><span style="color: red">*</span>
-                </label>
-                <div class="col-sm">
+                <div class="col-sm-2">
+                  <label for="address">
+                    <small>Alamat Rumah (sesuai KTP)</small
+                    ><span style="color: red">*</span>
+                  </label>
+                </div>
+                <div class="col-sm-2">
+                  <Field
+                    name="province"
+                    class="form-control"
+                    as="select"
+                    v-model="applicant.province"
+                    @change="getKota(applicant.province[0], 'ktp')"
+                  >
+                    <option
+                      v-for="data in dataProvinsi"
+                      :key="data.id"
+                      :value="[data.id, data.nama]"
+                    >
+                      {{ data.nama }}
+                    </option>
+                  </Field>
+                  <ErrorMessage name="province">
+                    <small style="color: red">Province is required</small>
+                  </ErrorMessage>
+                </div>
+                <div class="col-sm-2">
+                  <Field
+                    name="city"
+                    class="form-control"
+                    as="select"
+                    v-model="applicant.city"
+                    @change="getKecamatan(applicant.city[0], 'ktp')"
+                  >
+                    <option
+                      v-for="data in dataKotaKab"
+                      :key="data.id"
+                      :value="[data.id, data.nama]"
+                    >
+                      {{ data.nama }}
+                    </option>
+                  </Field>
+                  <ErrorMessage name="city">
+                    <small style="color: red">city is required</small>
+                  </ErrorMessage>
+                </div>
+                <div class="col-sm-2">
+                  <Field
+                    name="district"
+                    class="form-control"
+                    as="select"
+                    v-model="applicant.district"
+                    @change="getDesaKel(applicant.district[0], 'ktp')"
+                  >
+                    <option
+                      v-for="data in dataKecamatan"
+                      :key="data.id"
+                      :value="[data.id, data.nama]"
+                    >
+                      {{ data.nama }}
+                    </option>
+                  </Field>
+                  <ErrorMessage name="district">
+                    <small style="color: red">district is required</small>
+                  </ErrorMessage>
+                </div>
+                <div class="col-sm-2">
+                  <Field
+                    name="subdistrict"
+                    class="form-control"
+                    as="select"
+                    v-model="applicant.subdistrict"
+                  >
+                    <option
+                      v-for="data in dataDesaKel"
+                      :key="data.id"
+                      :value="[data.id, data.nama]"
+                    >
+                      {{ data.nama }}
+                    </option>
+                  </Field>
+                  <ErrorMessage name="subdistrict">
+                    <small style="color: red">subdistrict is required</small>
+                  </ErrorMessage>
+                </div>
+                <div class="col-sm-2">
+                  <Field
+                    class="form-control"
+                    name="postal_code"
+                    type="text"
+                    :rules="isRequired"
+                    v-model="applicant.postal_code_address"
+                    placeholder="Kode Pos"
+                  />
+                  <ErrorMessage name="postal_code">
+                    <small style="color: red">Postal Code is required</small>
+                  </ErrorMessage>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-10 offset-sm-2">
                   <Field
                     class="form-control"
                     name="address"
+                    type="text"
                     :rules="isRequired"
                     v-model="applicant.address"
+                    placeholder="Alamat Lengkap"
                   />
                   <ErrorMessage name="address">
                     <small style="color: red">Address is required</small>
@@ -404,64 +516,127 @@
                 </div>
               </div>
             </div>
-            <div class="mt-2">
+            <div class="mt-4">
               <div class="row">
-                <label
-                  for="postal_code_address"
-                  class="col-sm-2 col-form-label"
-                >
-                  <small>Kode Pos</small><span style="color: red">*</span>
-                </label>
-                <div class="col-sm">
+                <div class="col-sm-2">
+                  <label for="address">
+                    <small>Alamat Rumah (Domisili)</small
+                    ><span style="color: red">*</span>
+                  </label>
+                </div>
+                <div class="col-sm-2">
+                  <Field
+                    name="province_dom"
+                    class="form-control"
+                    as="select"
+                    v-model="applicant.province_dom"
+                    @change="getKota(applicant.province_dom[0], 'domicile')"
+                  >
+                    <option
+                      v-for="data in dataProvinsi"
+                      :key="data.id"
+                      :value="[data.id, data.nama]"
+                    >
+                      {{ data.nama }}
+                    </option>
+                  </Field>
+                  <ErrorMessage name="province_dom">
+                    <small style="color: red">Province_dom is required</small>
+                  </ErrorMessage>
+                </div>
+                <div class="col-sm-2">
+                  <Field
+                    name="city_dom"
+                    class="form-control"
+                    as="select"
+                    v-model="applicant.city_dom"
+                    @change="getKecamatan(applicant.city_dom[0], 'domicile')"
+                  >
+                    <option
+                      v-for="data in dataKotaKab_dom"
+                      :key="data.id"
+                      :value="[data.id, data.nama]"
+                    >
+                      {{ data.nama }}
+                    </option>
+                  </Field>
+                  <ErrorMessage name="city_dom">
+                    <small style="color: red">city_dom is required</small>
+                  </ErrorMessage>
+                </div>
+                <div class="col-sm-2">
+                  <Field
+                    name="district_dom"
+                    class="form-control"
+                    as="select"
+                    v-model="applicant.district_dom"
+                    @change="getDesaKel(applicant.district_dom[0], 'domicile')"
+                  >
+                    <option
+                      v-for="data in dataKecamatan_dom"
+                      :key="data.id"
+                      :value="[data.id, data.nama]"
+                    >
+                      {{ data.nama }}
+                    </option>
+                  </Field>
+                  <ErrorMessage name="district_dom">
+                    <small style="color: red">district_dom is required</small>
+                  </ErrorMessage>
+                </div>
+
+                <div class="col-sm-2">
+                  <Field
+                    name="subdistrict_dom"
+                    class="form-control"
+                    as="select"
+                    v-model="applicant.subdistrict_dom"
+                  >
+                    <option
+                      v-for="data in dataDesaKel_dom"
+                      :key="data.id"
+                      :value="[data.id, data.nama]"
+                    >
+                      {{ data.nama }}
+                    </option>
+                  </Field>
+                  <ErrorMessage name="subdistrict_dom">
+                    <small style="color: red"
+                      >subdistrict_dom is required</small
+                    >
+                  </ErrorMessage>
+                </div>
+                <div class="col-sm-2">
                   <Field
                     class="form-control"
-                    name="postal_code_address"
+                    name="postal_code_dom"
+                    type="text"
                     :rules="isRequired"
-                    v-model="applicant.postal_code_address"
+                    v-model="applicant.postal_code_domicile"
+                    placeholder="Kode Pos"
                   />
-                  <ErrorMessage name="postal_code_address">
-                    <small style="color: red"
-                      >Postal Code Addess is required</small
-                    >
+                  <ErrorMessage name="postal_code_dom">
+                    <small style="color: red">Postal Code is required</small>
+                  </ErrorMessage>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-10 offset-sm-2">
+                  <Field
+                    class="form-control"
+                    name="domicile"
+                    type="text"
+                    :rules="isRequired"
+                    v-model="applicant.domicile"
+                    placeholder="Alamat Lengkap"
+                  />
+                  <ErrorMessage name="domicile">
+                    <small style="color: red">Domicile is required</small>
                   </ErrorMessage>
                 </div>
               </div>
             </div>
-
-            <div class="mt-2">
-              <div class="row">
-                <label for="domicile" class="col-sm-2 col-form-label">
-                  <small>Alamat Rumah (Domisili)</small>
-                </label>
-                <div class="col-sm">
-                  <Field
-                    class="form-control"
-                    name="domicile"
-                    v-model="applicant.domicile"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-2">
-              <div class="row">
-                <label
-                  for="postal_code_domicile"
-                  class="col-sm-2 col-form-label"
-                >
-                  <small>Kode Pos (Domisili)</small>
-                </label>
-                <div class="col-sm">
-                  <Field
-                    class="form-control"
-                    name="postal_code_domicile"
-                    v-model="applicant.postal_code_domicile"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-2">
+            <div class="mt-4">
               <div class="row">
                 <label
                   for="office_parent_phone"
@@ -478,8 +653,7 @@
                 </div>
               </div>
             </div>
-
-            <div class="mt-2">
+            <div class="mt-4">
               <div class="row">
                 <label for="npwp_no" class="col-sm-2 col-form-label">
                   <small>No. NPWP (jika ada)</small>
@@ -493,8 +667,7 @@
                 </div>
               </div>
             </div>
-
-            <div class="mt-2">
+            <div class="mt-4">
               <div class="row">
                 <label for="account_no" class="col-sm-2 col-form-label">
                   <small>No. Rekening (jika ada)</small>
@@ -509,7 +682,6 @@
               </div>
             </div>
           </div>
-
           <div class="card-footer text-muted">
             <Button
               class="p-button-sm"
@@ -525,19 +697,19 @@
             />
           </div>
         </div>
-
         <div v-if="family">
           <div class="card-header">
             Data Keluarga&nbsp;<span><small>(Family Data)</small></span>
           </div>
+
           <div class="card-body">
             <div class="mt-2">
               <div class="row">
-                <label for="marital_status" class="col-sm-2 col-form-label">
+                <label for="marital_status" class="col-2 col-form-label">
                   <small>Status Perkawinan</small
                   ><span style="color: red">*</span>
                 </label>
-                <div class="col-sm">
+                <div class="col">
                   <Field
                     type="radio"
                     name="marital_status"
@@ -594,19 +766,66 @@
               </div>
             </div>
             <Button
-              @click="addFamily"
+              @click="openModal"
               icon="pi pi-plus"
               class="p-button-warning"
+              label="tambah anggota keluarga"
               v-tooltip.right="'Klik untuk menambahkan'"
             />
-            <div v-for="(fams, index) in families" :key="index">
+            <div class="mt-2">
+              <div class="row">
+                <div
+                  class="col-4"
+                  v-for="(family, index) in families"
+                  :key="index"
+                  style="min-width: 0vw"
+                >
+                  <div class="card">
+                    <div class="row">
+                      <div
+                        class="col-sm-2 col-offset-10 text-secondary"
+                        style="cursor: pointer"
+                        @click="popIndex(index)"
+                      >
+                        x
+                      </div>
+                    </div>
+                    <div class="p-2">
+                      <p class="fs-6 my-1"><b>Nama : </b> {{ family.name }}</p>
+                      <p class="fs-6 my-1">
+                        <b>Sebagai : </b> {{ family.member }}
+                      </p>
+                      <p class="fs-6 my-1">
+                        <b>Gender : </b> {{ family.gender }}
+                      </p>
+                      <p class="fs-6 my-1">
+                        <b>Tanggal Lahir : </b> {{ family.date }}
+                      </p>
+                      <p class="fs-6 my-1">
+                        <b>Pendidikan : </b> {{ family.education }}
+                      </p>
+                      <p class="fs-6 my-1">
+                        <b>Pekerjaan : </b> {{ family.occupation_company }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Dialog
+              header="Tambah Data Keluarga"
+              v-model:visible="displayModal"
+              :breakpoints="{ '960px': '85vw', '640px': '90vw' }"
+              :style="{ width: '50vw' }"
+              :modal="true"
+            >
               <div class="mt-2">
                 <div class="row">
-                  <label for="member" class="col-sm-2 col-form-label">
+                  <label for="member" class="col-3 col-form-label">
                     <small>Anggota Keluarga</small
                     ><span style="color: red">*</span>
                   </label>
-                  <div class="col-sm">
+                  <div class="col">
                     <Dropdown
                       v-model="fams.member"
                       :name="`families[${index}][member]`"
@@ -620,10 +839,11 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="fams_name" class="col-sm-2 col-form-label">
+                  <label for="fams_name" class="col-3 col-form-label">
                     <small>Nama</small><span style="color: red">*</span>
                   </label>
-                  <div class="col-sm">
+                  <div class="col">
+
                     <Field
                       class="form-control"
                       :name="`families[${index}][name]`"
@@ -638,11 +858,12 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="fams_gender" class="col-sm-2 col-form-label">
+                  <label for="fams_gender" class="col-3 col-form-label">
                     <small>Jenis Kelamin</small
                     ><span style="color: red">*</span>
                   </label>
-                  <div class="col-sm">
+                  <div class="col">
+
                     <Field
                       type="radio"
                       value="L"
@@ -671,11 +892,11 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="fams_date" class="col-sm-2 col-form-label">
+                  <label for="fams_date" class="col-3 col-form-label">
                     <small>Tanggal Lahir</small
                     ><span style="color: red">*</span>
                   </label>
-                  <div class="col-sm">
+                  <div class="col">
                     <Field
                       class="form-control"
                       type="date"
@@ -693,10 +914,11 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="education" class="col-sm-2 col-form-label">
+                  <label for="education" class="col-3 col-form-label">
                     <small>Pendidikan</small>
                   </label>
-                  <div class="col-sm">
+                  <div class="col">
+
                     <Field
                       class="form-control"
                       :name="`families[${index}][education]`"
@@ -707,13 +929,10 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label
-                    for="occupation_company"
-                    class="col-sm-2 col-form-label"
-                  >
+                  <label for="occupation_company" class="col-3 col-form-label">
                     <small>Pekerjaan & Perusahaan</small>
                   </label>
-                  <div class="col-sm">
+                  <div class="col">
                     <Field
                       class="form-control"
                       :name="`families[${index}][occupation_company]`"
@@ -723,8 +942,20 @@
                   </div>
                 </div>
               </div>
-              <Divider />
-            </div>
+              <template #footer>
+                <Button
+                  label="No"
+                  icon="pi pi-times"
+                  @click="closeModal"
+                  class="p-button-text"
+                />
+                <Button
+                  label="Tambahkan"
+                  icon="pi pi-check"
+                  @click="addFamily"
+                />
+              </template>
+            </Dialog>
           </div>
           <div class="card-footer text-muted">
             <Button
@@ -768,8 +999,8 @@
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="name_location" class="col-sm-3 col-form-label">
-                  <small>Nama Sekolah / Perguruan Tinggi</small
+                <label for="name_location" class="col-sm-2 col-form-label">
+                  <small>Sekolah / Perguruan Tinggi</small
                   ><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
@@ -778,17 +1009,21 @@
                     name="name_location"
                     :rules="isRequired"
                     v-model="formaleducate.name_location"
+                    v-tooltip.top="'Nama - Lokasi'"
                   />
                   <ErrorMessage name="name_location">
-                    <small style="color: red">Name is required</small>
+                    <small style="color: red"
+                      >Name & Location is required</small
+                    >
                   </ErrorMessage>
                 </div>
               </div>
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="location" class="col-sm-3 col-form-label">
-                  <small>Lokasi</small><span style="color: red">*</span>
+                <label for="location" class="col-sm-2 col-form-label">
+                  <small>Lokasi</small
+                  ><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
                   <Field
@@ -796,9 +1031,12 @@
                     name="location"
                     :rules="isRequired"
                     v-model="formaleducate.location"
+                    v-tooltip.top="'Lokasi'"
                   />
                   <ErrorMessage name="location">
-                    <small style="color: red">Location is required</small>
+                    <small style="color: red"
+                      >Location is required</small
+                    >
                   </ErrorMessage>
                 </div>
               </div>
@@ -823,7 +1061,25 @@
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="entry" class="col-sm-3 col-form-label">
+                <label for="gpa" class="col-sm-2 col-form-label">
+                  <small>Nilai rata-rata</small><span style="color: red">*</span>
+                </label>
+                <div class="col-sm">
+                  <Field
+                    class="form-control"
+                    name="gpa"
+                    :rules="isRequired"
+                    v-model="formaleducate.gpa"
+                  />
+                  <ErrorMessage name="gpa">
+                    <small style="color: red">GPA is required</small>
+                  </ErrorMessage>
+                </div>
+              </div>
+            </div>
+            <div class="mt-2">
+              <div class="row">
+                <label for="entry" class="col-sm-2 col-form-label">
                   <small>Tahun Masuk</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
@@ -1237,6 +1493,7 @@
                   <small>Job Deskripsi</small>
                 </label>
                 <div class="col-sm">
+
                   <Textarea
                     v-model="jobdescription.description"
                     rows="15"
@@ -1247,6 +1504,7 @@
                     name="start"
                     v-model="jobdescription.description"
                     v-tooltip.top="'Gambarkan deskripsi pekerjaan terakhir'"
+
                   ></textarea> -->
                 </div>
               </div>
@@ -1679,17 +1937,25 @@
 import { ref, onMounted, reactive } from "vue";
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
-
 definePageMeta({
   layout: false,
 });
+
+const displayModal = ref(false);
+const openModal = () => {
+  displayModal.value = true;
+};
+const closeModal = () => {
+  displayModal.value = false;
+};
 
 const toast = useToast();
 
 const jobs = ref([]);
 const config = useRuntimeConfig();
-onMounted(() => {
+onMounted(async () => {
   getJob();
+  await getProvinsi();
 });
 
 const showWarn = () => {
@@ -1724,26 +1990,37 @@ function addComputer() {
   });
 }
 
-const families = reactive([
-  {
-    member: "",
-    name: "",
-    gender: "",
-    date: "",
-    education: "",
-    occupation_company: "",
-  },
-]);
+const families = reactive([]);
+const fams = ref({
+  member: "",
+  name: "",
+  gender: "",
+  date: "",
+  education: "",
+  occupation_company: "",
+});
 function addFamily() {
   families.push({
+    member: fams.value.member,
+    name: fams.value.name,
+    gender: fams.value.gender,
+    date: fams.value.date,
+    education: fams.value.education,
+    occupation_company: fams.value.occupation_company,
+  });
+  fams.value = {
     member: "",
     name: "",
     gender: "",
     date: "",
     education: "",
     occupation_company: "",
-  });
+  };
+  closeModal();
 }
+const popIndex = (index) => {
+  families.splice(index, 1);
+};
 
 const nonformaleducations = reactive([]);
 function addnonFormal() {
@@ -1790,14 +2067,22 @@ function addAttachment() {
   });
 }
 
-const applicant = reactive({
+const applicant = ref({
   name: "",
   gender: "",
   place_of_birth: "",
   date: "",
   blood_type: "",
+  province: "",
+  city: "",
+  district: "",
+  subdistrict: "",
   address: "",
   postal_code_address: "",
+  province_dom: "",
+  city_dom: "",
+  district_dom: "",
+  subdistrict_dom: "",
   domicile: "",
   postal_code_domicile: "",
   phone: "",
@@ -1832,6 +2117,7 @@ const formaleducate = reactive({
   name_location: "",
   location: "",
   major: "",
+  gpa: "",
   entry: "",
   graduate: "",
   ip_rata: "",
@@ -1902,34 +2188,51 @@ const isRequired = (value) => {
 };
 
 async function save() {
-  if (applicant.photo === null)
-    return (applicant.photo = "https://via.placeholder.com/120x120?text=FOTO");
+  if (applicant.value.photo === null)
+    return (applicant.value.photo =
+      "https://via.placeholder.com/120x120?text=FOTO");
   try {
     await axios
       .post(config.API_BASE_URL + "applicants", {
         applicant: {
-          name: applicant.name,
-          gender: applicant.gender,
-          place_of_birth: applicant.place_of_birth,
-          date: applicant.date,
-          blood_type: applicant.blood_type,
-          address: applicant.address,
-          postal_code_address: applicant.postal_code_address,
-          domicile: applicant.domicile,
-          postal_code_domicile: applicant.postal_code_domicile,
-          phone: applicant.phone,
-          mobile: applicant.mobile,
-          office_parent_phone: applicant.office_parent_phone,
-          email: applicant.email,
-          id_sim_no: applicant.id_sim_no,
-          valid_to: applicant.valid_to,
-          npwp_no: applicant.npwp_no,
-          account_no: applicant.account_no,
-          religion: applicant.religion,
-          JobId: applicant.JobId,
-          photo: applicant.photo,
-          marital_status: applicant.marital_status,
-          year_marriage: applicant.year_marriage,
+          name: applicant.value.name,
+          gender: applicant.value.gender,
+          place_of_birth: applicant.value.place_of_birth,
+          date: applicant.value.date,
+          blood_type: applicant.value.blood_type,
+          province: applicant.value.province ? applicant.value.province[1] : "",
+          city: applicant.value.city ? applicant.value.city[1] : "",
+          district: applicant.value.district ? applicant.value.district[1] : "",
+          subdistrict: applicant.value.subdistrict
+            ? applicant.value.subdistrict[1]
+            : "",
+          address: applicant.value.address,
+          postal_code_address: applicant.value.postal_code_address,
+          province_dom: applicant.value.province_dom
+            ? applicant.value.province_dom[1]
+            : "",
+          city_dom: applicant.value.city_dom ? applicant.value.city_dom[1] : "",
+          district_dom: applicant.value.district_dom
+            ? applicant.value.district_dom[1]
+            : "",
+          subdistrict_dom: applicant.value.subdistrict_dom
+            ? applicant.value.subdistrict_dom[1]
+            : "",
+          domicile: applicant.value.domicile,
+          postal_code_domicile: applicant.value.postal_code_domicile,
+          phone: applicant.value.phone,
+          mobile: applicant.value.mobile,
+          office_parent_phone: applicant.value.office_parent_phone,
+          email: applicant.value.email,
+          id_sim_no: applicant.value.id_sim_no,
+          valid_to: applicant.value.valid_to,
+          npwp_no: applicant.value.npwp_no,
+          account_no: applicant.value.account_no,
+          religion: applicant.value.religion,
+          JobId: applicant.value.JobId,
+          photo: applicant.value.photo,
+          marital_status: applicant.value.marital_status,
+          year_marriage: applicant.value.year_marriage,
           status: "shortlisted",
           isCandidate: 0,
         },
@@ -1939,6 +2242,7 @@ async function save() {
           name_location: formaleducate.name_location,
           location: formaleducate.location,
           major: formaleducate.major,
+          gpa: formaleducate.gpa,
           entry: formaleducate.entry,
           graduate: formaleducate.graduate,
           ip_rata: formaleducate.ip_rata,
@@ -1978,7 +2282,6 @@ async function save() {
         loading.value = true;
       });
     const applicantNow = await axios.get(config.API_BASE_URL + "applicants");
-    console.log(applicantNow.data.data[0].id);
     const pdf = await axios.get(
       config.API_BASE_URL + "topdf/" + applicantNow.data.data[0].id
     );
@@ -1999,7 +2302,7 @@ const onUploadAva = (evt) => {
   const reader = new FileReader();
   reader.readAsDataURL(f);
   reader.onloadend = function () {
-    applicant.photo = reader.result;
+    applicant.value.photo = reader.result;
   };
 };
 const onUpload = (evt, index) => {
@@ -2031,6 +2334,48 @@ const onUploadCerti = (evt, index) => {
     toast.add({ severity: "success", summary: "File Uploaded", life: 3000 });
   } catch (err) {
     alert(err);
+  }
+};
+
+const EXT_API_URL = "https://dev.farizdotid.com/api/daerahindonesia/";
+const dataProvinsi = ref([]);
+const dataKotaKab = ref([]);
+const dataKecamatan = ref([]);
+const dataDesaKel = ref([]);
+
+const dataKotaKab_dom = ref([]);
+const dataKecamatan_dom = ref([]);
+const dataDesaKel_dom = ref([]);
+
+const getProvinsi = async () => {
+  const res = await axios.get(EXT_API_URL + "provinsi");
+  dataProvinsi.value = res.data.provinsi;
+};
+
+const getKota = async (id_prov, whoIs) => {
+  const res = await axios.get(EXT_API_URL + "kota?id_provinsi=" + id_prov);
+  if (whoIs === "ktp") {
+    dataKotaKab.value = res.data.kota_kabupaten;
+  } else if (whoIs === "domicile") {
+    dataKotaKab_dom.value = res.data.kota_kabupaten;
+  }
+};
+
+const getKecamatan = async (id_kota, whoIs) => {
+  const res = await axios.get(EXT_API_URL + "kecamatan?id_kota=" + id_kota);
+  if (whoIs === "ktp") {
+    dataKecamatan.value = res.data.kecamatan;
+  } else if (whoIs === "domicile") {
+    dataKecamatan_dom.value = res.data.kecamatan;
+  }
+};
+
+const getDesaKel = async (id_kec, whoIs) => {
+  const res = await axios.get(EXT_API_URL + "kelurahan?id_kecamatan=" + id_kec);
+  if (whoIs === "ktp") {
+    dataDesaKel.value = res.data.kelurahan;
+  } else if (whoIs === "domicile") {
+    dataDesaKel_dom.value = res.data.kelurahan;
   }
 };
 </script>
