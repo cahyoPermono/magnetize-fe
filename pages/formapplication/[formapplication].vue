@@ -290,20 +290,6 @@
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="valid_to" class="col-sm-2 col-form-label">
-                  <small>Berlaku s.d</small>
-                </label>
-                <div class="col-sm">
-                  <Field
-                    class="form-control"
-                    name="valid_to"
-                    v-model="applicant.valid_to"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="mt-2">
-              <div class="row">
                 <label for="religion" class="col-sm-2 col-form-label">
                   <small>Agama</small><span style="color: red">*</span>
                 </label>
@@ -500,7 +486,7 @@
                   </ErrorMessage>
                 </div>
               </div>
-              <div class="row">
+              <div class="row mt-2">
                 <div class="col-sm-10 offset-sm-2">
                   <Field
                     class="form-control"
@@ -521,7 +507,7 @@
                 <div class="col-sm-2">
                   <label for="address">
                     <small>Alamat Rumah (Domisili)</small
-                    ><span style="color: red">*</span>
+                    >
                   </label>
                 </div>
                 <div class="col-sm-2">
@@ -540,9 +526,6 @@
                       {{ data.nama }}
                     </option>
                   </Field>
-                  <ErrorMessage name="province_dom">
-                    <small style="color: red">Province_dom is required</small>
-                  </ErrorMessage>
                 </div>
                 <div class="col-sm-2">
                   <Field
@@ -560,9 +543,6 @@
                       {{ data.nama }}
                     </option>
                   </Field>
-                  <ErrorMessage name="city_dom">
-                    <small style="color: red">city_dom is required</small>
-                  </ErrorMessage>
                 </div>
                 <div class="col-sm-2">
                   <Field
@@ -580,11 +560,7 @@
                       {{ data.nama }}
                     </option>
                   </Field>
-                  <ErrorMessage name="district_dom">
-                    <small style="color: red">district_dom is required</small>
-                  </ErrorMessage>
                 </div>
-
                 <div class="col-sm-2">
                   <Field
                     name="subdistrict_dom"
@@ -600,39 +576,26 @@
                       {{ data.nama }}
                     </option>
                   </Field>
-                  <ErrorMessage name="subdistrict_dom">
-                    <small style="color: red"
-                      >subdistrict_dom is required</small
-                    >
-                  </ErrorMessage>
                 </div>
                 <div class="col-sm-2">
                   <Field
                     class="form-control"
                     name="postal_code_dom"
                     type="text"
-                    :rules="isRequired"
                     v-model="applicant.postal_code_domicile"
                     placeholder="Kode Pos"
                   />
-                  <ErrorMessage name="postal_code_dom">
-                    <small style="color: red">Postal Code is required</small>
-                  </ErrorMessage>
                 </div>
               </div>
-              <div class="row">
+              <div class="row mt-2">
                 <div class="col-sm-10 offset-sm-2">
                   <Field
                     class="form-control"
                     name="domicile"
                     type="text"
-                    :rules="isRequired"
                     v-model="applicant.domicile"
                     placeholder="Alamat Lengkap"
                   />
-                  <ErrorMessage name="domicile">
-                    <small style="color: red">Domicile is required</small>
-                  </ErrorMessage>
                 </div>
               </div>
             </div>
@@ -918,7 +881,6 @@
                     <small>Pendidikan</small>
                   </label>
                   <div class="col">
-
                     <Field
                       class="form-control"
                       :name="`families[${index}][education]`"
@@ -980,7 +942,7 @@
           <div class="card-body">
             <div class="mt-2">
               <div class="row">
-                <label for="level" class="col-sm-3 col-form-label">
+                <label for="level" class="col-sm-2 col-form-label">
                   <small>Level</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
@@ -1043,7 +1005,7 @@
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="major" class="col-sm-3 col-form-label">
+                <label for="major" class="col-sm-2 col-form-label">
                   <small>Jurusan</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
@@ -1098,7 +1060,7 @@
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="graduate" class="col-sm-3 col-form-label">
+                <label for="graduate" class="col-sm-2 col-form-label">
                   <small>Tahun Lulus</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
@@ -1117,7 +1079,7 @@
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="ip_rata" class="col-sm-3 col-form-label">
+                <label for="ip_rata" class="col-sm-2 col-form-label">
                   <small>IPK / Nilai Rata-Rata</small
                   ><span style="color: red">*</span>
                 </label>
@@ -1207,24 +1169,6 @@
                       :name="`nonformaleducations[${index}][duration]`"
                       v-model="nonformaleducate.duration"
                     />
-                  </div>
-                </div>
-              </div>
-              <div class="mt-2">
-                <div class="row">
-                  <label for="certificate" class="col-sm-3 col-form-label">
-                    <small>Sertifikat</small>
-                  </label>
-                  <div class="col-sm">
-                    <FileUpload
-                      name="demo[]"
-                      mode="basic"
-                      @upload="onUploadCerti($event, index)"
-                      accept="image/*,.pdf"
-                      :maxFileSize="1000000"
-                      :auto="true"
-                    >
-                    </FileUpload>
                   </div>
                 </div>
               </div>
