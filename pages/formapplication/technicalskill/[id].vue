@@ -1,6 +1,7 @@
 <template>
   <div>
-    <Toast />
+    <div><Toast /></div>
+
     <ConfirmDialog></ConfirmDialog>
     <div class="card" style="margin-bottom: 15px">
       <Form @submit="save">
@@ -18,15 +19,27 @@
           <div v-for="(skill, index) in arrskill" :key="index">
             <h6>{{ skill.nameskill }}</h6>
             <DataTable :value="skill.subname">
-              <Column headerStyle="width: 20em" field="subskill" header="Nama Skill" />
+              <Column
+                headerStyle="width: 20em"
+                field="subskill"
+                header="Nama Skill"
+              />
               <Column header="Nilai">
                 <template #body="slotProps">
-                  <input type="text" v-model="slotProps.data.nilai" class="form-control" />
+                  <input
+                    type="text"
+                    v-model="slotProps.data.nilai"
+                    class="form-control"
+                  />
                 </template>
               </Column>
               <Column header="Keterangan">
                 <template #body="slotProps">
-                  <input type="text" v-model="slotProps.data.keterangan" class="form-control" />
+                  <input
+                    type="text"
+                    v-model="slotProps.data.keterangan"
+                    class="form-control"
+                  />
                 </template>
               </Column>
             </DataTable>
@@ -40,22 +53,38 @@
                 layak untuk disampaikan, silakan dimasukkan di bawah ini.
               </h6>
             </Message>
-            <Button @click="addOther" icon="pi pi-plus" class="p-button-warning"
-              v-tooltip.right="'Klik untuk menambahkan'" />
+            <Button
+              @click="addOther"
+              icon="pi pi-plus"
+              class="p-button-warning"
+              v-tooltip.right="'Klik untuk menambahkan'"
+            />
             <DataTable :value="otherskills">
               <Column headerStyle="width: 20em" header="Nama Skill">
                 <template #body="slotProps">
-                  <input type="text" v-model="slotProps.data.nameother" class="form-control" />
+                  <input
+                    type="text"
+                    v-model="slotProps.data.nameother"
+                    class="form-control"
+                  />
                 </template>
               </Column>
               <Column header="Nilai">
                 <template #body="slotProps">
-                  <input type="text" v-model="slotProps.data.nilaiother" class="form-control" />
+                  <input
+                    type="text"
+                    v-model="slotProps.data.nilaiother"
+                    class="form-control"
+                  />
                 </template>
               </Column>
               <Column header="Keterangan">
                 <template #body="slotProps">
-                  <input type="text" v-model="slotProps.data.keteranganother" class="form-control" />
+                  <input
+                    type="text"
+                    v-model="slotProps.data.keteranganother"
+                    class="form-control"
+                  />
                 </template>
               </Column>
             </DataTable>
@@ -63,7 +92,13 @@
         </div>
         <div class="card-footer text-muted">
           <Button class="p-button-sm p-button-text" disabled />
-          <Button class="p-button-sm" icon="pi pi-save" type="submit" :loading="loading" style="float: right" />
+          <Button
+            class="p-button-sm"
+            icon="pi pi-save"
+            type="submit"
+            :loading="loading"
+            style="float: right"
+          />
         </div>
       </Form>
     </div>
@@ -88,19 +123,25 @@ const config = useRuntimeConfig();
 
 const confirm1 = () => {
   confirm.require({
-    message: "Selamat Form Application Anda Sudah Lengkap dan Akan Kami Review Segera, Terima Kasih",
+    message:
+      "Selamat Form Application Anda Sudah Lengkap dan Akan Kami Review Segera, Terima Kasih",
     header: "Confirmation",
     icon: "pi pi-exclamation-triangle",
     accept: () => {
-      navigateTo('/')
+      navigateTo("/");
       // router.push({ path: "/" });
     },
   });
 };
 
 const showWarn = () => {
-  toast.add({ severity: 'warn', summary: 'Pengiriman Data', detail: 'Data Anda Sedang Kami Kirim Ke HRD', life: 3000 });
-}
+  toast.add({
+    severity: "warn",
+    summary: "Pengiriman Data",
+    detail: "Data Anda Sedang Kami Kirim Ke HRD",
+    life: 3000,
+  });
+};
 
 const applicants = ref(null);
 const jobs = ref(null);
@@ -131,10 +172,12 @@ onMounted(async () => {
 
 async function getApplicant() {
   try {
-    await axios.get(config.API_BASE_URL + "applicants").then(async (response) => {
-      applicants.value = await response.data.data[0];
-    });
-    console.log(applicants.value)
+    await axios
+      .get(config.API_BASE_URL + "applicants")
+      .then(async (response) => {
+        applicants.value = await response.data.data[0];
+      });
+    console.log(applicants.value);
   } catch (err) {
     console.log(err);
   }
@@ -142,8 +185,10 @@ async function getApplicant() {
 
 async function getJob() {
   try {
-    const job_applicant = applicants.value.job
-    const skills_promise = await axios.get(config.API_BASE_URL + "skills/" + job_applicant.id);
+    const job_applicant = applicants.value.job;
+    const skills_promise = await axios.get(
+      config.API_BASE_URL + "skills/" + job_applicant.id
+    );
     const skills = skills_promise.data.data;
     skills.forEach((element) => {
       arrskill.push({

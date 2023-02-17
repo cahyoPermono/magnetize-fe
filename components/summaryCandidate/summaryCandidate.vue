@@ -262,7 +262,7 @@ const getter = async () => {
     candidate_data.current_company = candidate.employmenthistories.length < 1 ?  '-' : candidate.employmenthistories[0].name_company;
     candidate_data.current_position = candidate.employmenthistories.length < 1 ?  '-' : candidate.employmenthistories[0].position;  
     candidate_data.current_sallary = candidate.employmenthistories.length < 1 ?  '-' : candidate.employmenthistories[0].take_home_pay;  
-    candidate_data.experience_telecomunication = candidate.otherinformation.experience_telecomunication || '-';
+    candidate_data.experience_telecomunication = candidate.otherinformation.experience_tellecomunication || '-';
     candidate_data.experience_it = candidate.otherinformation.experience_it;
     candidate_data.graduation = candidate.formaleducations.length < 1 ?  '-' : candidate.formaleducations[0].graduate;
     candidate_data.expected_salary = candidate.otherinformation.salary_expect;

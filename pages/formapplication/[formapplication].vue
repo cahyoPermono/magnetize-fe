@@ -58,6 +58,7 @@
             </div>
           </div>
           <div class="card-footer">
+            <Button class="p-button-text" :disabled="true" />
             <Button
               class="p-button-sm"
               icon="pi pi-arrow-right"
@@ -164,7 +165,7 @@
               </div>
             </div>
 
-            <div class="mt-2">
+            <!-- <div class="mt-2">
               <div class="row">
                 <label for="blood_type" class="col-sm-2 col-form-label">
                   <small>Gol Darah</small>
@@ -175,6 +176,57 @@
                     name="blood_type"
                     v-model="applicant.blood_type"
                   />
+                </div>
+              </div>
+            </div> -->
+
+            <div class="mt-2">
+              <div class="row">
+                <label for="blood_type" class="col-sm-2 col-form-label">
+                  <small>Gol Darah</small>
+                </label>
+                <div class="col-sm">
+                  <Field
+                    type="radio"
+                    name="blood_type"
+                    value="A"
+                    v-model="applicant.blood_type"
+                  />
+                  &nbsp;
+                  <label for="blood_type" class="col-form-label"
+                    ><small>A</small></label
+                  >&nbsp;&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="blood_type"
+                    value="B"
+                    v-model="applicant.blood_type"
+                  />&nbsp;
+                  <label for="blood_type" class="col-form-label"
+                    ><small>B</small></label
+                  >&nbsp;&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="blood_type"
+                    value="AB"
+                    v-model="applicant.blood_type"
+                  />&nbsp;
+                  <label for="blood_type" class="col-form-label"
+                    ><small>AB</small></label
+                  >&nbsp;&nbsp;&nbsp;
+                  <Field
+                    type="radio"
+                    name="blood_type"
+                    value="O"
+                    v-model="applicant.blood_type"
+                  />
+                  &nbsp;
+                  <label for="blood_type" class="col-form-label"
+                    ><small>O</small></label
+                  >&nbsp;&nbsp;&nbsp;
+                  <ErrorMessage name="religion">
+                    <small style="color: red">Religion is required</small>
+                  </ErrorMessage>
                 </div>
               </div>
             </div>
@@ -221,7 +273,7 @@
             <div class="mt-2">
               <div class="row">
                 <label for="id_sim_no" class="col-sm-2 col-form-label">
-                  <small>No. KTP/SIM</small><span style="color: red">*</span>
+                  <small>No. KTP</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
                   <Field
@@ -236,7 +288,6 @@
                 </div>
               </div>
             </div>
-
             <div class="mt-2">
               <div class="row">
                 <label for="valid_to" class="col-sm-2 col-form-label">
@@ -251,7 +302,6 @@
                 </div>
               </div>
             </div>
-
             <div class="mt-2">
               <div class="row">
                 <label for="religion" class="col-sm-2 col-form-label">
@@ -348,7 +398,6 @@
           <div class="card-header">
             Data Pribadi&nbsp;<span><small>(Personal Data)</small></span>
           </div>
-
           <div class="card-body">
             <div class="mt-4">
               <div class="row">
@@ -495,7 +544,6 @@
                     <small style="color: red">Province_dom is required</small>
                   </ErrorMessage>
                 </div>
-
                 <div class="col-sm-2">
                   <Field
                     name="city_dom"
@@ -516,7 +564,6 @@
                     <small style="color: red">city_dom is required</small>
                   </ErrorMessage>
                 </div>
-
                 <div class="col-sm-2">
                   <Field
                     name="district_dom"
@@ -796,6 +843,7 @@
                     <small>Nama</small><span style="color: red">*</span>
                   </label>
                   <div class="col">
+
                     <Field
                       class="form-control"
                       :name="`families[${index}][name]`"
@@ -815,6 +863,7 @@
                     ><span style="color: red">*</span>
                   </label>
                   <div class="col">
+
                     <Field
                       type="radio"
                       value="L"
@@ -869,6 +918,7 @@
                     <small>Pendidikan</small>
                   </label>
                   <div class="col">
+
                     <Field
                       class="form-control"
                       :name="`families[${index}][education]`"
@@ -930,7 +980,7 @@
           <div class="card-body">
             <div class="mt-2">
               <div class="row">
-                <label for="level" class="col-sm-2 col-form-label">
+                <label for="level" class="col-sm-3 col-form-label">
                   <small>Level</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
@@ -993,7 +1043,7 @@
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="major" class="col-sm-2 col-form-label">
+                <label for="major" class="col-sm-3 col-form-label">
                   <small>Jurusan</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
@@ -1048,7 +1098,7 @@
             </div>
             <div class="mt-2">
               <div class="row">
-                <label for="graduate" class="col-sm-2 col-form-label">
+                <label for="graduate" class="col-sm-3 col-form-label">
                   <small>Tahun Lulus</small><span style="color: red">*</span>
                 </label>
                 <div class="col-sm">
@@ -1061,6 +1111,25 @@
                   />
                   <ErrorMessage name="graduate">
                     <small style="color: red">Graduate is required</small>
+                  </ErrorMessage>
+                </div>
+              </div>
+            </div>
+            <div class="mt-2">
+              <div class="row">
+                <label for="ip_rata" class="col-sm-3 col-form-label">
+                  <small>IPK / Nilai Rata-Rata</small
+                  ><span style="color: red">*</span>
+                </label>
+                <div class="col-sm">
+                  <Field
+                    class="form-control"
+                    name="ip_rata"
+                    :rules="isRequired"
+                    v-model="formaleducate.ip_rata"
+                  />
+                  <ErrorMessage name="ip_rata">
+                    <small style="color: red">IPK is required</small>
                   </ErrorMessage>
                 </div>
               </div>
@@ -1101,7 +1170,7 @@
             >
               <div class="mt-2">
                 <div class="row">
-                  <label for="course" class="col-sm-2 col-form-label">
+                  <label for="course" class="col-sm-3 col-form-label">
                     <small>Jenis Kursus / Training / Seminar</small>
                   </label>
                   <div class="col-sm">
@@ -1115,7 +1184,7 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="year" class="col-sm-2 col-form-label">
+                  <label for="year" class="col-sm-3 col-form-label">
                     <small>Tahun</small>
                   </label>
                   <div class="col-sm">
@@ -1129,7 +1198,7 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="duration" class="col-sm-2 col-form-label">
+                  <label for="duration" class="col-sm-3 col-form-label">
                     <small>Lama</small>
                   </label>
                   <div class="col-sm">
@@ -1143,7 +1212,7 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="certificate" class="col-sm-2 col-form-label">
+                  <label for="certificate" class="col-sm-3 col-form-label">
                     <small>Sertifikat</small>
                   </label>
                   <div class="col-sm">
@@ -1161,7 +1230,7 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="sponsored_by" class="col-sm-2 col-form-label">
+                  <label for="sponsored_by" class="col-sm-3 col-form-label">
                     <small>Dibiayai Oleh</small>
                   </label>
                   <div class="col-sm">
@@ -1269,7 +1338,11 @@
         <div v-if="employhistory">
           <div class="card-header">
             Riwayat Pekerjaan<span
-              ><small><i> (Mulai dari pekerjaan terakhir)</i></small></span
+              ><small
+                ><i>
+                  (Mulai dari pekerjaan pertama s/d pekerjaan terakhir)</i
+                ></small
+              ></span
             >
           </div>
           <div class="card-body">
@@ -1420,12 +1493,19 @@
                   <small>Job Deskripsi</small>
                 </label>
                 <div class="col-sm">
-                  <textarea
+
+                  <Textarea
+                    v-model="jobdescription.description"
+                    rows="15"
+                    cols="115"
+                  />
+                  <!-- <textarea
                     class="form-control"
                     name="start"
                     v-model="jobdescription.description"
                     v-tooltip.top="'Gambarkan deskripsi pekerjaan terakhir'"
-                  ></textarea>
+
+                  ></textarea> -->
                 </div>
               </div>
             </div>
@@ -1456,9 +1536,8 @@
               <label for="hospitalized">
                 <small
                   >Apakah anda pernah dirawat di rumah sakit dan atau menderita
-                  sakit yang lama ? Have you been hospitalized and / or
-                  seriouslyill for a long time?</small
-                >
+                  sakit yang lama ?
+                </small>
                 <span style="color: red">*</span>
               </label>
               <select
@@ -1480,14 +1559,20 @@
             </div>
             <div class="mt-2" v-if="otherinformation.hospitalized === 'ya'">
               <label for="disease">
-                <small
-                  >(Jika Ya) Sakit apa ? (If Yes) What kind of disease ?</small
-                >
+                <small>(Jika Ya) Sakit apa ? </small>
               </label>
               <Field
                 class="form-control"
                 name="disease"
                 v-model="otherinformation.disease"
+              />
+              <label for="year">
+                <small>Kapan ? </small>
+              </label>
+              <Field
+                class="form-control"
+                name="year"
+                v-model="otherinformation.year"
               />
             </div>
 
@@ -1495,7 +1580,7 @@
               <label for="psycological_test">
                 <small
                   >Kapan terakhir anda mengikuti evaluasi psikologis (psikotest)
-                  ? When t you taken a psycological test ?</small
+                  ?</small
                 >
                 <span style="color: red">*</span>
               </label>
@@ -1513,9 +1598,8 @@
               <label for="experience_tellecomunication">
                 <small
                   >Berapa lama pengalaman anda didalam area kerja industri
-                  telekomunikasi ? How long have your experience in the work
-                  area telecommunication industry?</small
-                >
+                  telekomunikasi ?
+                </small>
               </label>
               <Field
                 class="form-control"
@@ -1526,9 +1610,8 @@
             <div class="mt-2">
               <label for="experience_it">
                 <small
-                  >Berapa lama pengalaman anda didalam area kerja teknologi IT ?
-                  How long have your experience in the work area IT
-                  Technology?</small
+                  >Berapa lama pengalaman anda didalam area kerja teknologi IT
+                  ?</small
                 >
               </label>
               <Field
@@ -1541,8 +1624,7 @@
               <label for="reason_join">
                 <small
                   >Sebutkan alasan anda ingin bergabung dengan PT Imani Prima?
-                  Why do you want to join with PT Imani Prima?</small
-                >
+                </small>
                 <span style="color: red">*</span>
               </label>
               <Field
@@ -1557,10 +1639,7 @@
             </div>
             <div class="mt-2">
               <label for="reason_hire">
-                <small
-                  >Mengapa kami bisa mempekerjakan anda? Why we can hire
-                  you?</small
-                >
+                <small>Mengapa kami bisa mempekerjakan anda? </small>
                 <span style="color: red">*</span>
               </label>
               <Field
@@ -1576,8 +1655,8 @@
             <div class="mt-2">
               <label for="opinion_teamwork">
                 <small
-                  >Informasikan pendapat anda tentang Kerjasama (Team Work) ?
-                  Inform your opinion about team work?</small
+                  >Informasikan pendapat anda tentang Kerjasama (Team Work)
+                  ?</small
                 >
                 <span style="color: red">*</span>
               </label>
@@ -1597,8 +1676,7 @@
               <label for="plan">
                 <small
                   >Sebutkan rencana jangka pendek dan rencana jangka panjang
-                  anda? Mention your short term plan and your long term
-                  plan?</small
+                  anda?</small
                 >
                 <span style="color: red">*</span>
               </label>
@@ -1616,9 +1694,8 @@
               <label for="respond_target">
                 <small
                   >Bagaimana tanggapan anda mengenai target yang akan diberikan
-                  oleh perusahaan kepada anda? How do your respond to the target
-                  will company will give you?</small
-                >
+                  oleh perusahaan kepada anda?
+                </small>
                 <span style="color: red">*</span>
               </label>
               <Field
@@ -1637,8 +1714,7 @@
               <label for="respond_preasure">
                 <small
                   >Bagaimana tanggapan anda mengenai tekanan dalam pekerjaan?
-                  How do your respond to pressure at work?</small
-                >
+                </small>
                 <span style="color: red">*</span>
               </label>
               <Field
@@ -1656,9 +1732,8 @@
             <div class="mt-2">
               <label for="reason_leave_last_company">
                 <small
-                  >Mengapa anda ingin keluar dari perusahaan terakhir ? Why do
-                  you want to leave the last company?</small
-                >
+                  >Mengapa anda ingin keluar dari perusahaan terakhir ?
+                </small>
               </label>
               <Field
                 class="form-control"
@@ -1668,10 +1743,7 @@
             </div>
             <div class="mt-2">
               <label for="salary_expect">
-                <small
-                  >Berapa gaji yang anda inginkan ? How much salary do you
-                  expect ?</small
-                >
+                <small>Berapa gaji yang anda inginkan ? </small>
                 <span style="color: red">*</span>
               </label>
               <InputNumber
@@ -1686,10 +1758,7 @@
             </div>
             <div class="mt-2">
               <label for="able_to_start">
-                <small
-                  >Kapan anda dapat mulai bekerja ? When will you be able to
-                  start to work ?</small
-                >
+                <small>Kapan anda dapat mulai bekerja ? </small>
                 <span style="color: red">*</span>
               </label>
               <Field
@@ -1706,8 +1775,8 @@
               <label for="contact_emergency">
                 <small
                   >Sebutkan orang terdekat yang bisa dihubungi dalam keadaan
-                  darurat ? Person to contact in case of emergency?</small
-                >
+                  darurat ?
+                </small>
                 <span style="color: red">*</span>
               </label>
               <Field
@@ -1725,8 +1794,7 @@
               <label for="relatives_in_ip">
                 <small
                   >Sebutkan nama kenalan anda di PT. Imani Prima dan hubungan
-                  anda dengannya sebagai ? Name your friends / relatives in PT.
-                  Imani Prima and the relationship as ?
+                  anda dengannya sebagai ?
                 </small>
               </label>
               <Field
@@ -1740,9 +1808,8 @@
               <label for="strength">
                 <small
                   >Menurut anda apa kelebihan pada diri anda ? Sebutkan
-                  masing-masing 3 item. What do you think is your strengths ?
-                  Please state 3 items.</small
-                >
+                  masing-masing 3 item.
+                </small>
                 <span style="color: red">*</span>
               </label>
               <Field
@@ -1760,9 +1827,8 @@
               <label for="weakness">
                 <small
                   >Menurut anda apa kekurangan pada diri anda ? Sebutkan
-                  masing-masing 3 item. What do you think is your weaknesses ?
-                  Please state 3 items.</small
-                >
+                  masing-masing 3 item.
+                </small>
                 <span style="color: red">*</span>
               </label>
               <Field
@@ -2054,6 +2120,7 @@ const formaleducate = reactive({
   gpa: "",
   entry: "",
   graduate: "",
+  ip_rata: "",
 });
 
 const levels = ref([
@@ -2081,6 +2148,7 @@ const jobdescription = reactive({
 const otherinformation = reactive({
   hospitalized: "",
   disease: "",
+  year: "",
   psycological_test: "",
   experience_tellecomunication: "",
   experience_it: "",
@@ -2177,6 +2245,7 @@ async function save() {
           gpa: formaleducate.gpa,
           entry: formaleducate.entry,
           graduate: formaleducate.graduate,
+          ip_rata: formaleducate.ip_rata,
         },
         nonformaleducation: nonformaleducations,
         computerliterate: computers,
@@ -2187,6 +2256,7 @@ async function save() {
         otherinformation: {
           hospitalized: otherinformation.hospitalized,
           disease: otherinformation.disease,
+          year: otherinformation.year,
           psycological_test: otherinformation.psycological_test,
           experience_tellecomunication:
             otherinformation.experience_tellecomunication,
