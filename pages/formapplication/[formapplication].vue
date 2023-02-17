@@ -1174,24 +1174,6 @@
               </div>
               <div class="mt-2">
                 <div class="row">
-                  <label for="certificate" class="col-sm-3 col-form-label">
-                    <small>Sertifikat</small>
-                  </label>
-                  <div class="col-sm">
-                    <FileUpload
-                      name="demo[]"
-                      mode="basic"
-                      @upload="onUploadCerti($event, index)"
-                      accept="image/*,.pdf"
-                      :maxFileSize="1000000"
-                      :auto="true"
-                    >
-                    </FileUpload>
-                  </div>
-                </div>
-              </div>
-              <div class="mt-2">
-                <div class="row">
                   <label for="sponsored_by" class="col-sm-3 col-form-label">
                     <small>Dibiayai Oleh</small>
                   </label>
