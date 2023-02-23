@@ -2,7 +2,7 @@
     <div>
         <Toast />
         <Dialog v-model:visible="props.modalUpdateJob" header="Edit Job Detail"
-            :breakpoints="{ '960px': '75vw', '640px': '90vw' }" :style="{ width: '40vw' }" :modal="true">
+            :breakpoints="{ '960px': '75vw', '640px': '90vw' }" :style="{ width: '70vw' }" :modal="true">
             <div class="card p-3">
                 <Form @submit="save">
                     <div class="row mt-2">
@@ -14,31 +14,53 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-7">
+                        <div class="col-12">
+                            <label for="job_category"><small>Kategori</small><span style="color: red">*</span></label>
+                            <Field name="job_category" class="form-control w-100" as="select" v-model="job.jobCategory">
+                                <option :value="job.jobCategory" selected> {{ job.jobCategory.category ?
+                                    job.jobCategory.category : '' }} </option>
+                                <option v-for="data in dataJobCategory" :key="data.id" :value="data"
+                                    :hidden="data.category === job.jobCategory.category">
+                                    {{ data.category }}
+                                </option>
+                            </Field>
+                            <ErrorMessage name="job_category">
+                                <small style="color: red">Category is required</small>
+                            </ErrorMessage>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
                             <label for="lokasi"><small>Lokasi</small><span style="color: red">*</span></label>
                             <Field class="form-control" name="lokasi" :rules="isRequired" v-model="job.location" />
                             <ErrorMessage name="lokasi"><small style="color: red">Location is required</small>
                             </ErrorMessage>
                         </div>
-                        <div class="col-3">
+                        <div class="col-6">
                             <label><small>Remote</small></label><br>
                             <InputSwitch v-model="job.remote" name="remote" />
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-7">
+                        <div class="col-6">
                             <label for="headcount"><small>Headcount</small><span style="color: red">*</span></label>
                             <Field type="number" class="form-control" name="headcount" :rules="isRequired"
                                 v-model="job.headcount" />
                             <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
                             </ErrorMessage>
                         </div>
-                        <div class="col-3">
-                            <label for="contract_detail"><small>Contract</small><span
-                                    style="color: red">*</span></label>
-                            <Dropdown v-model="dropdown_option.contract_detail" :options="contract_detail"
-                                optionLabel="a" :placeholder="job.contract_detail" />
-                            <ErrorMessage name="headcount"><small style="color: red">Headcount is required</small>
+                        <div class="col-6">
+                            <label for="contract_detail"><small>Contract</small><span style="color: red">*</span></label>
+                            <Field name="contract_detail" class="form-control w-100" as="select"
+                                v-model="job.contract_detail">
+                                <option :value="job.contract_detail" selected> {{ job.contract_detail }} </option>
+                                <option v-for="data in contract_detail" :key="data.id" :value="data.a"
+                                    :hidden="data.a === job.contract_detail">
+                                    {{ data.a }}
+                                </option>
+                            </Field>
+                            <ErrorMessage name="contract_detail">
+                                <small style="color: red">Contract Detail is required</small>
                             </ErrorMessage>
                         </div>
                     </div>
@@ -60,18 +82,31 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            <label><small>Currency</small><span style="color: red">*</span></label> <br>
-                            <Dropdown v-model="dropdown_option.currency" :options="CurrencyList" optionLabel="text"
-                                :placeholder="job.currency" />
-                            <ErrorMessage name="currency"><small style="color: red">Currency is required</small>
+                            <label for="currency"><small>Currency</small><span style="color: red">*</span></label>
+                            <Field name="currency" class="form-control w-100" as="select" v-model="job.currency">
+                                <option :value="job.currency" selected> {{ job.currency }} </option>
+                                <option v-for="data in CurrencyList" :key="data.id" :value="data.code"
+                                    :hidden="data.code === job.currency">
+                                    {{ data.text }}
+                                </option>
+                            </Field>
+                            <ErrorMessage name="currency">
+                                <small style="color: red">Currency is required</small>
                             </ErrorMessage>
                         </div>
                         <div class="col-6">
-                            <label><small>Frekuensi Penggajian</small><span style="color: red">*</span></label> <br>
-                            <Dropdown v-model="dropdown_option.payment_frequency" :options="payment_frequency"
-                                optionLabel="text" :placeholder="job.payment_frequency" />
-                            <ErrorMessage name="payment_frequency"><small style="color: red">payment frequency is
-                                    required</small>
+                            <label for="payment_frequency"><small>Frekuensi Penggajian</small><span
+                                    style="color: red">*</span></label>
+                            <Field name="payment_frequency" class="form-control w-100" as="select"
+                                v-model="job.payment_frequency">
+                                <option :value="job.payment_frequency" selected> {{ job.payment_frequency }} </option>
+                                <option v-for="data in payment_frequency" :key="data.id" :value="data.text"
+                                    :hidden="data.text === job.payment_frequency">
+                                    {{ data.text }}
+                                </option>
+                            </Field>
+                            <ErrorMessage name="payment_frequency">
+                                <small style="color: red">Frekuensi Penggajian is required</small>
                             </ErrorMessage>
                         </div>
                     </div>
@@ -88,10 +123,12 @@
 <script setup>
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
+import { usePermission } from "~~/stores/permission";
 const toast = useToast();
-
+const store = usePermission();
 const config = useRuntimeConfig();
 const route = useRoute();
+
 const props = defineProps({
     modalUpdateJob: {
         type: Boolean,
@@ -99,20 +136,37 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['closeModal']);
-const closeModal = () => {
-    emit('closeModal')
+const closeModal = async () => {
+    emit('closeModal');
+    await getPosition();
 };
-const dropdown_option = ref({
-    contract_detail: "",
-    currency: "",
-    payment_frequency: "",
+
+let job = ref();
+const dataJobCategory = ref({});
+
+const getPosition = async () => {
+    job.value = await axios.get(config.API_BASE_URL + "jobs/" + route.params.id);
+    job.value = await job.value.data.data;
+    if(!job.value.jobCategory){
+        job.value.jobCategory = '';
+    }
+};
+
+onMounted(async () => {
+    await getPosition();
+    const data = await axios.get(config.API_BASE_URL + `all_jobcategories`, {
+        headers: { Authorization: `Bearer ${store.token}` },
+    });
+    dataJobCategory.value = data.data.categories;
 });
 
-let job = reactive();
-onMounted(async () => {
-    job = await axios.get(config.API_BASE_URL + "jobs/" + route.params.id);
-    job = await job.data.data;
-});
+const updateSummary = async () => {
+    job.value.JobCategoryId = job.value.jobCategory.id
+    const res = await axios.put(config.API_BASE_URL + "update_job/" + route.params.id, job.value);
+    toast.add({ severity: 'success', summary: res.data.message, life: 3000 });
+    emit('closeModal');
+};
+
 const CurrencyList = [
     { code: "AFN", text: "AFN - Afghanistan Afghanis" },
     { code: "ALL", text: "ALL - Albania Leke" },
@@ -252,20 +306,4 @@ const contract_detail = [
         a: "Consultancy",
     },
 ];
-const updateSummary = async () => {
-    const data_update = {
-        name: job.name,
-        location: job.location,
-        remote: job.remote,
-        contract_detail: dropdown_option.value.contract_detail.a || job.contract_detail,
-        headcount: job.headcount,
-        min_salary: job.min_salary,
-        max_salary: job.max_salary,
-        currency: dropdown_option.value.currency.code || job.currency,
-        payment_frequency: dropdown_option.value.payment_frequency.text || job.payment_frequency,
-    }
-    const res = await axios.put(config.API_BASE_URL + "update_job/" + route.params.id, data_update);
-    toast.add({ severity: 'success', summary: res.data.message, life: 3000 });
-    emit('closeModal');
-};
 </script>
