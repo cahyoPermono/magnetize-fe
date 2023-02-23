@@ -86,7 +86,15 @@
                                 Job Creator
                             </td>
                             <td>
-                                &nbsp;&nbsp;&nbsp;&nbsp;: {{ job_data.creator }}
+                                &nbsp;&nbsp;&nbsp;&nbsp;: {{ job_data.user ? job_data.user.displayName : job_data.user }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Job Category
+                            </td>
+                            <td>
+                                &nbsp;&nbsp;&nbsp;&nbsp;: {{ job_data.jobCategory ? job_data.jobCategory.category : '-' }}
                             </td>
                         </tr>
                     </table>
@@ -96,8 +104,8 @@
             <div class="col">
                 <Panel>
                     <template #header>
-                        <b>Job Description &nbsp;<span><i class="pi pi-pencil"
-                                    style="font-size: 0.5rem; cursor:pointer;" @click="openModalDesc()"></i></span></b>
+                        <b>Job Description &nbsp;<span><i class="pi pi-pencil" style="font-size: 0.5rem; cursor:pointer;"
+                                    @click="openModalDesc()"></i></span></b>
                     </template>
                     <p>{{ job_data.desc }}</p>
                     <SummaryUpdateDesc :modalUpdateDesc="visibleModalUpdateDesc" @closeModal="openModalDesc()" />
@@ -108,8 +116,7 @@
                                     @click="openModalPackage()"></i></span></b>
                     </template>
                     <p>{{ job_data.package_detail }}</p>
-                    <SummaryUpdatePackage :modalUpdateDesc="visibleModalUpdatePackage"
-                        @closeModal="openModalPackage()" />
+                    <SummaryUpdatePackage :modalUpdateDesc="visibleModalUpdatePackage" @closeModal="openModalPackage()" />
                 </Panel>
             </div>
         </div>
@@ -124,45 +131,27 @@ const route = useRoute();
 const visibleModalUpdateDesc = ref(false);
 const visibleModalUpdatePackage = ref(false);
 const visibleModalUpdateJob = ref(false);
-const job_data = reactive({
-    name: null,
-    location: null,
-    remote: null,
-    headcount: null,
-    min_salary: null,
-    max_salary: null,
-    currency: null,
-    payment_frequency: null,
-    contract_detail: null,
-    desc: null,
-    package_detail: null,
-    desc: null,
-    creator: null
-});
+const job_data = ref([]);
 
 const id = route.params.id;
 let job = reactive();
 let creator_data = reactive();
 const getter = async () => {
     job = await axios.get(config.API_BASE_URL + "jobs/" + id);
-    job = await job.data.data;
-    job_data.name = job.name;
-    job_data.location = job.location;
-    job_data.remote = job.remote;
-    job_data.contract_detail = job.contract_detail;
-    job_data.headcount = job.headcount;
-    job_data.min_salary = job.min_salary;
-    job_data.max_salary = job.max_salary;
-    job_data.currency = job.currency;
-    job_data.package_detail = job.package_detail;
-    job_data.payment_frequency = job.payment_frequency;
-    job_data.desc = job.desc;
-    job_data.creator = job.user.fullName;
+    job = job.data.data;
+    job_data.value = job;
 }
 const desc = ref('');
 onMounted(() => {
     getter();
 });
+
+document.onkeydown = function (evt) {
+    evt = evt || window.event;
+    if (evt.keyCode == 27) {
+        visibleModalUpdateJob.value = false;
+    }
+};
 
 const openModalDesc = async () => {
     await getter();
@@ -178,6 +167,7 @@ const openModalUpdate = async () => {
     await getter();
     return visibleModalUpdateJob.value = !visibleModalUpdateJob.value;
 };
+
 </script>
   
   

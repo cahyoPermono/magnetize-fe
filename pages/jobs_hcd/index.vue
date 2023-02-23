@@ -2,20 +2,24 @@
     <div>
         <div class="container-dept">
             <h1>Jobs</h1>
-            <tambah-job v-on:loadData="getIndexJob()"></tambah-job>
+            <div class="flex">
+                <tambah-job @loadData="getIndexJob()"></tambah-job>
+                <NuxtLink to="/jobs_hcd/job_category" class="ml-2"> <Button label="Kategori" class="p-button-sm mt-3" /> </NuxtLink>
+            </div>
             <div style="width: 75vw;">
+                <!-- {{ displayed_data }} -->
                 <div class="card shadow mt-4 ml-4 w-100">
                     <DataTable :value="displayed_data" :paginator="true" :rows="5"
                         paginatorTemplate=" FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
                         responsiveLayout="scroll" removableSort>
-                        <Column field="job_name" header="Nama Posisi"></Column>
-                        <Column field="job_departement" header="Departemen" :sortable="true"></Column>
-                        <Column field="job_location" header="Lokasi" :sortable="true"></Column>
-                        <Column field="job_headcount" header="Jumlah Orang"></Column>
-                        <Column field="job_salary" header="Rentang Gaji"></Column>
+                        <Column field="name" header="Nama Posisi"></Column>
+                        <Column field="departement.nama" header="Departemen" :sortable="true"></Column>
+                        <Column field="location" header="Lokasi" :sortable="true"></Column>
+                        <Column field="headcount" header="Jumlah Orang"></Column>
+                        <Column field="jobCategory.category" header="Kategori" :sortable="true"></Column>
                         <Column>
                             <template #body="slotProps">
-                                <NuxtLink :to="`/jobs_hcd/${slotProps.data.job_id}`">
+                                <NuxtLink :to="`/jobs_hcd/${slotProps.data.id}`">
                                     <Button type="button" icon="pi pi-eye" class="p-button-outlined"></Button>
                                 </NuxtLink>
                             </template>
@@ -33,26 +37,10 @@ import { usePermission } from "@/stores/permission";
 
 const config = useRuntimeConfig();
 const displayed_data = ref([]);
-const getIndexJob = () => {
+const getIndexJob = async () => {
     displayed_data.value = [];
-    axios.get(config.API_BASE_URL + "jobs")
-        .then(r => {
-            const data = r.data.data;
-            data.forEach(async (element) => {
-                const dept = await axios.get(config.API_BASE_URL + "departements/" + element.DepartementId);
-                const data_dept = dept.data.departement;
-                if (data_dept) {
-                    displayed_data.value.push({
-                        job_id: element.id,
-                        job_name: element.name,
-                        job_departement: dept.data.departement.nama,
-                        job_location: element.location,
-                        job_headcount: element.headcount,
-                        job_salary: element.min_salary + " - " + element.max_salary + " (" + element.currency + ")",
-                    })
-                }
-            });
-        }).catch(err => { console.log(err) });
+    const data = await axios.get(config.API_BASE_URL + "jobs");
+    displayed_data.value = data.data.data;
 };
 
 onMounted(() => {
