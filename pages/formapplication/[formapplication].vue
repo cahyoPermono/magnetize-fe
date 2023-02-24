@@ -1,16 +1,20 @@
 <template>
-  <div>
+  <div class="bg-pattern px-4 py-3 min-h-screen">
     <div>
       <Toast />
     </div>
+    <div class="card mt-0 p-1 mb-2">
+      <img src="~/assets/formapplication/Header.jpg" alt="header" >
+    </div>
+    
     <div class="card">
       <Form v-slot="{ meta }" @submit="save">
         <div v-if="apply">
           <div class="card-body">
             <div class="mt-2">
               <div class="row">
-                <div class="col-sm-10">
-                  <img src="~/assets/LogoImani.png" /><br /><br />
+                <div class="col-sm-10 text-left md:text-center">
+                  <img src="~/assets/LogoImani.png" class="h-3rem md:h-6rem"/><br /><br />
                   <h5>FORMULIR LAMARAN KERJA</h5>
                   <h6>Application Form</h6>
                   <br />
