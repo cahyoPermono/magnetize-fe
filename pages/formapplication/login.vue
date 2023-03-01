@@ -1,98 +1,103 @@
 <template>
-    <Toast />
-    <div class="flex flex-wrap align-items-center justify-content-center min-h-screen bg-pattern">
-        <div class="card p-3 w-50 shadow">
-            <TabView :activeIndex="1">
-                <TabPanel header="Register">
-                    <Form v-slot="{ meta }" @submit="save" class="h-100">
-                        <div class="text-center">
-                            <h3>Daftar</h3>
-                            <p>Sebagai Pelamar</p>
-                        </div>
-                        <div class="mt-2">
-                            <div class="row p-3">
-                                <div class="col-sm-12">
-                                    <label for="name" class="col-form-label">
+    <div>
+        <Toast />
+        <div class="flex flex-wrap align-items-center justify-content-center min-h-screen bg-pattern">
+            <div class="card p-3 w-50 shadow">
+                <TabView :activeIndex="1">
+                    <TabPanel header="Register">
+                        <Form v-slot="{ meta }" @submit="save" :validation-schema="schema_2">
+                            <div class="text-center">
+                                <h3>Daftar</h3>
+                                <p>Sebagai Pelamar</p>
+                            </div>
+                            <div class="grid">
+                                <div class="col-12">
+                                    <label for="name">
                                         <small>Nama</small><span style="color: red">*</span>
                                     </label>
-                                    <Field class="form-control" name="name" :rules="isRequired" v-model="applicant.name" />
-                                    <ErrorMessage name="name">
-                                        <small style="color: red">Name required</small>
-                                    </ErrorMessage>
+                                    <Field name="name" v-slot="{ field, errorMessage }" >
+                                        <div class="field">
+                                            <InputText v-bind="field" aria-describedby="email-help" type="text"
+                                                :class="{ 'p-invalid': errorMessage }" class="w-100" />
+                                        </div>
+                                        <small id="email-help" class="p-error">{{ errorMessage }}</small>
+                                    </Field>
                                 </div>
                             </div>
-                            <div class="row p-3">
+                            <div class="grid">
                                 <div class="col-sm-6">
-                                    <label for="email" class="col-form-label">
+                                    <label for="email">
                                         <small>Email</small><span style="color: red">*</span>
                                     </label>
-                                    <Field class="form-control" name="email" :rules="isRequired"
-                                        v-model="applicant.email" />
-                                    <ErrorMessage name="email">
-                                        <small style="color: red">Email required</small>
-                                    </ErrorMessage>
+                                    <Field name="email" v-slot="{ field, errorMessage }">
+                                        <div class="field">
+                                            <InputText v-bind="field" aria-describedby="email-help" type="email"
+                                                :class="{ 'p-invalid': errorMessage }" class="w-100" />
+                                        </div>
+                                        <small id="email-help" class="p-error">{{ errorMessage }}</small>
+                                    </Field>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label for="password" class="col-form-label">
+                                    <label for="password">
                                         <small>Password</small><span style="color: red">*</span>
                                     </label>
-                                    <Field class="form-control" name="password" type="password" :rules="isRequired"
-                                        v-model="applicant.password" />
-                                    <ErrorMessage name="password">
-                                        <small style="color: red">Password required</small>
-                                    </ErrorMessage>
+                                    <Field name="password" v-slot="{ field, errorMessage }">
+                                        <div class="field">
+                                            <InputText v-bind="field" aria-describedby="email-help" type="password"
+                                                :class="{ 'p-invalid': errorMessage }" class="w-100" />
+                                        </div>
+                                        <small id="email-help" class="p-error">{{ errorMessage }}</small>
+                                    </Field>
                                 </div>
                             </div>
-                            <div class="row px-4">
-                                <div class="col-12 flex justify-content-end">
-                                    <Button class="p-button-sm mt-2" icon="pi pi-save" type="submit"
-                                        :disabled="!(meta.valid && meta.dirty)" />
-                                </div>
+                            <div class="col-12 flex justify-content-end">
+                                <Button class="p-button-sm mt-2" icon="pi pi-save" type="submit"
+                                    :disabled="!(meta.valid && meta.dirty)" />
                             </div>
-                        </div>
-                    </Form>
-                </TabPanel>
-                <TabPanel header="Login">
-                    <Form v-slot="{ meta }" @submit="login" class="h-100">
+                        </Form>
+                    </TabPanel>
+                    <TabPanel header="Login">
                         <div class="text-center">
                             <h3>Login</h3>
                             <p>Sebagai Pelamar</p>
                         </div>
-                        <div class="mt-2">
-                            <div class="row p-3">
-                                <div class="col-sm-12">
-                                    <label for="email" class="col-form-label">
+                        <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ meta }">
+                            <div class="grid">
+                                <div class="col-12">
+                                    <label for="email">
                                         <small>Email</small><span style="color: red">*</span>
                                     </label>
-                                    <Field class="form-control" name="email" :rules="isRequired"
-                                        v-model="applicant.email" />
-                                    <ErrorMessage name="email">
-                                        <small style="color: red">Email required</small>
-                                    </ErrorMessage>
+                                    <Field name="email" v-slot="{ field, errorMessage }" type="email">
+                                        <div class="field">
+                                            <InputText v-bind="field" aria-describedby="email-help"
+                                                :class="{ 'p-invalid': errorMessage }" class="w-100" />
+                                        </div>
+                                        <small id="email-help" class="p-error">{{ errorMessage }}</small>
+                                    </Field>
                                 </div>
                             </div>
-                            <div class="row p-3">
-                                <div class="col-sm-12">
+                            <div class="grid">
+                                <div class="col-12">
                                     <label for="password" class="col-form-label">
                                         <small>Password</small><span style="color: red">*</span>
                                     </label>
-                                    <Field class="form-control" name="password" type="password" :rules="isRequired"
-                                        v-model="applicant.password" />
-                                    <ErrorMessage name="password">
-                                        <small style="color: red">Password required</small>
-                                    </ErrorMessage>
+                                    <Field name="password" v-slot="{ field, errorMessage }" type="password">
+                                        <div class="field">
+                                            <InputText v-bind="field" aria-describedby="email-help"
+                                                :class="{ 'p-invalid': errorMessage }" type="password" class="w-100" />
+                                        </div>
+                                        <small id="email-help" class="p-error">{{ errorMessage }}</small>
+                                    </Field>
                                 </div>
                             </div>
-                            <div class="row px-4">
-                                <div class="col-12 flex justify-content-end">
-                                    <Button class="p-button-sm mt-2" icon="pi pi-save" type="submit"
-                                        :disabled="!(meta.valid && meta.dirty)" />
-                                </div>
+                            <div class="flex justify-content-end">
+                                <Button type="submit" icon="pi pi-save" label="Login"
+                                    :disabled="!(meta.valid && meta.dirty)" />
                             </div>
-                        </div>
-                    </Form>
-                </TabPanel>
-            </TabView>
+                        </Form>
+                    </TabPanel>
+                </TabView>
+            </div>
         </div>
     </div>
 </template>
@@ -101,49 +106,73 @@
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
 import { useStore } from "~~/stores/applicant_auth";
+import * as yup from 'yup';
 
 const toast = useToast();
 const config = useRuntimeConfig();
 const router = useRouter();
-const store = useStore();
 const token = useCookie("token");
 const user = useCookie("user");
-
+const schema = yup.object({
+    email: yup.string().required().email().label('Email address'),
+    password: yup.string().required().label('Password')
+});
+const schema_2 = yup.object({
+    email: yup.string().required().email().label('Email address'),
+    name: yup.string().required().label('name'),
+    password: yup.string().required().label('Password')
+});
 const applicant = ref({
     name: "",
     email: "",
     password: ""
 });
 
-const save = async () => {
-    const data = await axios.post(config.API_BASE_URL + "applicant_auth/register", applicant.value);
-    toast.add({
-        severity: "success",
-        summary: "Berhasil",
-        detail: `${data.data.message}`,
-        life: 3000,
-    });
-    applicant.value = {
-        name: "",
-        email: "",
-        password: ""
-    }
-};
 
-const login = async () => {
+const save = async (values) => {
     try {
-        const data = await axios.post(config.API_BASE_URL + "applicant_auth/login", applicant.value);
-        token.value = data.data.token;
-        user.value = data.data.user;
+        applicant.value.email = values.email;
+        applicant.value.name = values.name;
+        applicant.value.password = values.password;
+        const data = await axios.post(config.API_BASE_URL + "applicant_auth/register", applicant.value);
         toast.add({
             severity: "success",
             summary: "Berhasil",
             detail: `${data.data.message}`,
+            life: 2000,
+        });
+        applicant.value = {
+            name: "",
+            email: "",
+            password: ""
+        };
+    } catch (error) {
+        toast.add({
+            severity: "error",
+            summary: "Gagal",
+            detail: `${error.response.data.error}`,
             life: 3000,
         });
-        router.push('/formapplication/dashboard');
+    }
+};
+
+const onSubmit = async (values) => {
+    applicant.value.email = values.email;
+    applicant.value.password = values.password;
+    try {
+        const data = await axios.post(config.API_BASE_URL + "applicant_auth/login", applicant.value);
+        token.value = data.data.token;
+        const user_ = JSON.stringify(data.data.user);
+        user.value = user_;
+        toast.add({
+            severity: "success",
+            summary: "Berhasil",
+            detail: `${data.data.message}`
+        });
+        setTimeout(async () => {
+            router.push('/formapplication/dashboard');
+        }, 1000);
     } catch (error) {
-        console.log(error)
         toast.add({
             severity: "error",
             summary: "Gagal",
