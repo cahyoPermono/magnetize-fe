@@ -2,99 +2,103 @@
     <div>
         <Toast />
         <div class="flex flex-wrap align-items-center justify-content-center min-h-screen bg-pattern">
-            <div class="card p-3 w-50 shadow">
+            <div class="card shadow-4 w-6 fadein animation-duration-500 transition-delay-1000">
                 <TabView :activeIndex="1">
                     <TabPanel header="Register">
                         <Form v-slot="{ meta }" @submit="save" :validation-schema="schema_2">
-                            <div class="text-center">
-                                <h3>Daftar</h3>
-                                <p>Sebagai Pelamar</p>
-                            </div>
-                            <div class="grid">
-                                <div class="col-12">
-                                    <label for="name">
-                                        <small>Nama</small><span style="color: red">*</span>
-                                    </label>
-                                    <Field name="name" v-slot="{ field, errorMessage }" >
-                                        <div class="field">
-                                            <InputText v-bind="field" aria-describedby="email-help" type="text"
-                                                :class="{ 'p-invalid': errorMessage }" class="w-100" />
-                                        </div>
-                                        <small id="email-help" class="p-error">{{ errorMessage }}</small>
-                                    </Field>
+                            <div class="px-5">
+                                <div class="text-center">
+                                    <h3 class="mb-0">Daftar</h3>
+                                    <span>Sebagai Pelamar</span>
                                 </div>
-                            </div>
-                            <div class="grid">
-                                <div class="col-sm-6">
-                                    <label for="email">
-                                        <small>Email</small><span style="color: red">*</span>
-                                    </label>
-                                    <Field name="email" v-slot="{ field, errorMessage }">
-                                        <div class="field">
-                                            <InputText v-bind="field" aria-describedby="email-help" type="email"
-                                                :class="{ 'p-invalid': errorMessage }" class="w-100" />
-                                        </div>
-                                        <small id="email-help" class="p-error">{{ errorMessage }}</small>
-                                    </Field>
+                                <div class="grid">
+                                    <div class="col-12">
+                                        <label for="name">
+                                            <small>Nama</small><span style="color: red">*</span>
+                                        </label>
+                                        <Field name="name" v-slot="{ field, errorMessage }" >
+                                            <div class="field">
+                                                <InputText v-bind="field" aria-describedby="email-help" type="text"
+                                                    :class="{ 'p-invalid': errorMessage }" class="w-12" />
+                                            </div>
+                                            <small id="email-help" class="p-error">{{ errorMessage }}</small>
+                                        </Field>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <label for="password">
-                                        <small>Password</small><span style="color: red">*</span>
-                                    </label>
-                                    <Field name="password" v-slot="{ field, errorMessage }">
-                                        <div class="field">
-                                            <InputText v-bind="field" aria-describedby="email-help" type="password"
-                                                :class="{ 'p-invalid': errorMessage }" class="w-100" />
-                                        </div>
-                                        <small id="email-help" class="p-error">{{ errorMessage }}</small>
-                                    </Field>
+                                <div class="grid">
+                                    <div class="col-6">
+                                        <label for="email">
+                                            <small>Email</small><span style="color: red">*</span>
+                                        </label>
+                                        <Field name="email" v-slot="{ field, errorMessage }">
+                                            <div class="field">
+                                                <InputText v-bind="field" aria-describedby="email-help" type="email"
+                                                    :class="{ 'p-invalid': errorMessage }" class="w-12" />
+                                            </div>
+                                            <small id="email-help" class="p-error">{{ errorMessage }}</small>
+                                        </Field>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="password">
+                                            <small>Password</small><span style="color: red">*</span>
+                                        </label>
+                                        <Field name="password" v-slot="{ field, errorMessage }">
+                                            <div class="field">
+                                                <InputText v-bind="field" aria-describedby="email-help" type="password"
+                                                    :class="{ 'p-invalid': errorMessage }" class="w-12" />
+                                            </div>
+                                            <small id="email-help" class="p-error">{{ errorMessage }}</small>
+                                        </Field>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 flex justify-content-end">
-                                <Button class="p-button-sm mt-2" icon="pi pi-save" type="submit"
-                                    :disabled="!(meta.valid && meta.dirty)" />
+                                <div class="col-12 flex justify-content-end">
+                                    <Button class="p-button-sm mt-2" icon="pi pi-save" label="Register" type="submit"
+                                        :disabled="!(meta.valid && meta.dirty)" />
+                                </div>
                             </div>
                         </Form>
                     </TabPanel>
                     <TabPanel header="Login">
-                        <div class="text-center">
-                            <h3>Login</h3>
-                            <p>Sebagai Pelamar</p>
+                        <div class="px-5">
+                            <div class="text-center">
+                                <h3 class="mb-0">Login</h3>
+                                <span>Sebagai Pelamar</span>
+                            </div>
+                            <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ meta }">
+                                <div class="grid">
+                                    <div class="col-12">
+                                        <label for="email">
+                                            <small>Email</small><span style="color: red">*</span>
+                                        </label>
+                                        <Field name="email" v-slot="{ field, errorMessage }" type="email">
+                                            <div class="field">
+                                                <InputText v-bind="field" aria-describedby="email-help"
+                                                    :class="{ 'p-invalid': errorMessage }" class="w-12" />
+                                            </div>
+                                            <small id="email-help" class="p-error">{{ errorMessage }}</small>
+                                        </Field>
+                                    </div>
+                                </div>
+                                <div class="grid">
+                                    <div class="col-12">
+                                        <label for="password" class="col-form-label">
+                                            <small>Password</small><span style="color: red">*</span>
+                                        </label>
+                                        <Field name="password" v-slot="{ field, errorMessage }" type="password">
+                                            <div class="field">
+                                                <InputText v-bind="field" aria-describedby="email-help"
+                                                    :class="{ 'p-invalid': errorMessage }" type="password" class="w-12" />
+                                            </div>
+                                            <small id="email-help" class="p-error">{{ errorMessage }}</small>
+                                        </Field>
+                                    </div>
+                                </div>
+                                <div class="flex justify-content-end">
+                                    <Button type="submit" icon="pi pi-save" label="Login"
+                                        :disabled="!(meta.valid && meta.dirty)" />
+                                </div>
+                            </Form>
                         </div>
-                        <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ meta }">
-                            <div class="grid">
-                                <div class="col-12">
-                                    <label for="email">
-                                        <small>Email</small><span style="color: red">*</span>
-                                    </label>
-                                    <Field name="email" v-slot="{ field, errorMessage }" type="email">
-                                        <div class="field">
-                                            <InputText v-bind="field" aria-describedby="email-help"
-                                                :class="{ 'p-invalid': errorMessage }" class="w-100" />
-                                        </div>
-                                        <small id="email-help" class="p-error">{{ errorMessage }}</small>
-                                    </Field>
-                                </div>
-                            </div>
-                            <div class="grid">
-                                <div class="col-12">
-                                    <label for="password" class="col-form-label">
-                                        <small>Password</small><span style="color: red">*</span>
-                                    </label>
-                                    <Field name="password" v-slot="{ field, errorMessage }" type="password">
-                                        <div class="field">
-                                            <InputText v-bind="field" aria-describedby="email-help"
-                                                :class="{ 'p-invalid': errorMessage }" type="password" class="w-100" />
-                                        </div>
-                                        <small id="email-help" class="p-error">{{ errorMessage }}</small>
-                                    </Field>
-                                </div>
-                            </div>
-                            <div class="flex justify-content-end">
-                                <Button type="submit" icon="pi pi-save" label="Login"
-                                    :disabled="!(meta.valid && meta.dirty)" />
-                            </div>
-                        </Form>
                     </TabPanel>
                 </TabView>
             </div>
