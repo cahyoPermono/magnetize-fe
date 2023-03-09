@@ -1,11 +1,11 @@
 <template>
-  <div class="bg-pattern px-4 py-3 min-h-screen">
+  <div class="bg-pattern2 px-4 py-3 min-h-screen">
     <div>
       <Toast />
     </div>
     <Card class="mb-3 flex justify-content-center">
       <template #content>
-        <img class="w-screen px-6" src="~/assets/formapplication/Header.jpg" alt="header">
+        <img class="head-form" src="~/assets/formapplication/Header.jpg" alt="header">
       </template>
     </Card>
     <Form v-slot="{ meta }" @submit="save">
@@ -1496,7 +1496,6 @@ async function save(values) {
           detail: response.data.message,
           life: 3000,
         });
-        //  console.log(response.data.message);
       });
 
     loading.value = false;
