@@ -138,9 +138,9 @@
               </div>
               <div class="col-2">
                 <Field v-slot="{ field, errorMessage }" name="postal_code_address" :rules="isRequired"
-                v-model="applicant.postal_code_address">
-                <InputText v-bind="field" aria-describedby="email-help" :class="{ 'p-invalid': errorMessage }"
-                  class="block w-full" placeholder="Kode Pos" />
+                  v-model="applicant.postal_code_address">
+                  <InputText v-bind="field" aria-describedby="email-help" :class="{ 'p-invalid': errorMessage }"
+                    class="block w-full" placeholder="Kode Pos" />
                   <small id="email-help" class="p-error block">{{ errorMessage }}</small>
                 </Field>
               </div>
@@ -780,7 +780,7 @@
                   </label>
                   <div class="col">
                     <Field v-slot="{ field, errorMessage }" :rules="isRequired" name="reason_leacing"
-                      v-model="employmenthistory.reason_leacing">
+                      v-model="employmenthistory.reason_leaving">
                       <InputText v-bind="field" :class="{ 'p-invalid': errorMessage }" class="block w-full" />
                       <small id="reason_leacing-help" class="p-error block">{{ errorMessage }}</small>
                     </Field>
@@ -1155,7 +1155,8 @@
         </template>
         <template #footer>
           <Button class="p-button-sm" icon="pi pi-arrow-left" @click="(agreement = false), (otherinfo2 = true)" />
-          <Button class="p-button-sm" icon="pi pi-save" label="Save" :disabled="!agree" style="float: right"
+          <Button v-if="loading" class="p-button-sm" icon="pi pi-spin pi-spinner" label="Loading" :disabled="true" style="float: right" />
+          <Button v-else class="p-button-sm" icon="pi pi-save" label="Save" :disabled="!agree" style="float: right"
             type="submit" />
         </template>
       </Card>
@@ -1167,19 +1168,22 @@
 import { ref, onMounted, reactive } from "vue";
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
+import { useStore } from '~~/stores/applicant_auth';
 
 definePageMeta({
   layout: false,
+  middleware: [
+    async function (to, from) {
+      const store = useStore();
+      await store.auth();
+    },
+  ],
 });
 
 onMounted(async () => {
   await getJob();
   await getProvinsi();
 });
-
-const test = (param) => {
-  console.log(param.length);
-}
 const toast = useToast();
 const config = useRuntimeConfig();
 const router = useRouter();
@@ -1313,7 +1317,6 @@ const getJob = async () => {
   try {
     const response = await axios.get(config.API_BASE_URL + "jobs");
     jobs.value = response.data.data;
-    console.log(jobs.value)
   } catch (err) {
     console.log(err);
   }
@@ -1410,20 +1413,21 @@ const isRequired = (value) => {
 };
 
 async function save(values) {
-  console.log(applicant.value);
-  console.log(formaleducations.value);
-  console.log(nonformaleducations.value);
-  console.log(computersArr.value);
-  console.log(employmenthistories.value);
-  console.log(jobdescription);
-  console.log(otherinformation.value);
-  console.log(otherinformation2.value);
   if (applicant.value.photo === null)
     return (applicant.value.photo = "https://via.placeholder.com/120x120?text=FOTO");
   try {
+    // console.log(applicant.value);
+    // console.log(formaleducations.value);
+    // console.log(nonformaleducations.value);
+    // console.log(computersArr.value);
+    // console.log(employmenthistories.value);
+    // console.log(jobdescription.description);
+    // console.log(otherinformation.value);
+    loading.value = true;
     await axios
       .post(config.API_BASE_URL + "applicants", {
         applicant: {
+          jobPosition: applicant.value.JobId.name,
           ApplicantAuthId: user.value.id,
           name: applicant.value.name,
           gender: applicant.value.gender,
@@ -1453,7 +1457,7 @@ async function save(values) {
           status: "Selesai Mengisi Tahap  1",
           isCandidate: 0,
         },
-        formaleducation: formaleducations.value[0],
+        formaleducation: formaleducations.value,
         nonformaleducation: nonformaleducations.value,
         computerliterate: computersArr.value,
         employmenthistory: employmenthistories.value,
@@ -1486,18 +1490,21 @@ async function save(values) {
         },
       })
       .then((response) => {
-        showWarn();
-        loading.value = true;
-        console.log(response.data.message);
+        toast.add({
+          severity: "warn",
+          summary: "Sukses",
+          detail: response.data.message,
+          life: 3000,
+        });
+        //  console.log(response.data.message);
       });
-    // const applicantNow = await axios.get(config.API_BASE_URL + "applicants");
-    // const pdf = await axios.get(config.API_BASE_URL + "topdf/" + applicantNow.data.data[0].id);
-    // loading.value = false;
-    // setTimeout(() => {
-    //   router.push({
-    //     path: "/formapplication/technicalskill/" + applicantNow.data.data[0].id,
-    //   });
-    // }, 1000);
+
+    loading.value = false;
+    setTimeout(() => {
+      router.push({
+        path: "/formapplication/dashboard/",
+      });
+    }, 1000);
   } catch (err) {
     console.log(err);
   }
