@@ -85,3 +85,6 @@ body a:hover {
 .card .tabview {
     width: 70vw;
 }
+.p-card .p-card-content{
+    padding: 0;
+}

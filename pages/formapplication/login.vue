@@ -139,17 +139,15 @@ const save = async (values) => {
         applicant.value.name = values.name;
         applicant.value.password = values.password;
         const data = await axios.post(config.API_BASE_URL + "applicant_auth/register", applicant.value);
+        applicant.value.name = "";
+        applicant.value.email = "";
+        applicant.value.password = "";
         toast.add({
             severity: "success",
             summary: "Berhasil",
             detail: `${data.data.message}`,
             life: 2000,
         });
-        applicant.value = {
-            name: "",
-            email: "",
-            password: ""
-        };
     } catch (error) {
         toast.add({
             severity: "error",
