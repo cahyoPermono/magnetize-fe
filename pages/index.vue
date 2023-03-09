@@ -82,9 +82,14 @@
           </div>
         </div>
       </div>
-      <Button icon="pi pi-file" label="Apply"
-        class="p-button-rounded p-button-warning float animate__animated animate__bounceIn btn-anim"
-        style="box-shadow: 2px 2px 3px #999" @click="openPosition('center')" />
+      <div class="float">
+        <Button icon="pi pi-file" label="Daftar Sebagai Pelamar"
+          class="p-button-rounded p-button-warning animate__animated animate__bounceIn mr-2"
+          style="box-shadow: 2px 2px 3px #999" @click="loginapplicant()" />
+        <Button icon="pi pi-file" label="Isi buku tamu"
+          class="p-button-rounded p-button-warning p-button-outlined animate__animated animate__bounceIn"
+          style="box-shadow: 2px 2px 3px #999" @click="openPosition('center')" />
+      </div>
       <Dialog class="bukuTamu" header="Buku Tamu" v-model:visible="displayPosition" :breakpoints="{ '640px': '75vw' }"
         :style="{ width: '40vw' }" :position="position" :modal="true">
         <Form>
@@ -230,6 +235,10 @@ const data = reactive({
   posisi: "",
   cv: "",
 });
+
+const loginapplicant = () =>{
+  router.push("/formapplication/login")
+}
 
 const onUpload = (evt) => {
   let f = evt.files[0];
