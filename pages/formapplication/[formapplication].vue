@@ -256,8 +256,7 @@
               </label>
               <div class="col">
                 <Field v-slot="{ field, errorMessage }" :rules="isRequired" name="email" v-model="applicant.email">
-                  <InputText v-bind="field" aria-describedby="email-help" :class="{ 'p-invalid': errorMessage }"
-                    class="block w-full" />
+                  <InputText v-bind="field" aria-describedby="email-help" :disabled="true" />
                   <small id="email-help" class="p-error block">{{ errorMessage }}</small>
                 </Field>
               </div>
@@ -1184,6 +1183,7 @@ onMounted(async () => {
   await getJob();
   await getProvinsi();
 });
+
 const toast = useToast();
 const config = useRuntimeConfig();
 const router = useRouter();
@@ -1212,7 +1212,7 @@ const applicant = ref({
   postal_code_domicile: "",
   mobile: "",
   office_parent_phone: "",
-  email: "",
+  email: user.value.email,
   religion: "",
   JobId: "",
   photo: "",
