@@ -172,7 +172,7 @@ const onSubmit = async (values) => {
             detail: `${data.data.message}`
         });
         setTimeout(async () => {
-            router.push('/formapplication/dashboard');
+            window.location.assign('/formapplication/dashboard');
         }, 1000);
     } catch (error) {
         toast.add({

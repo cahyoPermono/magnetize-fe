@@ -1189,6 +1189,7 @@ const config = useRuntimeConfig();
 const router = useRouter();
 const jobs = ref([]);
 const user = useCookie("user");
+const store = useStore();
 
 //data
 const displayModal = ref(false);
@@ -1416,27 +1417,20 @@ async function save(values) {
   if (applicant.value.photo === null)
     return (applicant.value.photo = "https://via.placeholder.com/120x120?text=FOTO");
   try {
-    // console.log(applicant.value);
-    // console.log(formaleducations.value);
-    // console.log(nonformaleducations.value);
-    // console.log(computersArr.value);
-    // console.log(employmenthistories.value);
-    // console.log(jobdescription.description);
-    // console.log(otherinformation.value);
     loading.value = true;
     await axios
       .post(config.API_BASE_URL + "applicants", {
         applicant: {
-          jobPosition: applicant.value.JobId.name,
+          jobPosition: applicant.value.JobId.name.toUpperCase(),
           ApplicantAuthId: user.value.id,
-          name: applicant.value.name,
+          name: applicant.value.name.toUpperCase(),
           gender: applicant.value.gender,
-          place_of_birth: applicant.value.place_of_birth,
+          place_of_birth: applicant.value.place_of_birth.toUpperCase(),
           date: applicant.value.date,
           blood_type: applicant.value.blood_type,
           province: applicant.value.province ? applicant.value.province.nama : "",
           city: applicant.value.city ? applicant.value.city.nama : "",
-          district: applicant.value.district ? applicant.value.district.nama : "",
+          district: applicant.value. district ? applicant.value.district.nama : "",
           subdistrict: applicant.value.subdistrict ? applicant.value.subdistrict.nama : "",
           address: applicant.value.address,
           postal_code_address: applicant.value.postal_code_address,
@@ -1445,14 +1439,14 @@ async function save(values) {
           district_dom: applicant.value.district_dom ? applicant.value.district_dom.nama : "",
           subdistrict_dom: applicant.value.subdistrict_dom ? applicant.value.subdistrict_dom.nama : "",
           domicile: applicant.value.domicile,
-          postal_code_domicile: applicant.value.postal_code_domicile,
+          postal_code_domicile: applicant.value.postal_code_domicile ? applicant.value.postal_code_domicile : 0,
           mobile: applicant.value.mobile,
           office_parent_phone: applicant.value.office_parent_phone,
           email: applicant.value.email,
           religion: applicant.value.religion,
           JobId: applicant.value.JobId.id,
           photo: applicant.value.photo,
-          martial_status: applicant.value.marital_status,
+          marital_status: applicant.value.marital_status,
           year_marriage: applicant.value.year_marriage,
           status: "Selesai Mengisi Tahap  1",
           isCandidate: 0,
@@ -1491,17 +1485,17 @@ async function save(values) {
       })
       .then((response) => {
         toast.add({
-          severity: "warn",
-          summary: "Sukses",
-          detail: response.data.message,
+          severity: "info",
+          summary: response.data.message,
+          detail: "silahkan login ulang. terima kasih",
           life: 3000,
         });
       });
-
+    store.logout();
     loading.value = false;
     setTimeout(() => {
       router.push({
-        path: "/formapplication/dashboard/",
+        path: "/formapplication/login/",
       });
     }, 1000);
   } catch (err) {

@@ -103,3 +103,8 @@ body a:hover {
 .p-card .p-card-content {
   padding: 0;
 }
+
+.p-avatar img{
+  width: 130% !important;
+  height: 130% !important  ;
+}
