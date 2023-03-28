@@ -95,8 +95,8 @@ function login() {
         role.value = r.data.user.roleId;
         token_user.value = r.data.user.id;
         toast.add({ severity: "success", summary: "Berhasil", detail: "Login Sukses", life: 3000 });
-        setTimeout(async() => {
-          await router.push("/dashboard");
+        setTimeout(() => {
+          router.push("/dashboard");
           // await window.location.reload();
         }, 3000);
         // await router.push("/dashboard");

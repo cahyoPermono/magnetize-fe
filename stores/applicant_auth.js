@@ -17,5 +17,33 @@ export const useStore = defineStore("applicant_auth", () => {
         router.push("/formapplication/login");
     };
 
-    return { auth, logout, token, user }
+    const document = [
+        {
+            type:'cv/resume',
+            file:'',
+            filename:'',
+        },
+        {
+            type:'ktp',
+            file:'',
+            filename:'',
+        },
+        {
+            type:'npwp',
+            file:'',
+            filename:'',
+        },
+        {
+            type:'ijazah',
+            file:'',
+            filename:'',
+        },
+        {
+            type:'sertifikat',
+            file:'',
+            filename:'',
+        },
+    ];
+
+    return { auth, logout, token, user, document }
 });

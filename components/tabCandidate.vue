@@ -13,7 +13,7 @@
         <TabPanel>
           <template #header>
             <i class="pi pi-file"></i>
-            <span>&nbsp;&nbsp;Resume</span>
+            <span>&nbsp;&nbsp;Personal Documents</span>
           </template>
           <div>
             <Resume/>

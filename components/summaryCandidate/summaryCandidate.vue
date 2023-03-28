@@ -97,14 +97,6 @@
                         </tr>
                         <tr>
                             <td>
-                                Skype
-                            </td>
-                            <td>
-                                &nbsp;: -
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
                                 Another Contact
                             </td>
                             <td>
@@ -113,15 +105,15 @@
                         </tr>
                     </table>
                 </Panel>
-                <Panel class="mt-4">
-                    <template #header>
-                        <b>Employee Details &nbsp;<span></span></b>
-                    </template>
-                    <p>{{ candidate_data.status }}</p>
-                </Panel>
             </div>
             <div class="col">
                 <Panel>
+                    <template #header>
+                        <b>Status &nbsp;<span></span></b>
+                    </template>
+                    <p>{{ candidate_data.status }}</p>
+                </Panel>
+                <Panel class="mt-4">
                     <template #header>
                         <b>Skill &nbsp;<span></span></b>
                     </template>
@@ -262,14 +254,12 @@ const getter = async () => {
     candidate_data.current_company = candidate.employmenthistories.length < 1 ?  '-' : candidate.employmenthistories[0].name_company;
     candidate_data.current_position = candidate.employmenthistories.length < 1 ?  '-' : candidate.employmenthistories[0].position;  
     candidate_data.current_sallary = candidate.employmenthistories.length < 1 ?  '-' : candidate.employmenthistories[0].take_home_pay;  
-    candidate_data.experience_telecomunication = candidate.otherinformation.experience_tellecomunication || '-';
-    candidate_data.experience_it = candidate.otherinformation.experience_it;
     candidate_data.graduation = candidate.formaleducations.length < 1 ?  '-' : candidate.formaleducations[0].graduate;
     candidate_data.expected_salary = candidate.otherinformation.salary_expect;
     candidate_data.candidate_reference_name = candidate.relatives_in_ip || '-';
     candidate_data.notice_period = candidate.otherinformation.able_to_start;
     candidate_data.status = candidate.status;
-}
+};
 
 const getSkill = async () => {
     skills = await axios.get(config.API_BASE_URL + "applicantskills/" + id);
