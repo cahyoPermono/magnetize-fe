@@ -366,16 +366,17 @@ const isDocDis = computed(() => {
 const save = async () => {
     try {
         const save = {
+            name: data.value.name,
             applicant: {
                 ktp_no: dataPribadi.value.ktp,
                 npwp_no: dataPribadi.value.npwp,
-                accout_no: dataPribadi.value.rekening,
+                account_no: dataPribadi.value.rekening,
                 status: "Sudah Mengisi Tahap 2",
             },
             families: data.value.applicant.marital_status !== 'lajang' ? dataFamArr.value : dataKeluargaLajang.value,
             attachments: store.document,
         };
-        console.log(applicant.value.ApplicantId)
+        // console.log(save);
         const post = await axios.put(config.API_BASE_URL + "applicants/" + applicant.value.ApplicantId, save);
         toast.add({
             severity: "info",
@@ -402,7 +403,6 @@ onMounted(async () => {
     const res = await axios.get(config.API_BASE_URL + "applicant_auth/" + applicant.value.id, { headers: { 'Authorization': `Bearer ${store.token}` } })
     data.value = res.data.data;
     job.value = res.data.data.applicant.job.name;
-    console.log(res.data.data)
 });
 
 const isRequired = (value) => {
@@ -414,6 +414,12 @@ const isRequired = (value) => {
 
 definePageMeta({
     layout: false,
+    middleware: [
+        async function (to, from) {
+            const store = useStore();
+            await store.auth();
+        },
+    ],
 });
 
 </script>

@@ -121,6 +121,7 @@ let submitData = reactive({
     interview_3: '',
     comment: '',
     applicantId: applicant.value.ApplicantId,
+    name: applicant.value.name,
     status: 'Sudah Mengisi Form 3',
 });
 
@@ -162,5 +163,11 @@ const submit = async () => {
 
 definePageMeta({
     layout: false,
+    middleware: [
+        async function (to, from) {
+            const store = useStore();
+            await store.auth();
+        },
+    ],
 });
 </script>

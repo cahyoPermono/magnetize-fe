@@ -12,18 +12,9 @@
               </template>
             </Column>
             <Column field="name" header="Nama"></Column>
-            <Column field="gender" header="Gender" :sortable="true"></Column>
-            <Column field="place_of_birth" header="Tempat Lahir" :sortable="true"></Column>
-            <Column header="Tgl Lahir">
-                <template #body="slotProps">
-                    {{ reverseDate(slotProps.data.date) }}
-                </template>
-            </Column>
             <Column field="address" header="Alamat"></Column>
             <Column field="mobile" header="HP"></Column>
             <Column field="email" header="Email"></Column>
-            <Column field="religion" header="Agama"></Column>
-            <Column field="marital_status" header="Status"></Column>
             <Column>
               <template #body="slotProps">
                 <NuxtLink :to="`/candidate/${slotProps.data.id}`">

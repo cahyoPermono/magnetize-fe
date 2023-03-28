@@ -1490,7 +1490,15 @@ async function save(values) {
           detail: "silahkan login ulang. terima kasih",
           life: 3000,
         });
-      });
+      })
+      .catch((error)=>{
+        toast.add({
+          severity: "danger",
+          summary: error.data.message,
+          life: 3000,
+        });
+        loading.value = false;
+      })
     store.logout();
     loading.value = false;
     setTimeout(() => {

@@ -23,7 +23,7 @@
                     </template>
                     <template #footer>
                         <div class="text-center" v-if="buttonHidden">
-                            <h5>Anda sudah menyelesaikan semua tahapan interview <br>silahkan tunggu pemberitahuan kami selanjutnya, terima kasih.</h5>
+                            <p>Anda sudah menyelesaikan semua tahapan interview <br>silahkan tunggu pemberitahuan kami selanjutnya, terima kasih.</p>
                         </div>
                         <div class="text-center" v-else-if="userData.applicant">
                             <Button label="Isi Form" @click="toForm(userData.applicant.status)" class="p-button-success" />
@@ -125,6 +125,7 @@ const toForm = (status) => {
 onMounted(async () => {
     const applicantAuth = await axios.get(config.API_BASE_URL + "applicant_auth/" + user.value.id, { headers: { 'Authorization': `Bearer ${store.token}` } });
     userData.value = applicantAuth.data.data
+    console.log(userData.value);
 });
 
 definePageMeta({
