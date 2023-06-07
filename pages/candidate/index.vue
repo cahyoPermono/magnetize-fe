@@ -4,8 +4,9 @@
       <h1>Candidates</h1>
       <div style="width: 75vw">
         <div class="card shadow mt-4 ml-4 w-100">
-          <DataTable :value="displayed_data" :paginator="true" :rows="5" paginatorTemplate=" FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
-            responsiveLayout="scroll" removableSort >
+          <DataTable :value="displayed_data" :paginator="true" :rows="5"
+            paginatorTemplate=" FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+            responsiveLayout="scroll" removableSort>
             <Column header="Foto">
               <template #body="slotProps">
                 <Avatar :image="slotProps.data.photo" class="mr-2" size="xlarge" shape="circle" />
@@ -15,6 +16,12 @@
             <Column field="address" header="Alamat"></Column>
             <Column field="mobile" header="HP"></Column>
             <Column field="email" header="Email"></Column>
+            <Column header="Status">
+              <template #body="slotProps">
+                <span v-if="slotProps.data.applicantstatus">{{ slotProps.data.applicantstatus.status }}</span>
+                <span v-else> - </span>
+              </template>
+            </Column>
             <Column>
               <template #body="slotProps">
                 <NuxtLink :to="`/candidate/${slotProps.data.id}`">
@@ -45,6 +52,8 @@ function getCandidate() {
   try {
     axios.get(config.API_BASE_URL + "all_applicant").then((response) => {
       displayed_data.value = response.data.data;
+      displayed_data.value = displayed_data.value.reverse();
+
     });
   } catch (err) {
     console.log(err);

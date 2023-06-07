@@ -101,6 +101,7 @@
                 </Card>
             </Form>
         </div>
+        <loading-screen v-if="isLoading" />
     </div>
 </template>
 
@@ -114,6 +115,7 @@ const toast = useToast();
 const config = useRuntimeConfig();
 const router = useRouter();
 const applicant = useCookie("user");
+const isLoading = ref(false);
 
 let submitData = reactive({
     interview_1: '',
@@ -135,11 +137,14 @@ const isDone = computed(() => {
 
 const submit = async () => {
     try {
+        isLoading.value = true;
+        console.log(submitData);
         const post = await axios.post(config.API_BASE_URL + "processevaluation", submitData, {
             headers: {
                 'Authorization': `Bearer ${store.token}`
             }
         });
+        isLoading.value = false;
         toast.add({
             severity: "info",
             summary: post.data.message,
@@ -152,9 +157,10 @@ const submit = async () => {
             });
         }, 1000);
     } catch (error) {
+        isLoading.value = false;
         toast.add({
             severity: "error",
-            summary: post.data.message,
+            summary: error,
             detail: "selesai mengisi evaluasi interview. tunggu sebentar, terima kasih",
             life: 3000,
         });
