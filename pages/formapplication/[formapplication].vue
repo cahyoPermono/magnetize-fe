@@ -3,22 +3,24 @@
     <div>
       <Toast />
     </div>
-    <Card class="mb-3 flex justify-content-center">
-      <template #content>
-        <img class="head-form" src="~/assets/formapplication/Header.jpg" alt="header">
-      </template>
-    </Card>
+    <div class="mx-5">
+      <Card class="mb-3 flex justify-content-center">
+        <template #content>
+          <img class="head-form" src="~/assets/formapplication/Header.jpg" alt="header" style="max-width:100%; height:auto;">
+        </template>
+      </Card>
+    </div>
     <Form v-slot="{ meta }" @submit="save">
-      <Card v-if="apply">
+      <div class="mx-5">
+        <Card v-if="apply">
         <template #content>
           <div class="mt-2 mx-3">
             <div class="grid">
               <div class="col-10 text-left pl-2">
                 <h3 class="text-2xl mb-0">FORMULIR LAMARAN KERJA</h3>
-                <p class="text-lg my-0">Application Form</p>
               </div>
               <div class="col-2">
-                <div>
+                <div class="mt-5">
                   <Avatar :image="applicant.photo" size="xlarge" style="width: 120px; height: 120px" />
                 </div>
                 <div>
@@ -1159,6 +1161,7 @@
             type="submit" />
         </template>
       </Card>
+      </div>
     </Form>
   </div>
 </template>
