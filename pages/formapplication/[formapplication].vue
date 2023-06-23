@@ -1060,7 +1060,8 @@
             />
           </template>
         </Card>
-        <Card v-if="computer"> <!-- computer & special skills -->
+        <Card v-if="computer">
+          <!-- computer & special skills -->
           <template #title>
             Penguasaan Komputer dan Keahlian Khusus
             <span>
@@ -1160,7 +1161,7 @@
               v-if="applicant.JobId.jobCategory.id === 2"
               class="p-button-sm"
               icon="pi pi-arrow-right"
-              @click="(computer = false), (technicalSkill = true)"
+              @click="(computer = false), (technicalSkill = true), getSkills()"
               style="float: right"
             />
             <Button
@@ -1174,24 +1175,74 @@
           </template>
         </Card>
         <Card v-if="technicalSkill">
-          <template #title>
-            Technical Skills
-          </template>
+          <template #title> Technical Skills </template>
           <template #content>
-            technical skills
-          </template>
-          <template #footer>
-            <Button
-              class="p-button-sm"
-              icon="pi pi-arrow-left"
-              @click="(technicalSkill = false), (computer = true)"
-            />
-            <Button
-              class="p-button-sm"
-              icon="pi pi-arrow-right"
-              @click="(technicalSkill = false), (employhistory = true)"
-              style="float: right"
-            />
+            <Form @submit="addTechnicalSkill">
+              <div class="grid">
+                <div class="col-12 md:col-6 lg:col-4" v-for="skill in skills" :key="skill.id">
+                  <Card class="bg-blue-200">
+                    <template #title>
+                      <span class="px-2">{{ skill.skill }}</span>
+                    </template>
+                    <template #content>
+                      <div
+                        class="field pl-4 pr-3"
+                        v-for="subskill in skill.subskills"
+                        :key="subskill.id"
+                      >
+                        <!-- {{ subskill }} -->
+                        <label for="sub_skill_1" class="mr-2">{{ subskill.subskill }}</label>
+                        <div class="flex">
+                          <Field
+                            :name="'_' + subskill.id"
+                            v-slot="{ field, errorMessage }"
+                            :rules="rule"
+                          >
+                            <InputText
+                              v-bind="field"
+                              aria-describedby="sub_skill_help"
+                              :class="{ 'p-invalid': errorMessage }"
+                              class="mr-2"
+                              type="number"
+                              style="width: 4rem"
+                              placeholder="nilai"
+                            />
+                          </Field>
+                          <Field
+                            :name="'keterangan_'+ subskill.id"
+                            v-slot="{ field, errorMessage }"
+                            :rules="isRequired"
+                          >
+                            <InputText
+                              v-bind="field"
+                              aria-describedby="sub_skill_help"
+                              :class="{ 'p-invalid': errorMessage }"
+                              placeholder="keterangan"
+                            />
+                          </Field>
+                        </div>
+                      </div>
+                    </template>
+                  </Card>
+                </div>
+              </div>
+              <Button
+                class=" p-button-sm"
+                icon="pi pi-arrow-left"
+                @click="(technicalSkill = false), (computer = true)"
+              />
+              <!-- <button
+                class="p-button p-component p-button-sm p-button-icon-only"
+                style="float: right"
+                role="submit"
+              ><span class="pi pi-arrow-right p-button-icon" /></button> -->
+              <Button
+                class="p-button-sm"
+                icon="pi pi-arrow-right"
+                style="float: right"
+                type="submit"
+              />
+            </Form>
           </template>
         </Card>
         <Card v-if="employhistory">
@@ -2244,6 +2295,42 @@ const addhistory = () => {
   openDialogEmployHistory();
 };
 
+const skills = ref([]);
+const skills_arr = ref([]);
+const selectedJobId = ref("");
+watch(applicant.value, (newApplicant, oldApplicant) => {
+  selectedJobId.value = newApplicant.JobId.id;
+});
+const addTechnicalSkill = (values) =>{
+  for (let key in values) {
+    if (key.startsWith("_")) {
+      const subskillId = parseInt(key.slice(1));
+      const nilai = values[`_${subskillId}`];
+      const keterangan = values[`keterangan_${subskillId}`];
+      skills_arr.value.push({ subskillId, nilai, keterangan });
+    }
+  };
+  console.log(skills_arr.value);
+  technicalSkill.value = false;
+  employhistory.value = true;
+};
+
+const rule = (value) => {
+  if (value > 10 || value < 0) {
+    return "number not valid";
+  }
+
+  if (!value) {
+    return "field is required";
+  }
+  return true;
+};
+
+const getSkills = async () => {
+  const res = await axios.get(config.API_BASE_URL + "skills/" + selectedJobId.value);
+  skills.value = res.data.data;
+};
+
 //function modal
 const openModal = () => {
   displayModal.value = !displayModal.value;
@@ -2256,14 +2343,6 @@ const openDialogEmployHistory = () => {
 };
 const cancelEdu = (index, arr) => {
   arr.splice(index, 1);
-};
-const showWarn = () => {
-  toast.add({
-    severity: "warn",
-    summary: "Sukses isi Form",
-    detail: "Form Anda Lengkap, Silahkan tunggu halaman selanjutnya",
-    life: 3000,
-  });
 };
 
 let apply = ref(true);
@@ -2360,6 +2439,7 @@ async function save(values) {
           shifting: otherinformation2.value.shifting,
           giving_reference: otherinformation2.value.giving_reference,
         },
+        applicantskills: skills_arr.value
       })
       .then((response) => {
         toast.add({

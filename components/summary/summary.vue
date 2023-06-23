@@ -112,7 +112,8 @@
                 </Panel>
                 <Panel class="mt-4">
                     <template #header>
-                        <b>Job Package &nbsp;<span><i class="pi pi-pencil" style="font-size: 0.5rem; cursor:pointer;"
+                        <b>Job Package &nbsp;<span><i class="pi
+                         pi-pencil" style="font-size: 0.5rem; cursor:pointer;"
                                     @click="openModalPackage()"></i></span></b>
                     </template>
                     <p>{{ job_data.package_detail }}</p>
