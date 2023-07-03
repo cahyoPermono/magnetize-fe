@@ -81,6 +81,7 @@
                         v-bind="field"
                         :class="{ 'p-invalid': errorMessage }"
                         class="block w-full"
+                        placeholder="nomor KTP"
                       />
                       <small id="email-help" class="p-error block">{{ errorMessage }}</small>
                     </Field>
@@ -98,6 +99,7 @@
                         v-bind="field"
                         :class="{ 'p-invalid': errorMessage }"
                         class="block w-full"
+                        placeholder="nomor NPWP"
                       />
                       <small id="email-help" class="p-error block">{{ errorMessage }}</small>
                     </Field>
@@ -107,18 +109,37 @@
               <div class="mt-2 mx-3">
                 <div class="grid">
                   <label for="rekening" class="col-2">
-                    <small>No. Rekening</small>
+                    <small>No. Rekening</small><span style="color: red">*</span>
                   </label>
-                  <div class="col">
+                  <div class="col-2">
                     <Field
                       v-slot="{ field, errorMessage }"
-                      name="rekening"
-                      v-model="dataPribadi.rekening"
+                      name="bank"
+                      v-model="dataPribadi.bank"
+                      :rules="isRequired"
                     >
                       <InputText
                         v-bind="field"
                         :class="{ 'p-invalid': errorMessage }"
                         class="block w-full"
+                        placeholder="Nama Bank"
+                        r
+                      />
+                      <small id="email-help" class="p-error block">{{ errorMessage }}</small>
+                    </Field>
+                  </div>
+                  <div class="col">
+                    <Field
+                      v-slot="{ field, errorMessage }"
+                      name="rekening"
+                      v-model="dataPribadi.rekening"
+                      :rules="isRequired"
+                    >
+                      <InputText
+                        v-bind="field"
+                        :class="{ 'p-invalid': errorMessage }"
+                        class="block w-full"
+                        placeholder="nomor rekening"
                       />
                       <small id="email-help" class="p-error block">{{ errorMessage }}</small>
                     </Field>
@@ -163,6 +184,7 @@
                   </div>
                 </div>
               </div>
+              <hr />
               <h3 class="text-center">Data Keluarga</h3>
               <div class="mx-3">
                 <div class="grid">
@@ -354,6 +376,42 @@
                   </div>
                 </div>
               </div>
+              <hr />
+              <h5 class="text-center">Saudara</h5>
+              <div class="mx-3">
+                <Button icon="pi pi-plus" label="tambah saudara" class="mt-2" @click="openModal" />
+                <div class="grid mt-3">
+                  <div class="col-4">
+                    <Card>
+                      <template #title> Kakak </template>
+                      <template #content>
+                        <div class="block">
+                          <p>Nama : gafafsl</p>
+                          <p>tanggal lahir : salkdas</p>
+                          <p>pendidikan : asjkhfas</p>
+                          <p>pekerjaan : asjhddsakjh</p>
+                        </div>
+                      </template>
+                    </Card>
+                  </div>
+                </div>
+              </div>
+              <Dialog
+                header="Header"
+                v-model:visible="displayModal"
+                :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
+                :style="{ width: '80vw' }"
+                :modal="true"
+              >
+                <div>
+                  <div class="text-center">
+                    <h3>Tambah Saudara</h3>
+                  </div>
+                  <Form @submit="addSaudara"> </Form>
+                  <Button label="No" icon="pi pi-times" @click="openModal" class="p-button-text" />
+                  <Button label="Yes" icon="pi pi-check" />
+                </div>
+              </Dialog>
             </div>
             <div class="mt-5" v-else-if="data.applicant.marital_status !== 'lajang'">
               <div class="mt-2 mx-3">
@@ -440,6 +498,7 @@ const job = ref("");
 const dataPribadi = ref({
   ktp: "",
   npwp: "",
+  bank: "",
   rekening: "",
 });
 const dataKeluargaLajang = ref([
@@ -461,6 +520,10 @@ const dataKeluargaLajang = ref([
   },
 ]);
 const isLoading = ref(false);
+const displayModal = ref(false);
+const openModal = () => {
+  displayModal.value = !displayModal.value;
+};
 
 const isDocDis = computed(() => {
   if (store.document[0].file && store.document[1].file && store.document[3].file) {

@@ -24,7 +24,10 @@
                 <div class="col-10 text-left pl-2">
                   <h3 class="text-2xl mb-0">FORMULIR LAMARAN KERJA</h3>
                 </div>
-                <div class="col-2">
+                <div class="col-2" v-if="loading">
+                  loading
+                </div>
+                <div class="col-2" v-else>
                   <div class="mt-5">
                     <Avatar
                       :image="applicant.photo"
@@ -1209,7 +1212,7 @@
                             />
                           </Field>
                           <Field
-                            :name="'keterangan_'+ subskill.id"
+                            :name="'keterangan_' + subskill.id"
                             v-slot="{ field, errorMessage }"
                             :rules="isRequired"
                           >
@@ -1227,15 +1230,10 @@
                 </div>
               </div>
               <Button
-                class=" p-button-sm"
+                class="p-button-sm"
                 icon="pi pi-arrow-left"
                 @click="(technicalSkill = false), (computer = true)"
               />
-              <!-- <button
-                class="p-button p-component p-button-sm p-button-icon-only"
-                style="float: right"
-                role="submit"
-              ><span class="pi pi-arrow-right p-button-icon" /></button> -->
               <Button
                 class="p-button-sm"
                 icon="pi pi-arrow-right"
@@ -1585,6 +1583,7 @@
               ><small><i> (Other Informations)</i></small></span
             >
           </template>
+
           <template #content>
             <div class="mt-2 mx-3">
               <label for="hospitalized">
@@ -1800,8 +1799,32 @@
               </Field>
             </div>
             <div class="mt-2 mx-3">
-              <label for="contact_emergency">
+              <label for="person_contact_emergency">
                 <small>Sebutkan orang terdekat yang bisa dihubungi dalam keadaan darurat ? </small>
+                <span style="color: red">*</span>
+              </label>
+              <Field
+                v-slot="{ field, errorMessage }"
+                name="person_contact_emergency"
+                :rules="isRequired"
+                v-model="otherinformation.person_contact_emergency"
+              >
+                <InputText
+                  v-bind="field"
+                  aria-describedby="person_contact_emergency_help"
+                  :class="{ 'p-invalid': errorMessage }"
+                  class="block w-full"
+                />
+                <small id="person_contact_emergency_help" class="p-error block">{{
+                  errorMessage
+                }}</small>
+              </Field>
+            </div>
+            <div class="mt-2 mx-3">
+              <label for="contact_emergency">
+                <small
+                  >Nomor telpon orang terdekat yang bisa dihubungi dalam keadaan darurat
+                </small>
                 <span style="color: red">*</span>
               </label>
               <Field
@@ -1832,6 +1855,23 @@
                 v-model="otherinformation.relatives_in_ip"
               >
                 <InputText v-bind="field" aria-describedby="relatives_in_ip" class="block w-full" />
+              </Field>
+            </div>
+            <div class="mt-2 mx-3" v-if="otherinformation.relatives_in_ip">
+              <label for="position_relatives_in_ip">
+                <small>Sebutkan posisi kenalan anda di PT. Imani Prima</small>
+              </label>
+              <Field
+                v-slot="{ field }"
+                name="position_relatives_in_ip"
+                v-model="otherinformation.position_relatives_in_ip"
+                :rules="isRequired"
+              >
+                <InputText
+                  v-bind="field"
+                  aria-describedby="position_relatives_in_ip"
+                  class="block w-full"
+                />
               </Field>
             </div>
             <div class="mt-2 mx-3">
@@ -1928,23 +1968,6 @@
           </template>
           <template #content>
             <div class="mt-2 mx-3">
-              <label for="hospitalized">
-                <small
-                  >Apakah anda pernah dirawat di rumah sakit dan atau menderita sakit yang lama ?
-                </small>
-                <span style="color: red">*</span>
-              </label>
-              <div>
-                <Dropdown
-                  v-model="otherinformation.hospitalized"
-                  :options="hospitalized"
-                  optionLabel="val"
-                  optionValue="val"
-                  class="w-full"
-                />
-              </div>
-            </div>
-            <div class="mt-2 mx-3">
               <label for="overtime">
                 <small>Apakah anda bersedia bekerja lembur?</small>
                 <span style="color: red">*</span>
@@ -2026,6 +2049,26 @@
                   class="w-full"
                 />
               </div>
+            </div>
+            <div class="mt-2 mx-3">
+              <label for="information_source">
+                <small>Dari mana anda mengetahui informasi lowongan ini?</small>
+              </label>
+              <span style="color: red">*</span>
+              <Field
+                v-slot="{ field, errorMessage }"
+                name="information_source"
+                :rules="isRequired"
+                v-model="otherinformation.information_source"
+              >
+                <InputText
+                  v-bind="field"
+                  aria-describedby="email-help"
+                  :class="{ 'p-invalid': errorMessage }"
+                  class="block w-full"
+                />
+                <small id="information_source" class="p-error block">{{ errorMessage }}</small>
+              </Field>
             </div>
           </template>
           <template #footer>
@@ -2200,11 +2243,14 @@ const otherinformation = ref({
   salary_expect: "",
   able_to_start: "",
   contact_emergency: "",
+  person_contact_emergency: "",
   relatives_in_ip: "",
+  position_relatives_in_ip: "",
   strength: "",
   weakness: "",
   part_time_job: "",
   about_part_time_job: "",
+  information_source: "",
 });
 const otherinformation2 = ref({
   overtime: "",
@@ -2230,14 +2276,31 @@ const hospitalized = [{ val: "ya" }, { val: "tidak" }];
 
 //function
 const onUploadAva = (evt) => {
-  let f = evt.files[0];
-  // newAttachment.type = f.type;
-  const reader = new FileReader();
-  reader.readAsDataURL(f);
-  reader.onloadend = function () {
-    applicant.value.photo = reader.result;
-  };
+  try {
+    let f = evt.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(f);
+    reader.addEventListener('loadstart',function(){
+      loading.value = true;
+      console.log("start loading")
+    });
+
+    reader.addEventListener('load',function(){
+      console.log("loading")
+    });
+
+    reader.addEventListener('loadend',function(){
+      applicant.value.photo = reader.result;
+      loading.value = false;
+      console.log("loadend")
+    });
+
+  } catch (err) {
+    console.log(err);
+    loading.value = false;
+  }
 };
+
 const getJob = async () => {
   try {
     const response = await axios.get(config.API_BASE_URL + "jobs");
@@ -2301,7 +2364,7 @@ const selectedJobId = ref("");
 watch(applicant.value, (newApplicant, oldApplicant) => {
   selectedJobId.value = newApplicant.JobId.id;
 });
-const addTechnicalSkill = (values) =>{
+const addTechnicalSkill = (values) => {
   for (let key in values) {
     if (key.startsWith("_")) {
       const subskillId = parseInt(key.slice(1));
@@ -2309,8 +2372,7 @@ const addTechnicalSkill = (values) =>{
       const keterangan = values[`keterangan_${subskillId}`];
       skills_arr.value.push({ subskillId, nilai, keterangan });
     }
-  };
-  console.log(skills_arr.value);
+  }
   technicalSkill.value = false;
   employhistory.value = true;
 };
@@ -2358,6 +2420,16 @@ let otherinfo = ref(false);
 let otherinfo2 = ref(false);
 let agreement = ref(false);
 const loading = ref(false);
+
+const relativesRule = (value) => {
+  if (otherinformation.value.relatives_in_ip) {
+    if (!value) {
+      return "This field is required";
+    }
+    return true;
+  }
+  return true;
+};
 
 const isRequired = (value) => {
   if (!value) {
@@ -2427,8 +2499,8 @@ async function save(values) {
           respond_preasure: otherinformation.value.respond_preasure,
           salary_expect: otherinformation.value.salary_expect,
           able_to_start: otherinformation.value.able_to_start,
-          contact_emergency: otherinformation.value.contact_emergency,
-          relatives_in_ip: otherinformation.value.relatives_in_ip,
+          contact_emergency: `${otherinformation.value.contact_emergency} (${otherinformation.value.person_contact_emergency})`,
+          relatives_in_ip: `${otherinformation.value.relatives_in_ip} - ${otherinformation.value.position_relatives_in_ip}`,
           strength: otherinformation.value.strength,
           weakness: otherinformation.value.weakness,
           part_time_job: otherinformation.value.part_time_job,
@@ -2438,8 +2510,9 @@ async function save(values) {
           out_town_duty: otherinformation2.value.out_town_duty,
           shifting: otherinformation2.value.shifting,
           giving_reference: otherinformation2.value.giving_reference,
+          information_source: otherinformation.value.information_source,
         },
-        applicantskills: skills_arr.value
+        applicantskills: skills_arr.value,
       })
       .then((response) => {
         toast.add({
@@ -2452,7 +2525,7 @@ async function save(values) {
       .catch((error) => {
         toast.add({
           severity: "danger",
-          summary: error.data.message,
+          summary: error.data,
           life: 3000,
         });
         loading.value = false;
