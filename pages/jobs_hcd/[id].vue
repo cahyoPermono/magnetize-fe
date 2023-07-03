@@ -22,14 +22,10 @@
         <CandidatesStatusSummary />
       </div>
     </div>
+    <div class="mt-5">
+      <tab-component-jobs />
+    </div>
     <div class="grid">
-      <div class="mt-5">
-        <div class="b col-12">
-          <div class="card p-3">
-            <tab-component-jobs />
-          </div>
-        </div>
-      </div>
     </div>
     <NuxtLink to="/jobs_hcd" class="float my-float">
       <Button icon="pi pi-arrow-left" class="p-button-rounded" style="box-shadow: 2px 2px 3px #999" />

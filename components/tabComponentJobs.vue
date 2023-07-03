@@ -28,16 +28,16 @@
           <candidate-progress />
         </div>
       </TabPanel>
-      <!-- <TabPanel>
+      <TabPanel>
           <template #header>
-            <i class="pi pi-sitemap"></i>
-            <span>  - Team</span>
+            <i class="pi pi-star"></i>
+            <span>  - Skills</span>
           </template>
           <div>
-            
+            <skills />
           </div>
         </TabPanel>
-        <TabPanel>
+        <!-- <TabPanel>
           <template #header>
             <i class="pi pi-info-circle"></i>
             <span>  - Recommendations</span>
@@ -46,16 +46,16 @@
             
           </div>
         </TabPanel>
-        <TabPanel>
-          <template #header>
+        <TabPanel> -->
+          <!-- <template #header>
             <i class="pi pi-calendar"></i>
             <span>  - Activities</span>
           </template>
           <div>
             
           </div>
-        </TabPanel>
-        <TabPanel>
+        </TabPanel> -->
+        <!-- <TabPanel>
           <template #header>
             <i class="pi pi-plus-circle"></i>
             <span>  - Sourcing</span>
@@ -63,8 +63,8 @@
           <div>
             
           </div>
-        </TabPanel>
-        <TabPanel>
+        </TabPanel> -->
+        <!-- <TabPanel>
           <template #header>
             <i class="pi pi-chart-bar"></i>
             <span>  - Reports</span>

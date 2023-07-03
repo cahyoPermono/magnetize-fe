@@ -1,10 +1,5 @@
 <template>
-  <Button
-    label="Invite New User"
-    icon="pi pi-plus"
-    class="p-button-sm mt-3"
-    @click="openModal"
-  />
+  <Button label="Invite New User" icon="pi pi-plus" class="p-button-sm mt-3" @click="openModal" />
   <Dialog
     v-model:visible="displayModal"
     header="Create User"
@@ -84,11 +79,7 @@
         </div>
         <div class="mt-2">
           <div class="row">
-            <label
-              for="role"
-              class="col-sm-3 col-form-label pi pi-book"
-              style="font-size: 13px"
-            >
+            <label for="role" class="col-sm-3 col-form-label pi pi-book" style="font-size: 13px">
               &nbsp;Role<span style="color: red">*</span>
             </label>
             <div class="col-sm">
@@ -102,11 +93,7 @@
         </div>
         <div class="mt-2">
           <div class="row">
-            <label
-              for="email"
-              class="col-sm-3 col-form-label pi pi-at"
-              style="font-size: 13px"
-            >
+            <label for="email" class="col-sm-3 col-form-label pi pi-at" style="font-size: 13px">
               &nbsp;Email Address<span style="color: red">*</span>
             </label>
             <div class="col-sm">
@@ -124,15 +111,20 @@
         </div>
         <div class="mt-2">
           <div class="row">
-            <label
-              for="phone"
-              class="col-sm-3 col-form-label pi pi-phone"
-              style="font-size: 13px"
-            >
+            <label for="phone" class="col-sm-3 col-form-label pi pi-phone" style="font-size: 13px">
               &nbsp;Phone Number<span style="color: red">*</span>
             </label>
             <div class="col-sm">
-              <vue-tel-input v-model="newUser.phone" @input="onPhoneInput"></vue-tel-input>
+              <Field
+                class="form-control"
+                name="phone"
+                :rules="isRequired"
+                v-model="newUser.phone"
+              />
+              <ErrorMessage name="phone">
+                <small style="color: red">Phone Number is required</small>
+              </ErrorMessage>
+              <!-- <vue-tel-input v-model="newUser.phone" @input="onPhoneInput"></vue-tel-input> -->
             </div>
           </div>
         </div>
@@ -171,6 +163,7 @@ import axios from "axios";
 import { onMounted } from "vue";
 import { useToast } from "primevue/usetoast";
 
+const emit = defineEmits(["loadData"]);
 const toast = useToast();
 const config = useRuntimeConfig();
 const displayModal = ref(false);
@@ -186,11 +179,7 @@ const newUser = reactive({
   image: "",
 });
 
-const onPhoneInput = (phone, phoneObject) => {
-  newUser.phone = phoneObject.number;
-};
-
-const pict = computed(()=> newUser.image)
+const pict = computed(() => newUser.image);
 
 onMounted(() => {
   getRole();
@@ -209,8 +198,7 @@ const onUploadAva = (evt) => {
 };
 
 async function save() {
-  if (newUser.image === null)
-    return (newUser.image = "https://ibb.co/zPT27kB");
+  if (newUser.image === null) return (newUser.image = "https://ibb.co/zPT27kB");
   try {
     await axios
       .post(config.API_BASE_URL + "users", {
@@ -222,12 +210,16 @@ async function save() {
         location: newUser.location,
         image: newUser.image,
       })
-      .then(async () => {
-        await toast.add({ severity: "success", summary: "Berhasil", detail: "User baru telah ditambahkan", life: 3000 });
-        displayModal.value = false;
-        // alert("Create User Success");
-        location.reload();
+      .then(() => {
+        toast.add({
+          severity: "success",
+          summary: "Berhasil",
+          detail: "User baru telah ditambahkan",
+          life: 3000,
+        });
       });
+    displayModal.value = false;
+    emit("loadData");
   } catch (error) {
     console.log(error);
   }

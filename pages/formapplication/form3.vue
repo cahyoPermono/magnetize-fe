@@ -161,7 +161,7 @@ const submit = async () => {
         toast.add({
             severity: "error",
             summary: error,
-            detail: "selesai mengisi evaluasi interview. tunggu sebentar, terima kasih",
+            detail: "error",
             life: 3000,
         });
     }

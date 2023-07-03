@@ -165,8 +165,6 @@ onMounted(async () => {
   });
   userData.value = applicantAuth.data.data;
   statuses.value = status.data.data;
-  console.log(userData.value);
-  console.log(status);
 });
 
 definePageMeta({
