@@ -59,6 +59,26 @@
             </tr>
           </table>
         </Panel>
+
+        <Panel class="mt-4">
+          <template #header>
+            <b>Skill &nbsp;<span></span></b>
+          </template>
+          <div class="grid">
+            <div class="col">
+              <DataTable :value="skillname">
+                <Column field="skill" header="Skill"></Column>
+                <Column field="nilai" header="Nilai"></Column>
+              </DataTable>
+            </div>
+            <div class="col">
+              <DataTable :value="otherskillsname">
+                <Column field="skill" header="Skill"></Column>
+                <Column field="level" header="Level"></Column>
+              </DataTable>
+            </div>
+          </div>
+        </Panel>
       </div>
       <div class="col">
         <Panel>
@@ -67,24 +87,17 @@
           </template>
           <div class="d-flex justify-content-between">
             <p>{{ candidate_data.status }}</p>
-            <span v-if="candidate_data.status_id === 3 || candidate_data.status_id === 5">
+            <span
+              v-if="
+                candidate_data.status_id === 3 ||
+                candidate_data.status_id === 5 ||
+                candidate_data.status_id === 6
+              "
+            >
               <button class="btn btn-sm btn-secondary" @click="openModal()">
                 Selesai Interview
               </button>
             </span>
-          </div>
-        </Panel>
-        <Panel class="mt-4">
-          <template #header>
-            <b>Skill &nbsp;<span></span></b>
-          </template>
-          <div class="row">
-            <div class="col-sm">
-              <p v-for="(skill, index) in skillname" :key="index">{{ skill }}</p>
-            </div>
-            <div class="col-sm">
-              <p v-for="(other, index) in otherskills" :key="index">{{ other.nama }}</p>
-            </div>
           </div>
         </Panel>
         <Panel class="mt-4">
@@ -133,7 +146,12 @@
       </div>
       <template #footer>
         <Button label="No" icon="pi pi-times" @click="openModal()" class="p-button-text" />
-        <Button label="Yes" icon="pi pi-check" @click="doneInterview()" class="p-button-danger" />
+        <Button
+          label="Yes"
+          icon="pi pi-check"
+          @click="doneInterview(candidate_data.status_id)"
+          class="p-button-danger"
+        />
       </template>
     </Dialog>
   </div>
@@ -153,32 +171,12 @@ const reverseDate = (date) => {
   return dateFormat(date, "dd-mm-yyyy");
 };
 
-const candidate_data = reactive({
-  name: null,
-  gender: null,
-  place_of_birth: null,
-  date: null,
-  diploma: null,
-  university: null,
-  current_company: null,
-  current_position: null,
-  mobile: null,
-  office_parent_phone: null,
-  email: null,
-  experience_tellecomunication: null,
-  experience_it: null,
-  graduation: null,
-  current_sallary: null,
-  notice_period: null,
-  expected_salary: null,
-  candidate_reference_name: null,
-  status_id: 0,
-  status: null,
-});
+let candidate_data = reactive({});
 
 let skills = reactive([]);
 let skillname = reactive([]);
 let otherskills = reactive([]);
+let otherskillsname = reactive([]);
 const displayModal = ref(false);
 const openModal = () => {
   displayModal.value = !displayModal.value;
@@ -187,24 +185,13 @@ const openModal = () => {
 const id = route.params.id;
 let candidate = reactive({});
 
-const doneInterview = async () => {
-  if (candidate_data.status_id === 3) {
-    const data = {
-      applicant: {
-        ApplicantStatusId: 4,
-      },
-    };
-    await axios.put(config.API_BASE_URL + "applicants/update_status/" + id, data);
-  } else if (candidate_data.status_id === 5) {
-    const data = {
-      applicant: {
-        ApplicantStatusId: 6,
-      },
-    };
-    await axios.put(config.API_BASE_URL + "applicants/update_status/" + id, data);
-  } else {
-    return;
-  }
+const doneInterview = async (candidateStatus) => {
+  let candidateStatusNew = candidateStatus + 1;
+
+  await axios.put(config.API_BASE_URL + "applicants/update_status/" + id, {
+    applicant: { ApplicantStatusId: candidateStatusNew },
+  });
+
   await getter();
   displayModal.value = false;
 };
@@ -212,45 +199,50 @@ const doneInterview = async () => {
 const getter = async () => {
   candidate = await axios.get(config.API_BASE_URL + "applicants/" + id);
   candidate = await candidate.data.data;
-  candidate_data.name = candidate.name;
-  candidate_data.gender = candidate.gender;
-  candidate_data.place_of_birth = candidate.place_of_birth;
-  candidate_data.date = candidate.date;
-  candidate_data.address = candidate.address;
-  candidate_data.domicile = candidate.domicile;
-  candidate_data.email = candidate.email;
-  candidate_data.mobile = candidate.mobile;
-  candidate_data.office_parent_phone = candidate.office_parent_phone;
-  candidate_data.diploma =
+  candidate_data["name"] = candidate.name;
+  candidate_data["gender"] = candidate.gender;
+  candidate_data["place_of_birth"] = candidate.place_of_birth;
+  candidate_data["date"] = candidate.date;
+  candidate_data["address"] = candidate.address;
+  candidate_data["domicile"] = candidate.domicile;
+  candidate_data["email"] = candidate.email;
+  candidate_data["mobile"] = candidate.mobile;
+  candidate_data["office_parent_phone"] = candidate.office_parent_phone;
+  candidate_data["diploma"] =
     candidate.formaleducations.length < 1 ? "-" : candidate.formaleducations[0].major;
-  candidate_data.university =
+  candidate_data["university"] =
     candidate.formaleducations.length < 1 ? "-" : candidate.formaleducations[0].name_location;
-  candidate_data.current_company =
+  candidate_data["current_company"] =
     candidate.employmenthistories.length < 1 ? "-" : candidate.employmenthistories[0].name_company;
-  candidate_data.current_position =
+  candidate_data["current_position"] =
     candidate.employmenthistories.length < 1 ? "-" : candidate.employmenthistories[0].position;
-  candidate_data.current_sallary =
+  candidate_data["current_sallary"] =
     candidate.employmenthistories.length < 1 ? "-" : candidate.employmenthistories[0].take_home_pay;
-  candidate_data.graduation =
+  candidate_data["graduation"] =
     candidate.formaleducations.length < 1 ? "-" : candidate.formaleducations[0].graduate;
-  candidate_data.expected_salary = candidate.otherinformation.salary_expect;
-  candidate_data.candidate_reference_name = candidate.relatives_in_ip || "-";
-  candidate_data.notice_period = candidate.otherinformation.able_to_start;
-  candidate_data.status = candidate.applicantstatus.status;
-  candidate_data.status_id = candidate.applicantstatus.id;
+  candidate_data["expected_salary"] = candidate.otherinformation.salary_expect;
+  candidate_data["candidate_reference_name"] = candidate.relatives_in_ip || "-";
+  candidate_data["notice_period"] = candidate.otherinformation.able_to_start;
+  candidate_data["status"] = candidate.applicantstatus.status;
+  candidate_data["status_id"] = candidate.applicantstatus.id;
 };
 
 const getSkill = async () => {
   skills = await axios.get(config.API_BASE_URL + "applicantskills/" + id);
   skills = await skills.data.data;
   skills.forEach((element) => {
-    skillname.push(element.subskill.subskill);
+    skillname.push({ skill: element.subskill.subskill, nilai: element.nilai });
   });
+  console.log(skills)
 };
 
 const getOtherSkill = async () => {
-  otherskills = await axios.get(config.API_BASE_URL + "otherapplicantskills/" + id);
+  otherskills = await axios.get(config.API_BASE_URL + "computerliterates/" + id);
   otherskills = await otherskills.data.data;
+  otherskills.forEach((element) => {
+    otherskillsname.push({ skill: element.skill, level: element.level });
+  });
+  console.log(otherskillsname)
 };
 
 onMounted(async () => {

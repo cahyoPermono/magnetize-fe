@@ -1,11 +1,21 @@
 <template>
   <div style="width: 90vw">
     <Toast />
-    <div class="flex">
-      <Button label="Resume" icon="pi pi-download" class="p-button-sm p-button-success mr-1"
-        @click="downloadFile(form, 'f', 'Resume')" />
-      <Button v-for="(data, index) in attachments" :key="index" :label="data.type" icon="pi pi-download"
-        class="p-button-sm p-button-info mr-1" @click="downloadFile(data.file, 'file', data.type)" />
+    <div class="grid flex">
+      <Button
+        label="Resume"
+        icon="pi pi-download"
+        class="p-button-sm p-button-success mr-1 mt-1 col-3"
+        @click="downloadFile(form, 'f', 'Resume')"
+      />
+      <Button
+        v-for="(data, index) in attachments"
+        :key="index"
+        :label="data.type"
+        icon="pi pi-download"
+        class="p-button-sm p-button-info mr-1 mt-1 col-3"
+        @click="downloadFile(data.file, 'file', data.type)"
+      />
     </div>
   </div>
 </template>
@@ -22,11 +32,36 @@ let form = reactive();
 const nama = ref();
 const attachments = ref({});
 
+function getExtension(mimeType) {
+  const mimeToExtMap = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/gif": "gif",
+    "application/pdf": "pdf",
+    "application/x-zip-compressed": "zip",
+    "application/x-rar-compressed": "rar",
+    "application/vnd.rar": "rar",
+  };
+
+  // Check if the MIME type exists in the mapping object
+  if (mimeToExtMap.hasOwnProperty(mimeType)) {
+    return mimeToExtMap[mimeType];
+  }
+
+  // If the MIME type is not found, return an empty string or handle the case as needed
+  return "";
+}
+
 const downloadFile = async (form, param, type) => {
-  let linkSource = param === 'file' ? form : `data:application/pdf;base64,${form}`;
+  let linkSource = param === "file" ? form : `data:application/pdf;base64,${form}`;
+
+  //get ext
+  const mimeType_ = linkSource.substring(0, linkSource.indexOf(";")).replace("data:", "");
+  const ext = getExtension(mimeType_);
+
   const a = document.createElement("a");
   a.href = linkSource;
-  a.download = `${type}-${nama.value}.pdf`;
+  a.download = `${type}-${nama.value}.${ext}`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -49,7 +84,7 @@ async function getApplicantAttachment() {
 }
 
 onMounted(async () => {
-  await getApplicant()
+  await getApplicant();
   await getForm();
   await getApplicantAttachment();
 });

@@ -16,7 +16,7 @@
       </Card>
     </div>
     <Form v-slot="{ meta }" @submit="save">
-      <div class="mx-5">
+      <div class="mx-5 form-1">
         <Card v-if="apply">
           <template #content>
             <div class="mt-2 mx-3">
@@ -24,9 +24,7 @@
                 <div class="col-10 text-left pl-2">
                   <h3 class="text-2xl mb-0">FORMULIR LAMARAN KERJA</h3>
                 </div>
-                <div class="col-2" v-if="loading">
-                  loading
-                </div>
+                <div class="col-2" v-if="loading">loading</div>
                 <div class="col-2" v-else>
                   <div class="mt-5">
                     <Avatar
@@ -1010,7 +1008,7 @@
                     <template #content>
                       <div class="text-sm">
                         <table border="0">
-                          <td class="max-w-3rem">
+                          <td class="min-w-4rem">
                             <tr>
                               Tahun
                             </tr>
@@ -1179,6 +1177,7 @@
         </Card>
         <Card v-if="technicalSkill">
           <template #title> Technical Skills </template>
+          <template #subtitle>isi dengan nilai 0-10 (0: tidak mampu, 10: sangat ahli)</template>
           <template #content>
             <Form @submit="addTechnicalSkill">
               <div class="grid">
@@ -1558,7 +1557,7 @@
                   <small>Job Deskripsi</small>
                 </label>
                 <div class="col">
-                  <Textarea v-model="jobdescription.description" rows="15" cols="115" />
+                  <Textarea v-model="jobdescription.description" autoResize rows="15" cols="115" />
                 </div>
               </div>
             </div>
@@ -1876,47 +1875,121 @@
             </div>
             <div class="mt-2 mx-3">
               <label for="strength">
-                <small
-                  >Menurut anda apa kelebihan pada diri anda ? Sebutkan masing-masing 3 item.
-                </small>
+                <small>Menurut anda apa kelebihan pada diri anda ? Sebutkan 3. </small>
                 <span style="color: red">*</span>
               </label>
-              <Field
-                v-slot="{ field, errorMessage }"
-                name="strength"
-                :rules="isRequired"
-                v-model="otherinformation.strength"
-              >
-                <InputText
-                  v-bind="field"
-                  aria-describedby="strength_help"
-                  :class="{ 'p-invalid': errorMessage }"
-                  class="block w-full"
-                />
-                <small id="strength_help" class="p-error block">{{ errorMessage }}</small>
-              </Field>
+              <div class="grid">
+                <div class="col flex">
+                  <label for="strength-1" class="pt-2 mr-1">1.</label>
+                  <Field
+                    v-slot="{ field, errorMessage }"
+                    name="strength-1"
+                    :rules="isRequired"
+                    v-model="otherinformation.strength[0]"
+                  >
+                    <InputText
+                      v-bind="field"
+                      aria-describedby="strength_help"
+                      :class="{ 'p-invalid': errorMessage }"
+                      class="block w-full"
+                    />
+                    <small id="strength_help" class="p-error block">{{ errorMessage }}</small>
+                  </Field>
+                </div>
+                <div class="col flex">
+                  <label for="strength-2" class="pt-2 mr-1">2.</label>
+                  <Field
+                    v-slot="{ field, errorMessage }"
+                    name="strength-2"
+                    :rules="isRequired"
+                    v-model="otherinformation.strength[1]"
+                  >
+                    <InputText
+                      v-bind="field"
+                      aria-describedby="strength_help"
+                      :class="{ 'p-invalid': errorMessage }"
+                      class="block w-full"
+                    />
+                    <small id="strength_help" class="p-error block">{{ errorMessage }}</small>
+                  </Field>
+                </div>
+                <div class="col flex">
+                  <label for="strength-3" class="pt-2 mr-1">3.</label>
+                  <Field
+                    v-slot="{ field, errorMessage }"
+                    name="strength-3"
+                    :rules="isRequired"
+                    v-model="otherinformation.strength[2]"
+                  >
+                    <InputText
+                      v-bind="field"
+                      aria-describedby="strength_help"
+                      :class="{ 'p-invalid': errorMessage }"
+                      class="block w-full"
+                    />
+                    <small id="strength_help" class="p-error block">{{ errorMessage }}</small>
+                  </Field>
+                </div>
+              </div>
             </div>
             <div class="mt-2 mx-3">
               <label for="weakness">
-                <small
-                  >Menurut anda apa kekurangan pada diri anda ? Sebutkan masing-masing 3 item.
-                </small>
+                <small>Menurut anda apa kekurangan pada diri anda ? Sebutkan 3. </small>
                 <span style="color: red">*</span>
               </label>
-              <Field
-                v-slot="{ field, errorMessage }"
-                name="weakness"
-                :rules="isRequired"
-                v-model="otherinformation.weakness"
-              >
-                <InputText
-                  v-bind="field"
-                  aria-describedby="weakness_help"
-                  :class="{ 'p-invalid': errorMessage }"
-                  class="block w-full"
-                />
-                <small id="weakness_help" class="p-error block">{{ errorMessage }}</small>
-              </Field>
+              <div class="grid">
+                <div class="col flex">
+                  <label for="weakness-1" class="pt-2 mr-1">1.</label>
+                  <Field
+                    v-slot="{ field, errorMessage }"
+                    name="weakness-1"
+                    :rules="isRequired"
+                    v-model="otherinformation.weakness[0]"
+                  >
+                    <InputText
+                      v-bind="field"
+                      aria-describedby="weakness_help"
+                      :class="{ 'p-invalid': errorMessage }"
+                      class="block w-full"
+                    />
+                    <small id="weakness_help" class="p-error block">{{ errorMessage }}</small>
+                  </Field>
+                </div>
+                <div class="col flex">
+                  <label for="weakness-2" class="pt-2 mr-1">2.</label>
+                  <Field
+                    v-slot="{ field, errorMessage }"
+                    name="weakness-2"
+                    :rules="isRequired"
+                    v-model="otherinformation.weakness[1]"
+                  >
+                    <InputText
+                      v-bind="field"
+                      aria-describedby="weakness_help"
+                      :class="{ 'p-invalid': errorMessage }"
+                      class="block w-full"
+                    />
+                    <small id="weakness_help" class="p-error block">{{ errorMessage }}</small>
+                  </Field>
+                </div>
+                <div class="col flex">
+                  <label for="weakness-3" class="pt-2 mr-1">3.</label>
+                  <Field
+                    v-slot="{ field, errorMessage }"
+                    name="weakness-3"
+                    :rules="isRequired"
+                    v-model="otherinformation.weakness[2]"
+                  >
+                    <InputText
+                      v-bind="field"
+                      aria-describedby="weakness_help"
+                      :class="{ 'p-invalid': errorMessage }"
+                      class="block w-full"
+                    />
+                    <small id="weakness_help" class="p-error block">{{ errorMessage }}</small>
+                  </Field>
+                </div>
+              </div>
             </div>
             <div class="mt-2 mx-3">
               <label for="part_time_job">
@@ -2246,8 +2319,8 @@ const otherinformation = ref({
   person_contact_emergency: "",
   relatives_in_ip: "",
   position_relatives_in_ip: "",
-  strength: "",
-  weakness: "",
+  strength: ["", "", ""],
+  weakness: ["", "", ""],
   part_time_job: "",
   about_part_time_job: "",
   information_source: "",
@@ -2280,21 +2353,20 @@ const onUploadAva = (evt) => {
     let f = evt.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(f);
-    reader.addEventListener('loadstart',function(){
+    reader.addEventListener("loadstart", function () {
       loading.value = true;
-      console.log("start loading")
+      console.log("start loading");
     });
 
-    reader.addEventListener('load',function(){
-      console.log("loading")
+    reader.addEventListener("load", function () {
+      console.log("loading");
     });
 
-    reader.addEventListener('loadend',function(){
+    reader.addEventListener("loadend", function () {
       applicant.value.photo = reader.result;
       loading.value = false;
-      console.log("loadend")
+      console.log("loadend");
     });
-
   } catch (err) {
     console.log(err);
     loading.value = false;
@@ -2501,8 +2573,8 @@ async function save(values) {
           able_to_start: otherinformation.value.able_to_start,
           contact_emergency: `${otherinformation.value.contact_emergency} (${otherinformation.value.person_contact_emergency})`,
           relatives_in_ip: `${otherinformation.value.relatives_in_ip} - ${otherinformation.value.position_relatives_in_ip}`,
-          strength: otherinformation.value.strength,
-          weakness: otherinformation.value.weakness,
+          strength: `${otherinformation.value.strength[0]}, ${otherinformation.value.strength[1]}, ${otherinformation.value.strength[2]}`,
+          weakness: `${otherinformation.value.weakness[0]}, ${otherinformation.value.weakness[1]}, ${otherinformation.value.weakness[2]}`,
           part_time_job: otherinformation.value.part_time_job,
           about_part_time_job: otherinformation.value.about_part_time_job,
           overtime: otherinformation2.value.overtime,
@@ -2521,6 +2593,13 @@ async function save(values) {
           detail: "silahkan login ulang. terima kasih",
           life: 3000,
         });
+        setTimeout(() => {
+          store.logout();
+          loading.value = false;
+          router.push({
+            path: "/formapplication/login/",
+          });
+        }, 1000);
       })
       .catch((error) => {
         toast.add({
@@ -2530,13 +2609,6 @@ async function save(values) {
         });
         loading.value = false;
       });
-    store.logout();
-    loading.value = false;
-    setTimeout(() => {
-      router.push({
-        path: "/formapplication/login/",
-      });
-    }, 1000);
   } catch (err) {
     console.log(err);
   }
@@ -2586,9 +2658,7 @@ const getDesaKel = async (id_kec, whoIs) => {
 </script>
 
 <style>
-.card {
-  margin-left: 60px;
-  margin-right: 60px;
-  margin-top: 20px;
+.form-1 .p-card {
+  padding: 20px;
 }
 </style>

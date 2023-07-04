@@ -184,8 +184,8 @@
                   </div>
                 </div>
               </div>
-              <hr />
               <h3 class="text-center">Data Keluarga</h3>
+              <hr style="width: 100px;" />
               <div class="mx-3">
                 <div class="grid">
                   <div class="col-6">
@@ -376,42 +376,9 @@
                   </div>
                 </div>
               </div>
-              <hr />
               <h5 class="text-center">Saudara</h5>
-              <div class="mx-3">
-                <Button icon="pi pi-plus" label="tambah saudara" class="mt-2" @click="openModal" />
-                <div class="grid mt-3">
-                  <div class="col-4">
-                    <Card>
-                      <template #title> Kakak </template>
-                      <template #content>
-                        <div class="block">
-                          <p>Nama : gafafsl</p>
-                          <p>tanggal lahir : salkdas</p>
-                          <p>pendidikan : asjkhfas</p>
-                          <p>pekerjaan : asjhddsakjh</p>
-                        </div>
-                      </template>
-                    </Card>
-                  </div>
-                </div>
-              </div>
-              <Dialog
-                header="Header"
-                v-model:visible="displayModal"
-                :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
-                :style="{ width: '80vw' }"
-                :modal="true"
-              >
-                <div>
-                  <div class="text-center">
-                    <h3>Tambah Saudara</h3>
-                  </div>
-                  <Form @submit="addSaudara"> </Form>
-                  <Button label="No" icon="pi pi-times" @click="openModal" class="p-button-text" />
-                  <Button label="Yes" icon="pi pi-check" />
-                </div>
-              </Dialog>
+              <hr style="width: 100px;" />
+              <FormAddNewSaudara :data-saudara="dataKeluargaLajang" />
             </div>
             <div class="mt-5" v-else-if="data.applicant.marital_status !== 'lajang'">
               <div class="mt-2 mx-3">
@@ -520,10 +487,6 @@ const dataKeluargaLajang = ref([
   },
 ]);
 const isLoading = ref(false);
-const displayModal = ref(false);
-const openModal = () => {
-  displayModal.value = !displayModal.value;
-};
 
 const isDocDis = computed(() => {
   if (store.document[0].file && store.document[1].file && store.document[3].file) {
@@ -550,7 +513,6 @@ const save = async () => {
           : dataKeluargaLajang.value,
       attachments: store.document,
     };
-    // console.log(save);
     const post = await axios.put(
       config.API_BASE_URL + "applicants/" + applicant.value.ApplicantId,
       save

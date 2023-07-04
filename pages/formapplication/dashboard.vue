@@ -97,7 +97,7 @@ const statuses = ref([]);
 
 const isDisabled = computed(() => {
   const data = userData.value.applicant.ApplicantStatusId;
-  if (data === 3 || data === 5) {
+  if (data === 3 || data === 5 || data === 6) {
     return true;
   } else {
     return false;
@@ -124,7 +124,7 @@ const isTahap2 = computed(() => {
 
 const isTahap3 = computed(() => {
   const data = userData.value.applicant;
-  if (data && data.ApplicantStatusId >= 7) {
+  if (data && data.ApplicantStatusId > 7) {
     return "Sudah Mengisi Form Tahap 3";
   } else {
     return "Belum Mengisi";
@@ -141,7 +141,7 @@ const status = computed(() => {
 });
 
 const status2 = computed(() => {
-  if (userData.value.applicant && userData.value.applicant.ApplicantStatusId >= 7) {
+  if (userData.value.applicant && userData.value.applicant.ApplicantStatusId > 7) {
     return true;
   }
 });

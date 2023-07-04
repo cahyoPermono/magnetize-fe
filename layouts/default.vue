@@ -45,7 +45,7 @@
             </NuxtLink>
             <br />
             <NuxtLink v-if="(iscandidate)" to="/candidate">
-              <Button icon="pi pi-book" class="p-button-text p-button-plain" label="Candidate" />
+              <Button icon="pi pi-book" class="p-button-text p-button-plain" label="Applicants" />
             </NuxtLink>
             <br />
             <NuxtLink to="/dashboard-applicant">

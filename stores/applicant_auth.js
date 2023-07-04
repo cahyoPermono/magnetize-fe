@@ -19,30 +19,23 @@ export const useStore = defineStore("applicant_auth", () => {
 
     const document = [
         {
-            type:'cv/resume',
+            type:'CV/RESUME',
             file:'',
             filename:'',
+            isRequired:true,
         },
         {
-            type:'ktp',
+            type:'E-KTP',
             file:'',
             filename:'',
+            isRequired:true,
         },
         {
-            type:'npwp',
+            type:'NPWP',
             file:'',
             filename:'',
-        },
-        {
-            type:'ijazah',
-            file:'',
-            filename:'',
-        },
-        {
-            type:'sertifikat',
-            file:'',
-            filename:'',
-        },
+            isRequired:false,
+        }
     ];
 
     return { auth, logout, token, user, document }

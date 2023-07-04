@@ -16,7 +16,7 @@
           <span> - Summary</span>
         </template>
         <div>
-          <Summary></Summary>
+          <Summary />
         </div>
       </TabPanel>
       <TabPanel>
