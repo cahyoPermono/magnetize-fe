@@ -15,6 +15,13 @@
         </template>
       </Card>
     </div>
+    <TechnicalSkill
+      v-show="apply"
+      @next="(personal1 = true), (apply = false)"
+      @previous="(apply = true)"
+      @data-subskill="saveData"
+      :selectedJobId="selectedJobId"
+    />
     <Form v-slot="{ meta }" @submit="save">
       <div class="mx-5 form-1">
         <Card v-if="apply">
@@ -34,7 +41,7 @@
                     />
                   </div>
                   <div>
-                    <label for="image">Foto</label>
+                    <label for="image" v-if="!applicant.photo">Foto</label>
                     <FileUpload
                       mode="basic"
                       name="demo[]"
@@ -47,6 +54,7 @@
                   </div>
                 </div>
               </div>
+              {{ skills_arr }}
               <div class="grid" style="margin-top: 35px">
                 <label for="position" class="col-2">
                   <small>Posisi yang dilamar</small><span style="color: red">*</span>
@@ -229,19 +237,17 @@
                 </div>
                 <div class="col-2">
                   <Field
-                    v-slot="{ field, errorMessage }"
+                    v-slot="{ field }"
                     name="postal_code_address"
-                    :rules="isRequired"
                     v-model="applicant.postal_code_address"
+                    :rules="isRequired"
                   >
                     <InputText
                       v-bind="field"
                       aria-describedby="email-help"
-                      :class="{ 'p-invalid': errorMessage }"
                       class="block w-full"
                       placeholder="Kode Pos"
                     />
-                    <small id="email-help" class="p-error block">{{ errorMessage }}</small>
                   </Field>
                 </div>
               </div>
@@ -362,6 +368,7 @@
                       aria-describedby="email-help"
                       :class="{ 'p-invalid': errorMessage }"
                       class="block w-full"
+                      type="tel"
                     />
                     <small id="email-help" class="p-error block">{{ errorMessage }}</small>
                   </Field>
@@ -1162,7 +1169,7 @@
               v-if="applicant.JobId.jobCategory.id === 2"
               class="p-button-sm"
               icon="pi pi-arrow-right"
-              @click="(computer = false), (technicalSkill = true), getSkills()"
+              @click="(computer = false), (technicalSkill = true)"
               style="float: right"
             />
             <Button
@@ -1175,73 +1182,20 @@
             />
           </template>
         </Card>
-        <Card v-if="technicalSkill">
+        <!-- <Card v-if="technicalSkill">
           <template #title> Technical Skills </template>
           <template #subtitle>isi dengan nilai 0-10 (0: tidak mampu, 10: sangat ahli)</template>
           <template #content>
-            <Form @submit="addTechnicalSkill">
-              <div class="grid">
-                <div class="col-12 md:col-6 lg:col-4" v-for="skill in skills" :key="skill.id">
-                  <Card class="bg-blue-200">
-                    <template #title>
-                      <span class="px-2">{{ skill.skill }}</span>
-                    </template>
-                    <template #content>
-                      <div
-                        class="field pl-4 pr-3"
-                        v-for="subskill in skill.subskills"
-                        :key="subskill.id"
-                      >
-                        <!-- {{ subskill }} -->
-                        <label for="sub_skill_1" class="mr-2">{{ subskill.subskill }}</label>
-                        <div class="flex">
-                          <Field
-                            :name="'_' + subskill.id"
-                            v-slot="{ field, errorMessage }"
-                            :rules="rule"
-                          >
-                            <InputText
-                              v-bind="field"
-                              aria-describedby="sub_skill_help"
-                              :class="{ 'p-invalid': errorMessage }"
-                              class="mr-2"
-                              type="number"
-                              style="width: 4rem"
-                              placeholder="nilai"
-                            />
-                          </Field>
-                          <Field
-                            :name="'keterangan_' + subskill.id"
-                            v-slot="{ field, errorMessage }"
-                            :rules="isRequired"
-                          >
-                            <InputText
-                              v-bind="field"
-                              aria-describedby="sub_skill_help"
-                              :class="{ 'p-invalid': errorMessage }"
-                              placeholder="keterangan"
-                            />
-                          </Field>
-                        </div>
-                      </div>
-                    </template>
-                  </Card>
-                </div>
-              </div>
-              <Button
-                class="p-button-sm"
-                icon="pi pi-arrow-left"
-                @click="(technicalSkill = false), (computer = true)"
-              />
-              <Button
-                class="p-button-sm"
-                icon="pi pi-arrow-right"
-                style="float: right"
-                type="submit"
-              />
-            </Form>
+            <TechnicalSkill @data-subskill="addTechnicalSkill" :selectedJobId="selectedJobId" />
           </template>
-        </Card>
+          <template #footer>
+            <div class="flex justify-content-between">
+              <Button class="p-button-sm" icon="pi pi-arrow-left" @click="(technicalSkill = false), (computer = true)" />
+              <Button class="p-button-sm" icon="pi pi-arrow-right"
+                @click="(technicalSkill = false), (employhistory = true)" />
+            </div>
+          </template>
+        </Card> -->
         <Card v-if="employhistory">
           <template #title>
             Riwayat Pekerjaan<span
@@ -1359,9 +1313,9 @@
                 <div class="mt-2">
                   <div class="grid">
                     <label for="direct_supervisor" class="col-2">
-                      <small>Atasan Langsung</small><span style="color: red">*</span>
+                      <small>Atasan Langsung/Jabatan</small><span style="color: red">*</span>
                     </label>
-                    <div class="col">
+                    <div class="col-5">
                       <Field
                         v-slot="{ field, errorMessage }"
                         :rules="isRequired"
@@ -1372,8 +1326,27 @@
                           v-bind="field"
                           :class="{ 'p-invalid': errorMessage }"
                           class="block w-full"
+                          placeholder="nama"
                         />
                         <small id="direct_supervisor-help" class="p-error block">{{
+                          errorMessage
+                        }}</small>
+                      </Field>
+                    </div>
+                    <div class="col-5">
+                      <Field
+                        v-slot="{ field, errorMessage }"
+                        :rules="isRequired"
+                        name="direct_supervisor_position"
+                        v-model="employmenthistory.direct_supervisor_position"
+                      >
+                        <InputText
+                          v-bind="field"
+                          :class="{ 'p-invalid': errorMessage }"
+                          class="block w-full"
+                          placeholder="jabatan"
+                        />
+                        <small id="direct_supervisor_position-help" class="p-error block">{{
                           errorMessage
                         }}</small>
                       </Field>
@@ -1383,24 +1356,18 @@
                 <div class="mt-2">
                   <div class="grid">
                     <label for="take_home_pay" class="col-2">
-                      <small>Total Gaji</small><span style="color: red">*</span>
+                      <small>Gaji per Bulan</small><span style="color: red">*</span>
                     </label>
                     <div class="col">
-                      <Field
-                        v-slot="{ field, errorMessage }"
-                        :rules="isRequired"
-                        name="take_home_pay"
+                      <InputNumber
+                        mode="currency"
+                        currency="IDR"
+                        locale="id-ID"
                         v-model="employmenthistory.take_home_pay"
-                      >
-                        <InputText
-                          v-bind="field"
-                          :class="{ 'p-invalid': errorMessage }"
-                          class="block w-full"
-                        />
-                        <small id="take_home_pay-help" class="p-error block">{{
-                          errorMessage
-                        }}</small>
-                      </Field>
+                        :minFractionDigits="0"
+                        name="take_home_pay"
+                        class="w-full"
+                      />
                     </div>
                   </div>
                 </div>
@@ -1773,8 +1740,8 @@
                 locale="id-ID"
                 v-model="otherinformation.salary_expect"
                 name="salary_expect"
-                :class="{ 'p-invalid': errorMessage }"
-                class="block w-full"
+                class="w-full"
+                :minFractionDigits="0"
               />
             </div>
             <div class="mt-2 mx-3">
@@ -2208,10 +2175,18 @@
 </template>
 
 <script setup>
+/**************************************************************************
+ * IMPORTS
+ ***************************************************************************/
+
+//NPM
 import { ref, onMounted, reactive } from "vue";
 import axios from "axios";
 import { useToast } from "primevue/usetoast";
+
+//PROJECT
 import { useStore } from "~~/stores/applicant_auth";
+import TechnicalSkill from "./component/TechnicalSkill.vue";
 
 definePageMeta({
   layout: false,
@@ -2297,6 +2272,7 @@ const employmenthistory = ref({
   name_company: "",
   position: "",
   direct_supervisor: "",
+  direct_supervisor_position: "",
   take_home_pay: "",
   reason_leaving: "",
 });
@@ -2424,45 +2400,28 @@ const addhistory = () => {
     name_company: "",
     position: "",
     direct_supervisor: "",
+    direct_supervisor_position: "",
     take_home_pay: "",
     reason_leaving: "",
   };
   openDialogEmployHistory();
 };
 
-const skills = ref([]);
-const skills_arr = ref([]);
 const selectedJobId = ref("");
 watch(applicant.value, (newApplicant, oldApplicant) => {
   selectedJobId.value = newApplicant.JobId.id;
 });
-const addTechnicalSkill = (values) => {
-  for (let key in values) {
-    if (key.startsWith("_")) {
-      const subskillId = parseInt(key.slice(1));
-      const nilai = values[`_${subskillId}`];
-      const keterangan = values[`keterangan_${subskillId}`];
-      skills_arr.value.push({ subskillId, nilai, keterangan });
-    }
-  }
-  technicalSkill.value = false;
-  employhistory.value = true;
+
+const skills_arr = ref([]);
+const saveData = (values) => {
+  skills_arr.value = values;
 };
 
-const rule = (value) => {
-  if (value > 10 || value < 0) {
-    return "number not valid";
-  }
-
+const isRequired = (value) => {
   if (!value) {
-    return "field is required";
+    return "This field is required";
   }
   return true;
-};
-
-const getSkills = async () => {
-  const res = await axios.get(config.API_BASE_URL + "skills/" + selectedJobId.value);
-  skills.value = res.data.data;
 };
 
 //function modal
@@ -2493,23 +2452,6 @@ let otherinfo2 = ref(false);
 let agreement = ref(false);
 const loading = ref(false);
 
-const relativesRule = (value) => {
-  if (otherinformation.value.relatives_in_ip) {
-    if (!value) {
-      return "This field is required";
-    }
-    return true;
-  }
-  return true;
-};
-
-const isRequired = (value) => {
-  if (!value) {
-    return "This field is required";
-  }
-  return true;
-};
-
 async function save(values) {
   if (applicant.value.photo === null)
     return (applicant.value.photo = "https://via.placeholder.com/120x120?text=FOTO");
@@ -2530,7 +2472,7 @@ async function save(values) {
           district: applicant.value.district ? applicant.value.district.nama : "",
           subdistrict: applicant.value.subdistrict ? applicant.value.subdistrict.nama : "",
           address: applicant.value.address,
-          postal_code_address: applicant.value.postal_code_address,
+          postal_code_address: applicant.value.postal_code_address.replace(/[^0-9]/g, ""),
           province_dom: applicant.value.province_dom ? applicant.value.province_dom.nama : "",
           city_dom: applicant.value.city_dom ? applicant.value.city_dom.nama : "",
           district_dom: applicant.value.district_dom ? applicant.value.district_dom.nama : "",
@@ -2539,7 +2481,7 @@ async function save(values) {
             : "",
           domicile: applicant.value.domicile,
           postal_code_domicile: applicant.value.postal_code_domicile
-            ? applicant.value.postal_code_domicile
+            ? applicant.value.postal_code_domicile.replace(/[^0-9]/g, "")
             : 0,
           mobile: applicant.value.mobile,
           office_parent_phone: applicant.value.office_parent_phone,

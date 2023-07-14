@@ -10,6 +10,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     .filter((k) => k !== "default")
     .forEach((rule) => {
       defineRule(rule, rules[rule]);
-    //   console.log(rule);
+      // console.log(rule);
     });
 });

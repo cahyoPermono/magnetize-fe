@@ -1,110 +1,63 @@
 <template>
-  <div>
-    <Card>
-      <template #title> Technical Skills </template>
-      <template #content>
-        <Form @submit="submit">
-          <Card>
-            <template #title>
-              Keterangan Lainnya<span
-                ><small><i> (Other Informations)</i></small></span
-              >
-            </template>
-            <template #content>
-              <div class="mt-2 mx-3">
-                <label for="contact_emergency">
-                  <small
-                    >Sebutkan orang terdekat yang bisa dihubungi dalam keadaan darurat ?
-                  </small>
-                  <span style="color: red">*</span>
-                </label>
-                <Field
-                  v-slot="{ field, errorMessage }"
-                  name="contact_emergency"
-                  :rules="isRequired"
-                  v-model="otherinformation.contact_emergency"
-                  class="block"
-                >
-                  <InputText
-                    v-bind="field"
-                    aria-describedby="contact_emergency_help"
-                    :class="{ 'p-invalid': errorMessage }"
-                    class="mr-2"
-                  />
-                  <small id="contact_emergency_help" class="p-error block">{{
-                    errorMessage
-                  }}</small>
-                </Field>
-              </div>
-              <div class="mt-2 mx-3">
-                <label for="contact_emergency">
-                  <small
-                    >Nomor telpon orang terdekat yang bisa dihubungi dalam keadaan darurat
-                  </small>
-                  <span style="color: red">*</span>
-                </label>
-                <Field
-                  v-slot="{ field, errorMessage }"
-                  name="person_contact_emergency"
-                  :rules="personContact"
-                  v-model="otherinformation.person_contact_emergency"
-                  class="block"
-                >
-                  <InputText
-                    v-bind="field"
-                    aria-describedby="person_contact_emergency_help"
-                    :class="{ 'p-invalid': errorMessage }"
-                    class="block"
-                  />
-                  <small id="person_contact_emergency_help" class="p-error block">{{
-                    errorMessage
-                  }}</small>
-                </Field>
-              </div>
-            </template>
-          </Card>
-          <!-- <button type="submit">submit</button> -->
-          <Button class="p-button-sm" icon="pi pi-arrow-left" />
-          <Button class="p-button-sm" icon="pi pi-arrow-right" style="float: right" type="submit" />
-        </Form>
-        <!-- {{ skills }} -->
-      </template>
-    </Card>
+  <div class="container">
+    
+    <LandingApply v-if="landingApply" @next="(personalPage = true), (landingApply = false)" />
+    <PersonalPage
+      v-show="personalPage"
+      @back="(landingApply = true), (personalPage = false)"
+      @next="(familyPage = true), (personalPage = false)"
+    />
+    <FamilyPage
+      v-show="familyPage"
+      @back="(personalPage = true), (familyPage = false)"
+      @next="(technicalSkill = true), (familyPage = false)"
+    />
+    <TechnicalSkill
+      v-show="technicalSkill"
+      @next="(next = true), (technicalSkill = false)"
+      @previous="(landingApply = true), (technicalSkill = false)"
+      @data-subskill="saveData"
+      :selectedJobId="1"
+    />
+    <div v-show="next">
+      <p>next page</p>
+      <div>
+        <Button class="p-button-sm" icon="pi pi-arrow-left" @click="(next = false), (now = true)" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import axios from "axios";
+/**************************************************************************
+ * IMPORT
+ ***************************************************************************/
+//PROJECT
+import { useStore } from "~~/stores/StoreApplicant";
 
-const config = useRuntimeConfig();
-const route = useRoute();
-const otherinformation = ref({
-  contact_emergency: "",
-  person_contact_emergency: "",
-});
+//PAGES
+import LandingApply from "./component/LandingApply.vue";
+const TechnicalSkill = defineAsyncComponent(() => import("./component/TechnicalSkill.vue"));
+const PersonalPage = defineAsyncComponent(() => import("./component/PersonalPage.vue"));
+const FamilyPage = defineAsyncComponent(() => import("./component/FamilyPage.vue"));
 
-const isRequired = (value) => {
-  if (!value) {
-    return "This field is required";
-  }
-  return true;
+/**************************************************************************
+ * DATA
+ ***************************************************************************/
+//Constant Data
+const store = useStore();
+
+//Main Data
+let landingApply = ref(true);
+let technicalSkill = ref(false);
+let personalPage = ref(false);
+let familyPage = ref(false);
+let next = ref(false);
+
+const data = ref([]);
+const saveData = (subskills_arr) => {
+  data.value = subskills_arr;
 };
-
-const personContact = (values) => {
-  if (otherinformation.value.contact_emergency) {
-    if (!values) {
-      return "This field is required";
-    }
-    return true;
-  }
-  return true;
-};
-
-const submit = (values) => {
-  console.log(values);
-};
-
-onMounted(async () => {});
 
 definePageMeta({
   layout: false,
