@@ -33,13 +33,12 @@
             <small>Posisi yang dilamar</small><span style="color: red">*</span>
           </label>
           <div class="col">
-            <Field name="position" v-model="store.applicant.JobId">
+            <Field name="position" v-model="store.applicant.selectedJob">
               <Dropdown
                 class="w-full"
-                v-model="store.applicant.JobId"
+                v-model="store.applicant.selectedJob"
                 :options="jobs"
                 option-label="name"
-                option-value="jobCategory.id"
               />
             </Field>
           </div>
@@ -87,7 +86,7 @@ const next = () => {
  * CONSTANT FUNCTION
  ***************************************************************************/
 const isPageFilled = computed(() => {
-  if (store.applicant.JobId && store.applicant.photo) {
+  if (store.applicant.selectedJob && store.applicant.photo) {
     return false;
   }
   return true;

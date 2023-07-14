@@ -107,15 +107,15 @@
               </label>
             </div>
             <div class="col-2">
-              <Field :rules="isRequired" name="province" v-model="store.applicant.province">
-                <Dropdown
-                  class="w-full"
-                  v-model="store.selectedAddress.province"
-                  :options="dataProvinsi"
-                  optionLabel="nama"
-                  @change="getKota(store.selectedAddress.province.id, 'ktp')"
-                />
-              </Field>
+                <Field :rules="isRequired" name="province" v-model="store.applicant.province">
+                  <Dropdown
+                    class="w-full"
+                    v-model="store.selectedAddress.province"
+                    :options="dataProvinsi"
+                    optionLabel="nama"
+                    @change="getKota(store.selectedAddress.province.id, 'ktp')"
+                  />
+                </Field>
             </div>
             <div class="col-2">
               <Field :rules="isRequired" name="city" v-model="store.applicant.city">

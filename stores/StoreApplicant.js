@@ -3,10 +3,10 @@ import { defineStore } from "pinia";
 
 export const useStore = defineStore("applicant_store", () => {
     //PERSONAL APPLICANT DATA
-    const user = useCookie("user");
+    const USER = useCookie("user");
 
     let applicant = ref({
-        email: user.value.email
+        email: USER.value.email
     });
 
     let selectedAddress = ref({
@@ -15,6 +15,7 @@ export const useStore = defineStore("applicant_store", () => {
     let selectedAddressDom = ref({
         province: {}, city: {}, district: {}, subdistrict: {}
     });
+
     watchEffect(() => {
         applicant.value.province = selectedAddress.value.province.nama;
         applicant.value.city = selectedAddress.value.city.nama;
@@ -29,12 +30,22 @@ export const useStore = defineStore("applicant_store", () => {
             applicant.value.year_marriage = ''
         }
     });
-    // watch(applicant.value.marital_status, (newVal, oldVal) => {
 
-    // })
+    //FORMALEDUCATE
+    let formalEducate = ref({});
+    const formalEducatePool = [];
+
+    //NONFORMALEDUCATE
+    let computer = ref({});
+    const computerPool = [];
+
+    //COMPUTERLITERATE
+    let nonFormalEducate = ref({});
+    const nonFormalEducatePool = [];
 
     //TECHNICALSKILL
     let technicalSkills = ref([]);
+    let otherTechnicalSkills = ref([]);
 
-    return { applicant, technicalSkills, selectedAddress, selectedAddressDom }
+    return { applicant, selectedAddress, selectedAddressDom, formalEducate, formalEducatePool, nonFormalEducate, nonFormalEducatePool, computer, computerPool, technicalSkills, otherTechnicalSkills, }
 });

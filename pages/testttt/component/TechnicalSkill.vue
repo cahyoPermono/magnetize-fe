@@ -79,7 +79,11 @@
                       type="number"
                     />
                   </Field>
-                  <Field v-model="skill.keterangan" v-slot="{ field, errorMessage }" :rules="isRequired">
+                  <Field
+                    v-model="skill.keterangan"
+                    v-slot="{ field, errorMessage }"
+                    :rules="isRequired"
+                  >
                     <InputText
                       v-bind="field"
                       :class="{ 'p-invalid': errorMessage }"
@@ -102,7 +106,7 @@
         icon="pi pi-arrow-right"
         style="float: right"
         @click="next"
-        :disabled="!disableBtn"
+        :disabled="disableBtn"
       />
     </template>
   </Card>
@@ -125,13 +129,7 @@ import { useStore } from "~~/stores/StoreApplicant";
 const config = useRuntimeConfig();
 const store = useStore();
 
-const emits = defineEmits(["data-subskill", "next", "previous"]);
-const props = defineProps({
-  selectedJobId: {
-    type: Number,
-    required: true,
-  },
-});
+const emits = defineEmits(["next", "previous"]);
 
 const next = () => {
   emits("next");
@@ -145,7 +143,7 @@ const previous = () => {
 const skills = ref([]);
 const saveData = () => {
   const data = skills.value;
-  emits("data-subskill", data);
+  store.technicalSkills = data;
 };
 
 //Save Other Skill
@@ -161,12 +159,7 @@ const delOtherSkill = (index) => {
   otherSkills.value.splice(index, 1);
 };
 
-/**************************************************************************
- * CONSTANT FUNCTION
- ***************************************************************************/
-const disableBtn = computed(() => {
-  let nilaiArr = [];
-  let keteranganArr = [];
+const disableBtn = computed((nilaiArr = [], keteranganArr = []) => {
   skills.value.forEach((jobSkill) => {
     jobSkill.subskills.forEach((el) => {
       nilaiArr.push(el.nilai);
@@ -176,11 +169,14 @@ const disableBtn = computed(() => {
   let isNilaiNotNull = nilaiArr.includes("");
   let isKeteranganNotNull = keteranganArr.includes("");
 
-  return !(isNilaiNotNull && isKeteranganNotNull);
+  return isNilaiNotNull || isKeteranganNotNull;
 });
 
-const getSkills = async (selectedJobId) => {
-  const res = await axios.get(config.API_BASE_URL + "skills/" + selectedJobId);
+/**************************************************************************
+ * CONSTANT FUNCTION
+ ***************************************************************************/
+const getSkills = async (selectedJobCategoryId) => {
+  const res = await axios.get(config.API_BASE_URL + "skills/" + selectedJobCategoryId);
   return res.data.data;
 };
 
@@ -214,8 +210,10 @@ const rule = (value) => {
   return true;
 };
 
-onMounted(async () => {
-  const data = await getSkills(store.applicant.JobId);
-  skills.value = getSubskills(data);
+watchEffect(async () => {
+  if (store.applicant.selectedJob) {
+    const data = await getSkills(store.applicant.selectedJob.id);
+    skills.value = getSubskills(data);
+  }
 });
 </script>
