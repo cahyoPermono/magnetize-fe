@@ -6,7 +6,8 @@ export const useStore = defineStore("applicant_store", () => {
     const USER = useCookie("user");
 
     let applicant = ref({
-        email: USER.value.email
+        email: USER.value.email,
+        ApplicantAuthId: USER.value.id
     });
 
     let selectedAddress = ref({
@@ -36,16 +37,32 @@ export const useStore = defineStore("applicant_store", () => {
     const formalEducatePool = [];
 
     //NONFORMALEDUCATE
-    let computer = ref({});
-    const computerPool = [];
-
-    //COMPUTERLITERATE
     let nonFormalEducate = ref({});
     const nonFormalEducatePool = [];
+
+    //COMPUTERLITERATE
+    let computer = ref({});
+    const computerPool = [];
 
     //TECHNICALSKILL
     let technicalSkills = ref([]);
     let otherTechnicalSkills = ref([]);
 
-    return { applicant, selectedAddress, selectedAddressDom, formalEducate, formalEducatePool, nonFormalEducate, nonFormalEducatePool, computer, computerPool, technicalSkills, otherTechnicalSkills, }
+    //EMPLOYMENTHISTORY
+    let employmentHistory = ref({});
+    let employmentHistoryPool = ref([]);
+
+    //JOBDESC
+    let jobDesk = ref('');
+
+    //OTHERINFORMATION
+    let otherInformation = ref({
+        strength: ['', '', '',],
+        weakness: ['', '', '',]
+    });
+
+    //LOADING SCREEN
+    let loading = ref(false);
+
+    return { applicant, selectedAddress, selectedAddressDom, formalEducate, formalEducatePool, nonFormalEducate, nonFormalEducatePool, computer, computerPool, technicalSkills, otherTechnicalSkills, employmentHistory, employmentHistoryPool, jobDesk, otherInformation, loading }
 });

@@ -59,7 +59,7 @@
             <template #content>
               <div class="field pl-4 pr-3">
                 <Button icon="pi pi-plus" label="tambah skill" @click="addOtherSkill" />
-                <div class="mt-3 flex" v-for="(skill, index) in otherSkills" :key="index">
+                <div class="mt-3 flex" v-for="(skill, index) in store.otherTechnicalSkills" :key="index">
                   <Field v-model="skill.skill" v-slot="{ field, errorMessage }" :rules="rule">
                     <InputText
                       v-bind="field"
@@ -100,7 +100,7 @@
       </div>
     </template>
     <template #footer>
-      <Button class="p-button-sm" icon="pi pi-arrow-left" @click="previous" />
+      <Button class="p-button-sm" icon="pi pi-arrow-left" @click="back" />
       <Button
         class="p-button-sm"
         icon="pi pi-arrow-right"
@@ -129,14 +129,14 @@ import { useStore } from "~~/stores/StoreApplicant";
 const config = useRuntimeConfig();
 const store = useStore();
 
-const emits = defineEmits(["next", "previous"]);
+const emits = defineEmits(["next", "back"]);
 
 const next = () => {
   emits("next");
 };
 
-const previous = () => {
-  emits("previous");
+const back = () => {
+  emits("back");
 };
 
 //Save Skill
@@ -147,16 +147,15 @@ const saveData = () => {
 };
 
 //Save Other Skill
-const otherSkills = ref([]);
 const addOtherSkill = () => {
-  otherSkills.value.push({
+  store.otherTechnicalSkills.push({
     skill: "",
     nilai: "",
     keterangan: "",
   });
 };
 const delOtherSkill = (index) => {
-  otherSkills.value.splice(index, 1);
+  store.otherTechnicalSkills.splice(index, 1);
 };
 
 const disableBtn = computed((nilaiArr = [], keteranganArr = []) => {

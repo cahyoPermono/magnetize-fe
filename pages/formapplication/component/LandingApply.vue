@@ -46,7 +46,7 @@
       </div>
     </template>
     <template #footer>
-      <div class="flex justify-content-end">
+      <div class="flex justify-content-between">
         <Button
           class="p-button-sm"
           icon="pi pi-arrow-right"

@@ -59,7 +59,7 @@
             <template #content>
               <div class="field pl-4 pr-3">
                 <Button icon="pi pi-plus" label="tambah skill" @click="addOtherSkill" />
-                <div class="mt-3 flex" v-for="(skill, index) in otherSkills" :key="index">
+                <div class="mt-3 flex" v-for="(skill, index) in store.otherTechnicalSkills" :key="index">
                   <Field v-model="skill.skill" v-slot="{ field, errorMessage }" :rules="rule">
                     <InputText
                       v-bind="field"
@@ -79,7 +79,11 @@
                       type="number"
                     />
                   </Field>
-                  <Field v-model="skill.keterangan" v-slot="{ field, errorMessage }" :rules="isRequired">
+                  <Field
+                    v-model="skill.keterangan"
+                    v-slot="{ field, errorMessage }"
+                    :rules="isRequired"
+                  >
                     <InputText
                       v-bind="field"
                       :class="{ 'p-invalid': errorMessage }"
@@ -96,68 +100,65 @@
       </div>
     </template>
     <template #footer>
-      <Button class="p-button-sm" icon="pi pi-arrow-left" @click="previous" />
+      <Button class="p-button-sm" icon="pi pi-arrow-left" @click="back" />
       <Button
         class="p-button-sm"
         icon="pi pi-arrow-right"
         style="float: right"
         @click="next"
-        :disabled="!disableBtn"
+        :disabled="disableBtn"
       />
     </template>
   </Card>
 </template>
 
 <script setup>
+/**************************************************************************
+ * IMPORT
+ ***************************************************************************/
+//NPM
 import axios from "axios";
+
+//PROJECT
+import { useStore } from "~~/stores/StoreApplicant";
 
 /**************************************************************************
  * DATA
  ***************************************************************************/
 //Main Data
 const config = useRuntimeConfig();
-const props = defineProps({
-  selectedJobId: {
-    type: Number,
-    required: true,
-  },
-});
+const store = useStore();
 
-const emits = defineEmits(["data-subskill", "next", "previous"]);
+const emits = defineEmits(["next", "back"]);
+
 const next = () => {
   emits("next");
 };
 
-const previous = () => {
-  emits("previous");
+const back = () => {
+  emits("back");
 };
 
 //Save Skill
 const skills = ref([]);
 const saveData = () => {
   const data = skills.value;
-  emits("data-subskill", data);
+  store.technicalSkills = data;
 };
 
 //Save Other Skill
-const otherSkills = ref([]);
 const addOtherSkill = () => {
-  otherSkills.value.push({
+  store.otherTechnicalSkills.push({
     skill: "",
     nilai: "",
     keterangan: "",
   });
 };
 const delOtherSkill = (index) => {
-  otherSkills.value.splice(index, 1);
+  store.otherTechnicalSkills.splice(index, 1);
 };
 
-/**************************************************************************
- * CONSTANT FUNCTION
- ***************************************************************************/
-const disableBtn = computed(() => {
-  let nilaiArr = [];
-  let keteranganArr = [];
+const disableBtn = computed((nilaiArr = [], keteranganArr = []) => {
   skills.value.forEach((jobSkill) => {
     jobSkill.subskills.forEach((el) => {
       nilaiArr.push(el.nilai);
@@ -167,11 +168,14 @@ const disableBtn = computed(() => {
   let isNilaiNotNull = nilaiArr.includes("");
   let isKeteranganNotNull = keteranganArr.includes("");
 
-  return !(isNilaiNotNull && isKeteranganNotNull);
+  return isNilaiNotNull || isKeteranganNotNull;
 });
 
-const getSkills = async (selectedJobId) => {
-  const res = await axios.get(config.API_BASE_URL + "skills/" + selectedJobId);
+/**************************************************************************
+ * CONSTANT FUNCTION
+ ***************************************************************************/
+const getSkills = async (selectedJobCategoryId) => {
+  const res = await axios.get(config.API_BASE_URL + "skills/" + selectedJobCategoryId);
   return res.data.data;
 };
 
@@ -205,8 +209,10 @@ const rule = (value) => {
   return true;
 };
 
-onMounted(async () => {
-  const data = await getSkills(props.selectedJobId);
-  skills.value = getSubskills(data);
+watchEffect(async () => {
+  if (store.applicant.selectedJob) {
+    const data = await getSkills(store.applicant.selectedJob.id);
+    skills.value = getSubskills(data);
+  }
 });
 </script>

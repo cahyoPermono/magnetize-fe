@@ -154,14 +154,14 @@
                 v-slot="{ field, errorMessage }"
                 name="postal_code_address"
                 v-model="store.applicant.postal_code_address"
-                :rules="isRequired"
+                :rules="zipCode"
               >
                 <InputText
                 v-bind="field"
-                aria-describedby="email-help"
                 class="block w-full"
                 :class="{ 'p-invalid': errorMessage }"
-                placeholder="Kode Posss"
+                placeholder="Kode Pos"
+                aria-label="zip code"
                 />
                 <small id="email-help" class="p-error block">{{ errorMessage }}</small>
               </Field>
@@ -247,9 +247,9 @@
               >
                 <InputText
                   v-bind="field"
-                  aria-describedby="email-help"
                   class="block w-full"
                   placeholder="Kode Pos"
+                  aria-label="zip code"
                 />
               </Field>
             </div>
@@ -516,7 +516,11 @@ const isRequired = (value) => {
 
 const zipCode = (value) =>{
   let isnum = /^\d+$/.test(value);
-  if (isnum) {
+  if (!value) {
+    return "This field is required";
+  }
+
+  if (!isnum) {
     return "number only!";
   }
   return true;
