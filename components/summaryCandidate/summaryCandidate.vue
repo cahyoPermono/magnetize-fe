@@ -142,7 +142,7 @@
         <div class="col-1 col-offset-1">
           <i class="pi pi-exclamation-triangle" style="font-size: 1.5rem"></i>
         </div>
-        <div class="col font-bold">Anda Yakin ?</div>
+        <div class="col font-bold">Apakah kandidat ini lanjut ke tahapan selanjutnya ?</div>
       </div>
       <template #footer>
         <Button label="No" icon="pi pi-times" @click="openModal()" class="p-button-text" />

@@ -9,6 +9,13 @@
         @click="downloadFile(form, 'f', 'Resume')"
       />
       <Button
+      v-if="formTechnical"
+        label="Technical Skill"
+        icon="pi pi-download"
+        class="p-button-sm p-button-success mr-1 mt-1 col-3"
+        @click="downloadFile(formTechnical, 'f', 'Technical Skill')"
+      />
+      <Button
         v-for="(data, index) in attachments"
         :key="index"
         :label="data.type"
@@ -29,6 +36,7 @@ const route = useRoute();
 const config = useRuntimeConfig();
 const id = route.params.id;
 let form = reactive();
+let formTechnical = reactive();
 const nama = ref();
 const attachments = ref({});
 
@@ -65,12 +73,19 @@ const downloadFile = async (form, param, type) => {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  toast.add({ severity: 'success', summary: 'berhasil download resume', life: 1000 });
+  toast.add({ severity: "success", summary: "berhasil download resume", life: 1000 });
 };
 
 async function getForm() {
   form = await axios.get(config.API_BASE_URL + "download_pdf?id=" + id + "&name=" + nama.value);
   form = form.data.dataPDF;
+}
+
+async function getFormTechnical() {
+  formTechnical = await axios.get(
+    config.API_BASE_URL + "download_technical_skill?id=" + id + "&name=" + nama.value
+  );
+  formTechnical = formTechnical.data.dataPDF;
 }
 
 async function getApplicant() {
@@ -86,6 +101,7 @@ async function getApplicantAttachment() {
 onMounted(async () => {
   await getApplicant();
   await getForm();
+  await getFormTechnical();
   await getApplicantAttachment();
 });
 </script>

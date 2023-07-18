@@ -60,13 +60,13 @@
               <div class="field pl-4 pr-3">
                 <Button icon="pi pi-plus" label="tambah skill" @click="addOtherSkill" />
                 <div class="mt-3 flex" v-for="(skill, index) in store.otherTechnicalSkills" :key="index">
-                  <Field v-model="skill.skill" v-slot="{ field, errorMessage }" :rules="rule">
+                  <Field v-model="skill.nama" v-slot="{ field, errorMessage }" :rules="rule">
                     <InputText
                       v-bind="field"
                       :class="{ 'p-invalid': errorMessage }"
                       class="mr-2 w-full"
                       style="width: 4rem"
-                      placeholder="skill"
+                      placeholder="nama skill"
                     />
                   </Field>
                   <Field v-model="skill.nilai" v-slot="{ field, errorMessage }" :rules="rule">
@@ -149,7 +149,7 @@ const saveData = () => {
 //Save Other Skill
 const addOtherSkill = () => {
   store.otherTechnicalSkills.push({
-    skill: "",
+    nama: "",
     nilai: "",
     keterangan: "",
   });
