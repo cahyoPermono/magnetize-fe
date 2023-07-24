@@ -242,7 +242,6 @@ const getOtherSkill = async () => {
   otherskills.forEach((element) => {
     otherskillsname.push({ skill: element.skill, level: element.level });
   });
-  console.log(otherskillsname)
 };
 
 onMounted(async () => {

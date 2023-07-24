@@ -14,7 +14,7 @@
             accept="application/pdf"
             :maxFileSize="maxSize"
             @upload="upload($event, index)"
-            url="./test"
+            url="/"
             :auto="true"
             chooseLabel="Browse"
           />
@@ -33,7 +33,7 @@
           name="data lain"
           :maxFileSize="maxSize"
           @upload="upload($event)"
-          url="./test"
+          url="/"
           :auto="true"
           chooseLabel="Browse"
           multiple="true"
@@ -94,7 +94,6 @@ const upload = async (event, index) => {
       detail: "sukses upload",
       life: 2000,
     });
-    console.log(store.document);
     loading.value = false;
   } catch (error) {
     loading.value = false;

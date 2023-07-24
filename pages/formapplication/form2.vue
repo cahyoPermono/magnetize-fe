@@ -14,8 +14,7 @@
       <Form v-slot="{ meta }">
         <Card v-if="pribadi">
           <template #content>
-            <div class="mt-1" v-if="loading">loading</div>
-            <div class="mt-1" v-else>
+            <div class="mt-1">
               <div class="text-center">
                 <h3 class="text-2xl my-0">Formulir 2</h3>
               </div>
@@ -29,7 +28,7 @@
                       v-slot="{ field, errorMessage }"
                       :rules="isRequired"
                       name="name"
-                      v-model="data.name"
+                      v-model="data.applicant.name"
                     >
                       <InputText
                         v-bind="field"
@@ -123,7 +122,6 @@
                         :class="{ 'p-invalid': errorMessage }"
                         class="block w-full"
                         placeholder="Nama Bank"
-                        r
                       />
                       <small id="email-help" class="p-error block">{{ errorMessage }}</small>
                     </Field>
@@ -185,7 +183,7 @@
                 </div>
               </div>
               <h3 class="text-center">Data Keluarga</h3>
-              <hr style="width: 100px;" />
+              <hr style="width: 100px" />
               <div class="mx-3">
                 <div class="grid">
                   <div class="col-6">
@@ -377,7 +375,7 @@
                 </div>
               </div>
               <h5 class="text-center">Saudara</h5>
-              <hr style="width: 100px;" />
+              <hr style="width: 100px" />
               <FormAddNewSaudara :data-saudara="dataKeluargaLajang" />
             </div>
             <div class="mt-5" v-else-if="data.applicant.marital_status !== 'lajang'">
@@ -428,7 +426,16 @@
             <FormAddDocument />
           </template>
           <template #footer>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between" v-if="isLoading">
+              <Button class="p-button-sm" icon="pi pi-arrow-left" :disabled="true" />
+              <Button
+                class="p-button-sm"
+                icon="pi pi-spin pi-spinner"
+                label="Loading"
+                :disabled="true"
+              />
+            </div>
+            <div class="flex justify-content-between" v-else>
               <Button
                 class="p-button-sm"
                 icon="pi pi-arrow-left"
@@ -440,7 +447,6 @@
         </Card>
       </Form>
     </div>
-    <loading-screen v-if="isLoading" />
   </div>
 </template>
 
@@ -460,7 +466,6 @@ const store = useStore();
 const config = useRuntimeConfig();
 const applicant = useCookie("user");
 const data = ref({});
-const loading = ref(false);
 const job = ref("");
 const dataPribadi = ref({
   ktp: "",
@@ -500,7 +505,7 @@ const save = async () => {
   try {
     isLoading.value = true;
     const save = {
-      name: data.value.name,
+      name: data.value.applicant.name,
       applicant: {
         ktp_no: dataPribadi.value.ktp,
         npwp_no: dataPribadi.value.npwp,

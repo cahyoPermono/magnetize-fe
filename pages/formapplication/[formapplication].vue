@@ -164,6 +164,7 @@ const saveData = async () => {
     //Destructure Body
     let applicant_new = {
       ...store.applicant,
+      name: store.applicant.name.toUpperCase(),
       jobPosition: store.applicant.selectedJob.name.toUpperCase(),
       JobId: store.applicant.selectedJob.id,
       status: "Selesai Mengisi Tahap  1",

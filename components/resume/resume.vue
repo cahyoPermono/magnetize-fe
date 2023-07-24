@@ -9,11 +9,18 @@
         @click="downloadFile(form, 'f', 'Resume')"
       />
       <Button
-      v-if="formTechnical"
+        v-if="formTechnical"
         label="Technical Skill"
         icon="pi pi-download"
         class="p-button-sm p-button-success mr-1 mt-1 col-3"
         @click="downloadFile(formTechnical, 'f', 'Technical Skill')"
+      />
+      <Button
+        v-if="form2"
+        label="Form 2"
+        icon="pi pi-download"
+        class="p-button-sm p-button-success mr-1 mt-1 col-3"
+        @click="downloadFile(form2, 'f', 'Form 2')"
       />
       <Button
         v-for="(data, index) in attachments"
@@ -36,6 +43,7 @@ const route = useRoute();
 const config = useRuntimeConfig();
 const id = route.params.id;
 let form = reactive();
+let form2 = reactive();
 let formTechnical = reactive();
 const nama = ref();
 const attachments = ref({});
@@ -88,6 +96,13 @@ async function getFormTechnical() {
   formTechnical = formTechnical.data.dataPDF;
 }
 
+async function getForm2() {
+  const data = await axios.get(config.API_BASE_URL + "download_form_2?id=" + id + "&name=" + nama.value);
+  if (data.data.dataPDF) {
+    form2 = data.data.dataPDF;
+  }
+}
+
 async function getApplicant() {
   nama.value = await axios.get(config.API_BASE_URL + "applicants/" + id);
   nama.value = nama.value.data.data.name;
@@ -102,6 +117,7 @@ onMounted(async () => {
   await getApplicant();
   await getForm();
   await getFormTechnical();
+  await getForm2();
   await getApplicantAttachment();
 });
 </script>
