@@ -80,7 +80,7 @@ body a:hover {
   color: #6c757d;
 }
 
-.p-card .p-card-body{
+.p-card .p-card-body {
   padding: 0.3rem;
 }
 
@@ -108,7 +108,11 @@ body a:hover {
   padding: 0;
 }
 
-.p-avatar img{
+.p-avatar img {
   width: 130% !important;
   height: 130% !important  ;
+}
+.vl {
+  border-left: 2px solid;
+  height: 1rem;
 }

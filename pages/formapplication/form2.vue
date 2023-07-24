@@ -14,7 +14,7 @@
       <Form v-slot="{ meta }">
         <Card v-if="pribadi">
           <template #content>
-            <div class="mt-1">
+            <div class="mt-1" v-if="data.applicant">
               <div class="text-center">
                 <h3 class="text-2xl my-0">Formulir 2</h3>
               </div>
@@ -511,6 +511,7 @@ const save = async () => {
         npwp_no: dataPribadi.value.npwp,
         account_no: dataPribadi.value.rekening,
         status: "Sudah Mengisi Tahap 2",
+        status_note:""
       },
       families:
         data.value.applicant.marital_status !== "lajang"

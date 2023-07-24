@@ -1,7 +1,7 @@
 <template>
-  <div class="grid mr-0 p-3">
-    <div class="col-4 col-offset-1">
-      <Card class="bg-yellow-300">
+  <div class="grid mr-0 p-3 justify-content-center">
+    <div class="md:col-5 col-12">
+      <Card class="bg-yellow-300 p-3">
         <template #content>
           <div class="text-center">
             <span v-if="userData.applicant">
@@ -17,7 +17,7 @@
             <span>{{ user.email }}</span>
             <div class="mt-4">
               <span>status :</span>
-              <h5 class="mt-0">{{ status }}</h5>
+              <!-- <h5 class="mt-0">{{ userData.applicantstatus.status }}</h5> -->
             </div>
           </div>
         </template>
@@ -28,10 +28,10 @@
               kami selanjutnya, terima kasih.
             </p>
           </div>
-          <div class="text-center" v-else-if="userData.applicant">
+          <div class="text-center" v-else-if="userData.ApplicantStatusId">
             <Button
               label="Isi Form"
-              @click="toForm(userData.applicant.ApplicantStatusId)"
+              @click="toForm(userData.ApplicantStatusId)"
               class="p-button-success"
               :disabled="isDisabled"
             />
@@ -42,41 +42,53 @@
         </template>
       </Card>
     </div>
-    <div class="col-6">
-      <Card class="bg-yellow-300">
+    <div class="md:col-5 col-12">
+      <Card class="bg-yellow-300 p-3">
+        <template #title> Application Progress </template>
         <template #content>
-          <div class="flex mb-5">
+          <div v-for="status in statuses" :key="status.id">
+            <div v-if="applicantStatus > status.id">
+              <div class="flex">
+                <div
+                  class="w-2rem h-2rem border-circle mt-2 bg-yellow-600 ml-3 flex align-items-center justify-content-center"
+                >
+                  <i class="pi pi-check text-white" style="font-size: 1rem"></i>
+                </div>
+                <div class="ml-2 text-sm align-items-center flex">
+                  <h5 class="my-0">{{ status.status }}</h5>
+                </div>
+              </div>
+            </div>
+            <div v-else-if="applicantStatus == status.id">
+              <div class="flex">
+                <div
+                  class="w-2rem h-2rem border-circle mt-2 bg-yellow-700 ml-3 flex align-items-center justify-content-center"
+                >
+                  <i class="pi pi-flag text-white" style="font-size: 1rem"></i>
+                </div>
+                <div class="ml-2 text-sm align-items-center">
+                  <h5 class="my-0">{{ status.status }}</h5>
+                  <p class="m-0"><b>Note: </b>{{ userData.status_note ? userData.status_note : "-" }}</p>
+                </div>
+              </div>
+            </div>
+            <div v-else>
+              <div class="flex">
+                <div
+                  class="w-2rem h-2rem border-circle mt-2 bg-yellow-800 ml-3 flex align-items-center justify-content-center"
+                >
+                  <i class="pi pi-lock text-white" style="font-size: 1rem"></i>
+                </div>
+                <div class="ml-2 text-sm align-items-center flex">
+                  <h5 class="my-0">{{ status.status }}</h5>
+                </div>
+              </div>
+            </div>
             <div
-              class="w-4rem h-4rem border-circle bg-yellow-800 ml-3 flex align-items-center justify-content-center"
-            >
-              <i class="pi pi-map text-white" style="font-size: 2rem"></i>
-            </div>
-            <div class="ml-2">
-              <p class="text-2xl font-bold m-0">Form Pertama</p>
-              <span>{{ isTahap1 }}</span>
-            </div>
-          </div>
-          <div class="flex mb-5">
-            <div
-              class="w-4rem h-4rem border-circle bg-yellow-800 ml-3 flex align-items-center justify-content-center"
-            >
-              <i class="pi pi-map text-white" style="font-size: 2rem"></i>
-            </div>
-            <div class="ml-2">
-              <p class="text-2xl font-bold m-0">Form Kedua</p>
-              <span>{{ isTahap2 }} </span>
-            </div>
-          </div>
-          <div class="flex">
-            <div
-              class="w-4rem h-4rem border-circle bg-yellow-800 ml-3 flex align-items-center justify-content-center"
-            >
-              <i class="pi pi-map text-white" style="font-size: 2rem"></i>
-            </div>
-            <div class="ml-2">
-              <p class="text-2xl font-bold m-0">Form Ketiga</p>
-              <span> {{ isTahap3 }} </span>
-            </div>
+              class="vl mt-2 border-yellow-800"
+              style="margin-left: 1.9rem"
+              v-if="status.id !== statuses.length"
+            ></div>
           </div>
         </template>
       </Card>
@@ -96,48 +108,19 @@ const userData = ref({});
 const statuses = ref([]);
 
 const isDisabled = computed(() => {
-  const data = userData.value.applicant.ApplicantStatusId;
-  if (data === 3 || data === 5 || data === 6) {
+  const data = userData.value.ApplicantStatusId;
+  if (data === 3 || data === 5 || data === 6 || data === 7 || data === 8) {
     return true;
   } else {
     return false;
   }
 });
 
-const isTahap1 = computed(() => {
-  const data = userData.value.applicant;
-  if (data && data.ApplicantStatusId >= 3) {
-    return "Sudah Mengisi Form Tahap 1";
-  } else {
-    return "Belum Mengisi";
+const applicantStatus = computed(() => {
+  if (user.value.ApplicantId) {
+    return userData.value.ApplicantStatusId;
   }
-});
-
-const isTahap2 = computed(() => {
-  const data = userData.value.applicant;
-  if (data && data.ApplicantStatusId >= 5) {
-    return "Sudah Mengisi Form Tahap 2";
-  } else {
-    return "Belum Mengisi";
-  }
-});
-
-const isTahap3 = computed(() => {
-  const data = userData.value.applicant;
-  if (data && data.ApplicantStatusId > 7) {
-    return "Sudah Mengisi Form Tahap 3";
-  } else {
-    return "Belum Mengisi";
-  }
-});
-
-const status = computed(() => {
-  const data = userData.value.applicant;
-  if (data) {
-    return data.applicantstatus.status;
-  } else {
-    return "Belum Mengisi Form";
-  }
+  return 1;
 });
 
 const status2 = computed(() => {
@@ -149,7 +132,7 @@ const status2 = computed(() => {
 const toForm = (status) => {
   if (status <= 2 || status === "#") {
     router.push({ path: "/formapplication/form" });
-  } else if (status >= 4 && status < 6) {
+  } else if (status >= 4 && status < 7) {
     router.push({ path: "/formapplication/form2" });
   } else {
     router.push({ path: "/formapplication/form3" });
@@ -163,7 +146,9 @@ onMounted(async () => {
   const status = await axios.get(config.API_BASE_URL + "applicantstatus", {
     headers: { Authorization: `Bearer ${store.token}` },
   });
-  userData.value = applicantAuth.data.data;
+  if (user.value.ApplicantId) {
+    userData.value = applicantAuth.data.data.applicant;
+  }
   statuses.value = status.data.data;
 });
 

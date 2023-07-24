@@ -91,13 +91,33 @@
               v-if="
                 candidate_data.status_id === 3 ||
                 candidate_data.status_id === 5 ||
-                candidate_data.status_id === 6
+                candidate_data.status_id === 6 ||
+                candidate_data.status_id === 7
               "
             >
-              <button class="btn btn-sm btn-secondary" @click="openModal()">
+              <button
+                class="btn btn-sm btn-secondary"
+                @click="openModal()"
+                v-if="candidate.status_note"
+              >
                 Selesai Interview
               </button>
+              <button class="btn btn-sm btn-secondary" @click="openModalJadwal()" v-else>
+                Jadwalkan Interview
+              </button>
             </span>
+            <span v-if="candidate_data.status_id === 8">
+              <button
+                class="btn btn-sm btn-success"
+                @click="openModal()"
+                v-if="candidate.status_note"
+              >
+                Selesai Interview
+              </button>
+              <button class="btn btn-sm btn-success" @click="openModalLanjutan()" v-else>
+                Tahap Lanjutan
+              </button></span
+            >
           </div>
         </Panel>
         <Panel class="mt-4">
@@ -130,6 +150,23 @@
       </div>
     </div>
     <Dialog
+      v-model:visible="displayModalLanjutan"
+      :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
+      :style="{ width: '30vw' }"
+      :modal="true"
+    >
+      <p><strong>Apakah Pelamar ini diterima?</strong></p>
+      <template #footer>
+        <Button label="Tidak" icon="pi pi-times" class="p-button-danger" @click="tidakDiterima" />
+        <Button
+          label="Ya"
+          icon="pi pi-check"
+          class="p-button-success"
+          @click="diterima(candidate_data.status_id)"
+        />
+      </template>
+    </Dialog>
+    <Dialog
       v-model:visible="displayModal"
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
       :style="{ width: '30vw' }"
@@ -153,6 +190,68 @@
           class="p-button-danger"
         />
       </template>
+    </Dialog>
+    <Dialog
+      v-model:visible="displayModalJadwal"
+      :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
+      :style="{ width: '40vw' }"
+      :modal="true"
+    >
+      <template #header>
+        <h4><strong>Jadwal Interview</strong></h4>
+      </template>
+      <div class="pt-3">
+        <Form @submit="buatJadwal">
+          <div class="grid">
+            <div class="col">
+              <label for="tanggal">Tanggal Interview</label>
+              <Field v-slot="{ field, errorMessage }" :rules="isRequired" name="tanggal">
+                <InputText
+                  v-bind="field"
+                  :class="{ 'p-invalid': errorMessage }"
+                  class="block w-full"
+                  type="date"
+                />
+                <small id="email-help" class="p-error block">{{ errorMessage }}</small>
+              </Field>
+            </div>
+            <div class="col">
+              <label for="jam">Jam</label>
+              <Field v-slot="{ field, errorMessage }" :rules="isRequired" name="jam">
+                <InputText
+                  v-bind="field"
+                  :class="{ 'p-invalid': errorMessage }"
+                  class="block w-full"
+                  type="time"
+                />
+                <small id="email-help" class="p-error block">{{ errorMessage }}</small>
+              </Field>
+            </div>
+          </div>
+          <div class="grid mt-2">
+            <div class="col">
+              <label for="interviewer">Interviewer</label>
+              <Field v-slot="{ field, errorMessage }" :rules="isRequired" name="interviewer">
+                <InputText
+                  v-bind="field"
+                  :class="{ 'p-invalid': errorMessage }"
+                  class="block w-full"
+                />
+                <small id="email-help" class="p-error block">{{ errorMessage }}</small>
+              </Field>
+            </div>
+          </div>
+          <div class="flex justify-content-end mt-4">
+            <Button
+              label="No"
+              icon="pi pi-times"
+              @click="openModalJadwal()"
+              class="p-button-text"
+            />
+            <Button label="Yes" icon="pi pi-check" class="p-button-info" type="submit" />
+          </div>
+        </Form>
+      </div>
     </Dialog>
   </div>
 </template>
@@ -178,53 +277,93 @@ let skillname = reactive([]);
 let otherskills = reactive([]);
 let otherskillsname = reactive([]);
 const displayModal = ref(false);
+const displayModalJadwal = ref(false);
+const displayModalLanjutan = ref(false);
+const id = route.params.id;
+
+const openModalLanjutan = () => {
+  displayModalLanjutan.value = !displayModalLanjutan.value;
+};
+
+const tidakDiterima = () => {};
+
+const diterima = async (candidateStatus) => {
+  let candidateStatusNew = candidateStatus + 1;
+  await axios.put(config.API_BASE_URL + "applicants/update_status/" + id, {
+    applicant: { ApplicantStatusId: candidateStatusNew, status_note: "" },
+  });
+  await getter();
+  openModalLanjutan();
+};
+
+const openModalJadwal = () => {
+  displayModalJadwal.value = !displayModalJadwal.value;
+};
+
+const buatJadwal = async (val) => {
+  const a = new Date(val.tanggal);
+  const note = `waktu: ${a.toDateString()}, ${val.jam} WIB. oleh: ${val.interviewer}`;
+  await axios.put(config.API_BASE_URL + "applicants/update_status/" + id, {
+    applicant: { status_note: note },
+  });
+  await getter();
+  openModalJadwal();
+};
+
 const openModal = () => {
   displayModal.value = !displayModal.value;
 };
 
-const id = route.params.id;
-let candidate = reactive({});
-
 const doneInterview = async (candidateStatus) => {
   let candidateStatusNew = candidateStatus + 1;
-
   await axios.put(config.API_BASE_URL + "applicants/update_status/" + id, {
-    applicant: { ApplicantStatusId: candidateStatusNew },
+    applicant: { ApplicantStatusId: candidateStatusNew, status_note: "" },
   });
-
   await getter();
   displayModal.value = false;
 };
 
+let candidate = ref({});
+
 const getter = async () => {
-  candidate = await axios.get(config.API_BASE_URL + "applicants/" + id);
-  candidate = await candidate.data.data;
-  candidate_data["name"] = candidate.name;
-  candidate_data["gender"] = candidate.gender;
-  candidate_data["place_of_birth"] = candidate.place_of_birth;
-  candidate_data["date"] = candidate.date;
-  candidate_data["address"] = candidate.address;
-  candidate_data["domicile"] = candidate.domicile;
-  candidate_data["email"] = candidate.email;
-  candidate_data["mobile"] = candidate.mobile;
-  candidate_data["office_parent_phone"] = candidate.office_parent_phone;
+  candidate.value = await axios.get(config.API_BASE_URL + "applicants/" + id);
+  candidate.value = await candidate.value.data.data;
+  candidate_data["name"] = candidate.value.name;
+  candidate_data["gender"] = candidate.value.gender;
+  candidate_data["place_of_birth"] = candidate.value.place_of_birth;
+  candidate_data["date"] = candidate.value.date;
+  candidate_data["address"] = candidate.value.address;
+  candidate_data["domicile"] = candidate.value.domicile;
+  candidate_data["email"] = candidate.value.email;
+  candidate_data["mobile"] = candidate.value.mobile;
+  candidate_data["office_parent_phone"] = candidate.value.office_parent_phone;
   candidate_data["diploma"] =
-    candidate.formaleducations.length < 1 ? "-" : candidate.formaleducations[0].major;
+    candidate.value.formaleducations.length < 1 ? "-" : candidate.value.formaleducations[0].major;
   candidate_data["university"] =
-    candidate.formaleducations.length < 1 ? "-" : candidate.formaleducations[0].name_location;
+    candidate.value.formaleducations.length < 1
+      ? "-"
+      : candidate.value.formaleducations[0].name_location;
   candidate_data["current_company"] =
-    candidate.employmenthistories.length < 1 ? "-" : candidate.employmenthistories[0].name_company;
+    candidate.value.employmenthistories.length < 1
+      ? "-"
+      : candidate.value.employmenthistories[0].name_company;
   candidate_data["current_position"] =
-    candidate.employmenthistories.length < 1 ? "-" : candidate.employmenthistories[0].position;
+    candidate.value.employmenthistories.length < 1
+      ? "-"
+      : candidate.value.employmenthistories[0].position;
   candidate_data["current_sallary"] =
-    candidate.employmenthistories.length < 1 ? "-" : candidate.employmenthistories[0].take_home_pay;
+    candidate.value.employmenthistories.length < 1
+      ? "-"
+      : candidate.value.employmenthistories[0].take_home_pay;
   candidate_data["graduation"] =
-    candidate.formaleducations.length < 1 ? "-" : candidate.formaleducations[0].graduate;
-  candidate_data["expected_salary"] = candidate.otherinformation.salary_expect;
-  candidate_data["candidate_reference_name"] = candidate.relatives_in_ip || "-";
-  candidate_data["notice_period"] = candidate.otherinformation.able_to_start;
-  candidate_data["status"] = candidate.applicantstatus.status;
-  candidate_data["status_id"] = candidate.applicantstatus.id;
+    candidate.value.formaleducations.length < 1
+      ? "-"
+      : candidate.value.formaleducations[0].graduate;
+  candidate_data["expected_salary"] = candidate.value.otherinformation.salary_expect;
+  candidate_data["candidate_reference_name"] = candidate.value.relatives_in_ip || "-";
+  candidate_data["notice_period"] = candidate.value.otherinformation.able_to_start;
+  candidate_data["status"] = candidate.value.applicantstatus.status;
+  candidate_data["status_id"] = candidate.value.applicantstatus.id;
 };
 
 const getSkill = async () => {
@@ -233,7 +372,6 @@ const getSkill = async () => {
   skills.forEach((element) => {
     skillname.push({ skill: element.subskill.subskill, nilai: element.nilai });
   });
-  console.log(skills)
 };
 
 const getOtherSkill = async () => {
@@ -242,6 +380,13 @@ const getOtherSkill = async () => {
   otherskills.forEach((element) => {
     otherskillsname.push({ skill: element.skill, level: element.level });
   });
+};
+
+const isRequired = (value) => {
+  if (!value) {
+    return "This field is required";
+  }
+  return true;
 };
 
 onMounted(async () => {
