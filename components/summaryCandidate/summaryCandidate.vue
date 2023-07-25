@@ -85,19 +85,46 @@
           <template #header>
             <b>Status &nbsp;<span></span></b>
           </template>
-          <div class="d-flex justify-content-between">
+          <div>
             <p>{{ candidate_data.status }}</p>
-            <span
-              v-if="
-                candidate_data.status_id === 3 ||
-                candidate_data.status_id === 5 ||
-                candidate_data.status_id === 6 ||
-                candidate_data.status_id === 7
-              "
-            >
+            <div v-if="candidate_data.status_id === 5">
+              <div v-if="!candidate.status_note">
+                <button class="btn btn-sm btn-secondary" @click="openModalJadwal()">
+                  Jadwalkan Interview
+                </button>
+              </div>
+              <div v-else class="d-flex justify-content-between">
+                <button class="btn btn-sm btn-danger mr-2" @click="openModalUlangInterview()">
+                  Interview Ulang
+                </button>
+                <br />
+                <button
+                  class="btn btn-sm btn-secondary w-50"
+                  @click="openModal('Apakah kandidat ini lanjut ke tahapan selanjutnya ?')"
+                >
+                  Selesai Interview
+                </button>
+              </div>
+            </div>
+            <div v-if="candidate_data.status_id === 6">
+              <div v-if="!candidate.status_note">
+                <button class="btn btn-sm btn-secondary" @click="openModalTes()">
+                  Jadwalkan Tes
+                </button>
+              </div>
+              <div v-else class="d-flex justify-content-between">
+                <button
+                  class="btn btn-sm btn-secondary w-50"
+                  @click="openModal('Apakah kandidat ini lanjut ke tahapan selanjutnya ?')"
+                >
+                  Selesai Tes
+                </button>
+              </div>
+            </div>
+            <div v-if="candidate_data.status_id === 3">
               <button
                 class="btn btn-sm btn-secondary"
-                @click="openModal()"
+                @click="openModal('Apakah kandidat ini lanjut ke tahapan selanjutnya ?')"
                 v-if="candidate.status_note"
               >
                 Selesai Interview
@@ -105,19 +132,20 @@
               <button class="btn btn-sm btn-secondary" @click="openModalJadwal()" v-else>
                 Jadwalkan Interview
               </button>
-            </span>
-            <span v-if="candidate_data.status_id === 8">
-              <button
-                class="btn btn-sm btn-success"
-                @click="openModal()"
-                v-if="candidate.status_note"
-              >
-                Selesai Interview
+            </div>
+            <div v-if="candidate_data.status_id === 7">
+              <div class="flex justify-content-between" v-if="candidate.status_note">
+                <button
+                  class="btn btn-sm btn-success"
+                  @click="openModal('Apakah kandidat ini diterima ?')"
+                >
+                  Diterima
+                </button>
+              </div>
+              <button class="btn btn-sm btn-secondary" @click="openModalJadwal()" v-else>
+                Jadwalkan Interview
               </button>
-              <button class="btn btn-sm btn-success" @click="openModalLanjutan()" v-else>
-                Tahap Lanjutan
-              </button></span
-            >
+            </div>
           </div>
         </Panel>
         <Panel class="mt-4">
@@ -167,6 +195,28 @@
       </template>
     </Dialog>
     <Dialog
+      v-model:visible="displayModalInterviewUlang"
+      :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
+      :style="{ width: '30vw' }"
+      :modal="true"
+    >
+      <p><strong>Ulang interview ini?</strong></p>
+      <template #footer>
+        <Button
+          label="cancel"
+          icon="pi pi-times"
+          class="p-button-danger"
+          @click="openModalUlangInterview"
+        />
+        <Button
+          label="Ya"
+          icon="pi pi-check"
+          class="p-button-success"
+          @click="ulangInterview(candidate_data.status_id)"
+        />
+      </template>
+    </Dialog>
+    <Dialog
       v-model:visible="displayModal"
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
       :style="{ width: '30vw' }"
@@ -179,7 +229,7 @@
         <div class="col-1 col-offset-1">
           <i class="pi pi-exclamation-triangle" style="font-size: 1.5rem"></i>
         </div>
-        <div class="col font-bold">Apakah kandidat ini lanjut ke tahapan selanjutnya ?</div>
+        <div class="col font-bold">{{ displayModalText }}</div>
       </div>
       <template #footer>
         <Button label="No" icon="pi pi-times" @click="openModal()" class="p-button-text" />
@@ -253,6 +303,63 @@
         </Form>
       </div>
     </Dialog>
+    <Dialog
+      v-model:visible="displayModalTes"
+      :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
+      :style="{ width: '40vw' }"
+      :modal="true"
+    >
+      <template #header>
+        <h4><strong>Jadwal Tes</strong></h4>
+      </template>
+      <div class="pt-3">
+        <Form @submit="buatJadwalTes">
+          <div class="grid">
+            <div class="col">
+              <label for="tanggal">Tanggal Tes</label>
+              <Field v-slot="{ field, errorMessage }" :rules="isRequired" name="tanggal">
+                <InputText
+                  v-bind="field"
+                  :class="{ 'p-invalid': errorMessage }"
+                  class="block w-full"
+                  type="date"
+                />
+                <small id="email-help" class="p-error block">{{ errorMessage }}</small>
+              </Field>
+            </div>
+            <div class="col">
+              <label for="jam">Jam</label>
+              <Field v-slot="{ field, errorMessage }" :rules="isRequired" name="jam">
+                <InputText
+                  v-bind="field"
+                  :class="{ 'p-invalid': errorMessage }"
+                  class="block w-full"
+                  type="time"
+                />
+                <small id="email-help" class="p-error block">{{ errorMessage }}</small>
+              </Field>
+            </div>
+          </div>
+          <div class="grid mt-2">
+            <div class="col">
+              <label for="tambahan">Note Tambahan</label>
+              <Field v-slot="{ field, errorMessage }" :rules="isRequired" name="tambahan">
+                <InputText
+                  v-bind="field"
+                  :class="{ 'p-invalid': errorMessage }"
+                  class="block w-full"
+                />
+                <small id="email-help" class="p-error block">{{ errorMessage }}</small>
+              </Field>
+            </div>
+          </div>
+          <div class="flex justify-content-end mt-4">
+            <Button label="No" icon="pi pi-times" @click="openModalTes()" class="p-button-text" />
+            <Button label="Yes" icon="pi pi-check" class="p-button-info" type="submit" />
+          </div>
+        </Form>
+      </div>
+    </Dialog>
   </div>
 </template>
 
@@ -270,6 +377,7 @@ const reverseDate = (date) => {
   return dateFormat(date, "dd-mm-yyyy");
 };
 
+let displayModalText = ref("Apakah kandidat ini lanjut ke tahapan selanjutnya ?");
 let candidate_data = reactive({});
 
 let skills = reactive([]);
@@ -279,48 +387,67 @@ let otherskillsname = reactive([]);
 const displayModal = ref(false);
 const displayModalJadwal = ref(false);
 const displayModalLanjutan = ref(false);
+const displayModalTes = ref(false);
+const displayModalInterviewUlang = ref(false);
 const id = route.params.id;
+
+const openModal = (text) => {
+  displayModal.value = !displayModal.value;
+  displayModalText.value = text;
+};
+
+const openModalTes = () => {
+  displayModalTes.value = !displayModalTes.value;
+};
+
+const openModalUlangInterview = () => {
+  displayModalInterviewUlang.value = !displayModalInterviewUlang.value;
+};
 
 const openModalLanjutan = () => {
   displayModalLanjutan.value = !displayModalLanjutan.value;
-};
-
-const tidakDiterima = () => {};
-
-const diterima = async (candidateStatus) => {
-  let candidateStatusNew = candidateStatus + 1;
-  await axios.put(config.API_BASE_URL + "applicants/update_status/" + id, {
-    applicant: { ApplicantStatusId: candidateStatusNew, status_note: "" },
-  });
-  await getter();
-  openModalLanjutan();
 };
 
 const openModalJadwal = () => {
   displayModalJadwal.value = !displayModalJadwal.value;
 };
 
-const buatJadwal = async (val) => {
-  const a = new Date(val.tanggal);
-  const note = `waktu: ${a.toDateString()}, ${val.jam} WIB. oleh: ${val.interviewer}`;
+const processInterview = async (body) => {
   await axios.put(config.API_BASE_URL + "applicants/update_status/" + id, {
-    applicant: { status_note: note },
+    applicant: body,
   });
   await getter();
-  openModalJadwal();
 };
 
-const openModal = () => {
-  displayModal.value = !displayModal.value;
+const ulangInterview = async () => {
+  await processInterview({ status_note: "" });
+  openModalUlangInterview();
+};
+
+const diterima = async (candidateStatus) => {
+  let candidateStatusNew = candidateStatus + 1;
+  await processInterview({ ApplicantStatusId: candidateStatusNew, status_note: "" });
+  openModalLanjutan();
 };
 
 const doneInterview = async (candidateStatus) => {
   let candidateStatusNew = candidateStatus + 1;
-  await axios.put(config.API_BASE_URL + "applicants/update_status/" + id, {
-    applicant: { ApplicantStatusId: candidateStatusNew, status_note: "" },
-  });
-  await getter();
+  await processInterview({ ApplicantStatusId: candidateStatusNew, status_note: "" });
   displayModal.value = false;
+};
+
+const buatJadwal = async (val) => {
+  const a = new Date(val.tanggal);
+  const note = `waktu: ${a.toDateString()}, ${val.jam} WIB. oleh: ${val.interviewer}`;
+  await processInterview({ status_note: note });
+  openModalJadwal();
+};
+
+const buatJadwalTes = async (val) => {
+  const a = new Date(val.tanggal);
+  const note = `waktu: ${a.toDateString()}, ${val.jam} WIB. note: ${val.tambahan}`;
+  await processInterview({ status_note: note });
+  openModalTes();
 };
 
 let candidate = ref({});

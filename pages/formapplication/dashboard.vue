@@ -4,8 +4,8 @@
       <Card class="bg-yellow-300 p-3">
         <template #content>
           <div class="text-center">
-            <span v-if="userData.applicant">
-              <Avatar :image="userData.applicant.photo" class="mt-3" size="xlarge" shape="circle" />
+            <span v-if="userData">
+              <Avatar :image="userData.photo" class="mt-3" size="xlarge" shape="circle" />
             </span>
             <div
               v-else
@@ -17,27 +17,18 @@
             <span>{{ user.email }}</span>
             <div class="mt-4">
               <span>status :</span>
-              <!-- <h5 class="mt-0">{{ userData.applicantstatus.status }}</h5> -->
+              <h5 class="mt-0">{{ status }}</h5>
             </div>
           </div>
         </template>
         <template #footer>
-          <div class="text-center" v-if="status2">
-            <p>
-              Anda sudah menyelesaikan semua tahapan interview <br />silahkan tunggu pemberitahuan
-              kami selanjutnya, terima kasih.
-            </p>
-          </div>
-          <div class="text-center" v-else-if="userData.ApplicantStatusId">
+          <div class="text-center">
             <Button
               label="Isi Form"
-              @click="toForm(userData.ApplicantStatusId)"
+              @click="toForm(applicantStatus)"
               class="p-button-success"
               :disabled="isDisabled"
             />
-          </div>
-          <div class="text-center" v-else>
-            <Button label="Isi Form" @click="toForm('#')" class="p-button-success" />
           </div>
         </template>
       </Card>
@@ -68,7 +59,7 @@
                 </div>
                 <div class="ml-2 text-sm align-items-center">
                   <h5 class="my-0">{{ status.status }}</h5>
-                  <p class="m-0"><b>Note: </b>{{ userData.status_note ? userData.status_note : "-" }}</p>
+                  <p class="m-0">{{ userData.status_note ? userData.status_note : "-" }}</p>
                 </div>
               </div>
             </div>
@@ -108,11 +99,11 @@ const userData = ref({});
 const statuses = ref([]);
 
 const isDisabled = computed(() => {
-  const data = userData.value.ApplicantStatusId;
-  if (data === 3 || data === 5 || data === 6 || data === 7 || data === 8) {
-    return true;
-  } else {
+  const data = applicantStatus.value;
+  if (data === 2 || data === 4 || data === 8) {
     return false;
+  } else {
+    return true;
   }
 });
 
@@ -120,22 +111,29 @@ const applicantStatus = computed(() => {
   if (user.value.ApplicantId) {
     return userData.value.ApplicantStatusId;
   }
-  return 1;
+  return 2;
 });
 
-const status2 = computed(() => {
-  if (userData.value.applicant && userData.value.applicant.ApplicantStatusId > 7) {
-    return true;
+const status = computed(() => {
+  if (userData.value.applicantstatus) {
+    return userData.value.applicantstatus.status;
   }
+  return "Form-1 : Applicantion Form";
 });
 
 const toForm = (status) => {
-  if (status <= 2 || status === "#") {
-    router.push({ path: "/formapplication/form" });
-  } else if (status >= 4 && status < 7) {
-    router.push({ path: "/formapplication/form2" });
-  } else {
-    router.push({ path: "/formapplication/form3" });
+  try {
+    if (status === 2) {
+      router.push({ path: "/formapplication/form" });
+    } else if (status === 4) {
+      router.push({ path: "/formapplication/form2" });
+    } else if (status === 8) {
+      router.push({ path: "/formapplication/form3" });
+    } else {
+      throw "applicant status invalid";
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 

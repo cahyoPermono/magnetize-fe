@@ -104,10 +104,14 @@
               </label>
               <div class="col">
                 <Field v-slot="{ field, errorMessage }" :rules="isRequired" name="gender">
-                  <InputText
-                    v-bind="field"
-                    :class="{ 'p-invalid': errorMessage }"
-                    class="block w-full"
+                  <Dropdown
+                    :options="gender"
+                    option-value="val"
+                    option-label="label"
+                    :model-value="field.value"
+                    class="w-full"
+                    @input="field.onInput.forEach((fn) => fn($event.value))"
+                    @change="field.onChange.forEach((fn) => fn($event.value))"
                   />
                   <small id="email-help" class="p-error block">{{ errorMessage }}</small>
                 </Field>
@@ -129,6 +133,10 @@ const openModal = () => {
   displayModal.value = !displayModal.value;
 };
 
+const gender = [
+  { val: "P", label: "Perempuan" },
+  { val: "L", label: "laki-laki" },
+];
 const dataSaudara = computed(() => {
   return data_.dataSaudara.slice(2);
 });

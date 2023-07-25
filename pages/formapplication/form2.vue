@@ -511,7 +511,7 @@ const save = async () => {
         npwp_no: dataPribadi.value.npwp,
         account_no: dataPribadi.value.rekening,
         status: "Sudah Mengisi Tahap 2",
-        status_note:""
+        status_note: "",
       },
       families:
         data.value.applicant.marital_status !== "lajang"
