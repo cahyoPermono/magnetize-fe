@@ -1,5 +1,6 @@
 <template>
-    <div class="card">
+  <Card>
+    <template #content>
       <TabView ref="tabview1">
         <TabPanel>
           <template #header>
@@ -7,7 +8,7 @@
             <span>&nbsp;&nbsp;Summary</span>
           </template>
           <div>
-            <SummaryCandidate ></SummaryCandidate>
+            <SummaryCandidate></SummaryCandidate>
           </div>
         </TabPanel>
         <TabPanel>
@@ -16,7 +17,16 @@
             <span>&nbsp;&nbsp;Personal Documents</span>
           </template>
           <div>
-            <Resume/>
+            <LazyResume />
+          </div>
+        </TabPanel>
+        <TabPanel>
+          <template #header>
+            <i class="pi pi-comments"></i>
+            <span>&nbsp;&nbsp;Comments</span>
+          </template>
+          <div>
+            <LazyComments />
           </div>
         </TabPanel>
         <TabPanel>
@@ -25,13 +35,12 @@
             <span>&nbsp;&nbsp;Jobs</span>
           </template>
           <div>
-            <Jobs />
+            <LazyJobs />
           </div>
         </TabPanel>
       </TabView>
-    </div>
-  </template>
-  
-  <script setup>
-  </script>
-  
+    </template>
+  </Card>
+</template>
+
+<script setup></script>

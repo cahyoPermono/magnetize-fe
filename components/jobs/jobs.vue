@@ -1,6 +1,6 @@
 <template>
   <Toast />
-  <div v-if="isCandidate === false" style="width: 900px">
+  <div v-if="isCandidate === false" style="width: 75vw">
     <Button label="Assign Jobs" icon="pi pi-plus" class="p-button-sm p-button-success mt-3" 
         @click="openModalCandidate" />
     <Dialog v-model:visible="displayModal" header="Tambah Kandidat" :breakpoints="{ '960px': '75vw', '640px': '90vw' }"

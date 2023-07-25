@@ -1,25 +1,25 @@
 <template>
-  <div style="width: 90vw">
+  <div>
     <Toast />
-    <div class="grid flex">
+    <div class="grid" style="width: 75vw">
       <Button
         label="Resume"
         icon="pi pi-download"
-        class="p-button-sm p-button-success mr-1 mt-1 col-3"
+        class="p-button-sm p-button-success mr-1 mt-1"
         @click="downloadFile(form, 'f', 'Resume')"
       />
       <Button
         v-if="formTechnical"
         label="Technical Skill"
         icon="pi pi-download"
-        class="p-button-sm p-button-success mr-1 mt-1 col-3"
+        class="p-button-sm p-button-success mr-1 mt-1"
         @click="downloadFile(formTechnical, 'f', 'Technical Skill')"
       />
       <Button
         v-if="form2"
         label="Form 2"
         icon="pi pi-download"
-        class="p-button-sm p-button-success mr-1 mt-1 col-3"
+        class="p-button-sm p-button-success mr-1 mt-1"
         @click="downloadFile(form2, 'f', 'Form 2')"
       />
       <Button
@@ -27,7 +27,7 @@
         :key="index"
         :label="data.type"
         icon="pi pi-download"
-        class="p-button-sm p-button-info mr-1 mt-1 col-3"
+        class="p-button-sm p-button-info mr-1 mt-1"
         @click="downloadFile(data.file, 'file', data.type)"
       />
     </div>
