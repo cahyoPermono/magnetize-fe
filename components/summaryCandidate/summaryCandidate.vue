@@ -88,7 +88,7 @@
           <div>
             <p>{{ candidate_data.status }}</p>
             <div v-if="candidate_data.status_id === 5">
-              <div v-if="!candidate.status_note">
+              <div v-if="!candidate.interviewer_name">
                 <button class="btn btn-sm btn-secondary" @click="openModalJadwal()">
                   Jadwalkan Interview
                 </button>
@@ -107,7 +107,7 @@
               </div>
             </div>
             <div v-if="candidate_data.status_id === 6">
-              <div v-if="!candidate.status_note">
+              <div v-if="!candidate.interviewer_name">
                 <button class="btn btn-sm btn-secondary" @click="openModalTes()">
                   Jadwalkan Tes
                 </button>
@@ -125,7 +125,7 @@
               <button
                 class="btn btn-sm btn-secondary"
                 @click="openModal('Apakah kandidat ini lanjut ke tahapan selanjutnya ?')"
-                v-if="candidate.status_note"
+                v-if="candidate.interviewer_name"
               >
                 Selesai Interview
               </button>
@@ -134,7 +134,7 @@
               </button>
             </div>
             <div v-if="candidate_data.status_id === 7">
-              <div class="flex justify-content-between" v-if="candidate.status_note">
+              <div class="flex justify-content-between" v-if="candidate.interviewer_name">
                 <button
                   class="btn btn-sm btn-success"
                   @click="openModal('Apakah kandidat ini diterima ?')"
@@ -265,18 +265,6 @@
                 <small id="email-help" class="p-error block">{{ errorMessage }}</small>
               </Field>
             </div>
-            <div class="col">
-              <label for="jam">Jam</label>
-              <Field v-slot="{ field, errorMessage }" :rules="isRequired" name="jam">
-                <InputText
-                  v-bind="field"
-                  :class="{ 'p-invalid': errorMessage }"
-                  class="block w-full"
-                  type="time"
-                />
-                <small id="email-help" class="p-error block">{{ errorMessage }}</small>
-              </Field>
-            </div>
           </div>
           <div class="grid mt-2">
             <div class="col">
@@ -327,23 +315,11 @@
                 <small id="email-help" class="p-error block">{{ errorMessage }}</small>
               </Field>
             </div>
-            <div class="col">
-              <label for="jam">Jam</label>
-              <Field v-slot="{ field, errorMessage }" :rules="isRequired" name="jam">
-                <InputText
-                  v-bind="field"
-                  :class="{ 'p-invalid': errorMessage }"
-                  class="block w-full"
-                  type="time"
-                />
-                <small id="email-help" class="p-error block">{{ errorMessage }}</small>
-              </Field>
-            </div>
           </div>
           <div class="grid mt-2">
             <div class="col">
-              <label for="tambahan">Note Tambahan</label>
-              <Field v-slot="{ field, errorMessage }" :rules="isRequired" name="tambahan">
+              <label for="oleh">Oleh</label>
+              <Field v-slot="{ field, errorMessage }" :rules="isRequired" name="oleh">
                 <InputText
                   v-bind="field"
                   :class="{ 'p-invalid': errorMessage }"
@@ -420,33 +396,37 @@ const processInterview = async (body) => {
 };
 
 const ulangInterview = async () => {
-  await processInterview({ status_note: "" });
+  await processInterview({ interviewer_name: "", interview_date: null });
   openModalUlangInterview();
 };
 
 const diterima = async (candidateStatus) => {
   let candidateStatusNew = candidateStatus + 1;
-  await processInterview({ ApplicantStatusId: candidateStatusNew, status_note: "" });
+  await processInterview({
+    ApplicantStatusId: candidateStatusNew,
+    interviewer_name: "",
+    interview_date: "",
+  });
   openModalLanjutan();
 };
 
 const doneInterview = async (candidateStatus) => {
   let candidateStatusNew = candidateStatus + 1;
-  await processInterview({ ApplicantStatusId: candidateStatusNew, status_note: "" });
+  await processInterview({
+    ApplicantStatusId: candidateStatusNew,
+    interviewer_name: "",
+    interview_date: null,
+  });
   displayModal.value = false;
 };
 
 const buatJadwal = async (val) => {
-  const a = new Date(val.tanggal);
-  const note = `waktu: ${a.toDateString()}, ${val.jam} WIB. oleh: ${val.interviewer}`;
-  await processInterview({ status_note: note });
+  await processInterview({ interviewer_name: val.interviewer, interview_date: val.tanggal });
   openModalJadwal();
 };
 
 const buatJadwalTes = async (val) => {
-  const a = new Date(val.tanggal);
-  const note = `waktu: ${a.toDateString()}, ${val.jam} WIB. note: ${val.tambahan}`;
-  await processInterview({ status_note: note });
+  await processInterview({ interviewer_name: val.oleh, interview_date: val.tanggal });
   openModalTes();
 };
 

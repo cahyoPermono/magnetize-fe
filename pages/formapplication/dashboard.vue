@@ -17,7 +17,8 @@
             <span>{{ user.email }}</span>
             <div class="mt-4">
               <span>status :</span>
-              <h5 class="mt-0">{{ status }}</h5>
+              <h4 class="mt-0">{{ status }}</h4>
+              <!-- {{ userData }} -->
             </div>
           </div>
         </template>
@@ -58,8 +59,8 @@
                   <i class="pi pi-flag text-white" style="font-size: 1rem"></i>
                 </div>
                 <div class="ml-2 text-sm align-items-center">
-                  <h5 class="my-0">{{ status.status }}</h5>
-                  <p class="m-0">{{ userData.status_note ? userData.status_note : "-" }}</p>
+                  <h4 class="my-0">{{ status.status }}</h4>
+                  <p class="m-0">{{ userData.interviewer_name ? note : "-" }}</p>
                 </div>
               </div>
             </div>
@@ -97,6 +98,12 @@ const config = useRuntimeConfig();
 const store = useStore();
 const userData = ref({});
 const statuses = ref([]);
+
+const note = computed(() => {
+  const date = userData.value.interview_date.slice(0,10);
+  const new_date = `${date.slice(8,10)}-${date.slice(5,7)}-${date.slice(0,4)} `
+  return `oleh: ${userData.value.interviewer_name}, pada:  ${new_date}`;
+});
 
 const isDisabled = computed(() => {
   const data = applicantStatus.value;
