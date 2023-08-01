@@ -36,6 +36,7 @@ import Badge from "primevue/badge";
 import Checkbox from "primevue/checkbox";
 import SplitButton from "primevue/splitbutton";
 import Slider from 'primevue/slider';
+import Menu from 'primevue/menu';
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(PrimeVue, { ripple: true });
@@ -75,6 +76,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component("Checkbox", Checkbox);
   nuxtApp.vueApp.component("SplitButton", SplitButton);
   nuxtApp.vueApp.component("Slider", Slider);
+  nuxtApp.vueApp.component("Menu", Menu);
 
   //other components that you need
 });
